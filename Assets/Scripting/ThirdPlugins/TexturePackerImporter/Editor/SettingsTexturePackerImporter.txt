@@ -1,0 +1,62 @@
+version: 2
+importPivots: 1
+tpsheetFileNames:
+- Assets/Art/DungeonMap/DungeonMapAtlas.tpsheet
+- Assets/Art/Effect/Frame/biaoxue/fe_biaoxue.tpsheet
+- Assets/Art/UI/Charge/ChargeAtlas.tpsheet
+- Assets/Art/UI/Common/CommonAtlas.tpsheet
+- Assets/Art/UI/Icon/IconAtlas.tpsheet
+- Assets/Art/UI/NPC/HeadIconAtlas.tpsheet
+- Assets/Art/UI/NPCTex/Body_01.tpsheet
+- Assets/Art/UI/NPCTex/Body_02.tpsheet
+- Assets/Art/UI/NPCTex/Body_03.tpsheet
+- Assets/Art/UI/NPCTex/Body_04.tpsheet
+- Assets/Art/UI/NPCTex/Body_05.tpsheet
+- Assets/Art/UI/NPCTex/Body_06.tpsheet
+- Assets/Art/UI/NPCTex/Body_07.tpsheet
+- Assets/Art/UI/NPCTex/Body_08.tpsheet
+- Assets/Art/UI/NPCTex/Body_09.tpsheet
+- Assets/Art/UI/NPCTex/Body_10.tpsheet
+- Assets/Art/UI/NPCTex/Body_11.tpsheet
+- Assets/Art/UI/NPCTex/Body_12.tpsheet
+- Assets/Art/UI/Window/Window_Chat/Window_Chat.tpsheet
+textureFileNames:
+- Assets/Art/DungeonMap/DungeonMapAtlas.png
+- Assets/Art/Effect/Frame/biaoxue/fe_biaoxue.png
+- Assets/Art/UI/Charge/ChargeAtlas.png
+- Assets/Art/UI/Common/CommonAtlas.png
+- Assets/Art/UI/Icon/IconAtlas.png
+- Assets/Art/UI/NPC/HeadIconAtlas.png
+- Assets/Art/UI/NPCTex/Body_01.png
+- Assets/Art/UI/NPCTex/Body_02.png
+- Assets/Art/UI/NPCTex/Body_03.png
+- Assets/Art/UI/NPCTex/Body_04.png
+- Assets/Art/UI/NPCTex/Body_05.png
+- Assets/Art/UI/NPCTex/Body_04.png
+- Assets/Art/UI/NPCTex/Body_07.png
+- Assets/Art/UI/NPCTex/Body_08.png
+- Assets/Art/UI/NPCTex/Body_09.png
+- Assets/Art/UI/NPCTex/Body_10.png
+- Assets/Art/UI/NPCTex/Body_11.png
+- Assets/Art/UI/NPCTex/Body_12.png
+- Assets/Art/UI/Window/Window_Chat/WindowChat.png
+normalmapFileNames:
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
+- 
