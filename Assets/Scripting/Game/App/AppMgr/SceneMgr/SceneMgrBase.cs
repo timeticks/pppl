@@ -11,7 +11,7 @@ public class SceneMgrBase : MonoBehaviour
     protected void _Init(SceneMgrBase instance)
     {
         InstanceBase = instance;
-        if (UIRootMgr.Instance != null) UIRootMgr.Instance.TopBlackMask = false;
+        if (UIRootMgr.Instance!=null) UIRootMgr.Instance.MyUICam.cullingMask = 1 << LayerMask.NameToLayer("UI");
     }
 
 }

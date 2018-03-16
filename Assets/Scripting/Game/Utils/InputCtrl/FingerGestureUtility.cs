@@ -217,7 +217,7 @@ public class FingerGestureUtility : MonoBehaviour {
 #else
         if (Input.touchCount > 0)
         {
-             return Input.touchCount > touchIndex ? Input.GetTouch(touchIndex).position:Input.GetTouch(0).position;
+             return Input.touchCount > touchIndex?Input.GetTouch(touchIndex).position:Input.GetTouch(0).position;
         }
         return Vector2.zero;
 #endif
@@ -328,12 +328,28 @@ public class FingerGestureUtility : MonoBehaviour {
 #else
         if (Input.touchCount > 0) 
         {
-             return EventSystem.current.IsPointerOverGameObject();
+            return IsPointerOverGameObject(Input.GetTouch(0).position);
         }
         return false;
 #endif
 
     }
+    public static bool IsPointerOverGameObject(Vector2 screenPosition)
+    {
+        Canvas canvas = UIRootMgr.Instance.MyCanvas;
+        //实例化点击事件  
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        //将点击位置的屏幕坐标赋值给点击事件  
+        eventDataCurrentPosition.position = screenPosition;
+        //获取画布上的 GraphicRaycaster 组件  
+        GraphicRaycaster uiRaycaster = canvas.gameObject.GetComponent<GraphicRaycaster>();
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        // GraphicRaycaster 发射射线  
+        uiRaycaster.Raycast(eventDataCurrentPosition, results);
+
+        return results.Count > 0;
+    }  
     public static bool IsTouchOnUI(int touchIndex)
     {
         if (EventSystem.current == null) return false;

@@ -9,14 +9,10 @@ public class ShockCtrl : MonoBehaviour
     float m_shakeStrength = 0.1f;
     float m_posShake = 2f;
     float m_shakeTime = 0.4f;
-
-    private IEnumerator shakeCameraCor;
     public void Init()
     {
-        if (shakeCameraCor != null)
-            StopCoroutine(shakeCameraCor);
-        shakeCameraCor = ShakeCamera();
-        StartCoroutine(shakeCameraCor);
+        StopCoroutine("ShakeCamera");
+        StartCoroutine("ShakeCamera");
     }
 
     public static ShockCtrl DoShock(Transform shockObj, float shakeStrength, float posShake, float shakeTime)
@@ -49,14 +45,12 @@ public class ShockCtrl : MonoBehaviour
             transform.position = m_lastPos;
             transform.rotation = m_lastRot;
         }
-        if (shakeCameraCor != null)
-            StopCoroutine(shakeCameraCor);
-        shakeCameraCor = ShakeCamera();
-        StartCoroutine(shakeCameraCor);
+        StopCoroutine("ShakeCamera");
+        StartCoroutine("ShakeCamera");
     }
 
-
-    public IEnumerator ShakeCamera()
+    
+    IEnumerator ShakeCamera()
     {
         m_isShaking = true;
         float shake_intensity = m_shakeTime;

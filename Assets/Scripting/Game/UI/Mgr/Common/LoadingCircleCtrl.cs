@@ -84,7 +84,7 @@ public class LoadingCircleCtrl : MonoBehaviour
             //}
             System.Action overDel = delegate()
             {
-                //GameClient.Instance.LoginOutGame();
+                GameClient.Instance.LoginOutGame();
             };
             UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(overDel, "服务器连接超时，请重新登录", Color.red);
             gameObject.SetActive(false);

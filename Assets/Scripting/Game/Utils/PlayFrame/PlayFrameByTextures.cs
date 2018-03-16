@@ -30,22 +30,18 @@ public class PlayFrameByTextures : MonoBehaviour {
         Play();
     }
 
-    private IEnumerator animStartCor;
     public void Play()
     {
-        if (animStartCor != null)
-            StopCoroutine(animStartCor);
-        animStartCor = AnimStart();
-        StartCoroutine(animStartCor);
+        StopCoroutine("AnimStart");
+        StartCoroutine("AnimStart");
     }
 
     public void Stop()
     {
-        if (animStartCor != null)
-            StopCoroutine(animStartCor);
+        StopCoroutine("AnimStart");
     }
 
-    public IEnumerator AnimStart()
+    IEnumerator AnimStart()
     {
         int index = m_StartIndex;
 
@@ -125,9 +121,9 @@ public class PlayFrameByTexturesEditor : Editor
                     Texture2D sp = AssetDatabase.LoadAssetAtPath<Texture2D>(resourcesAssets[i]);
                     sprites.Add(sp);
                 }
-                catch { TDebug.LogErrorFormat("Not Sprite {0}" , selection[i].name); }
+                catch { TDebug.LogError("Not Sprite " + selection[i].name); }
             }
-            TDebug.LogFormat("obj amount: {0}     sprite amount: {1}" , selection.Length , sprites.Count);
+            TDebug.Log("obj amount: " + selection.Length + "     sprite amount: " + sprites.Count);
             targetIns.m_SpriteList = sprites;
         }
     }

@@ -13,7 +13,6 @@ public class PlayFrameSprite : MonoBehaviour {
     private bool m_waitOffsetWait = false;
     internal DirNumType m_DirNumType = DirNumType.Two;
     internal int m_CurDirType;
-    private IEnumerator playAnimCor;
 
     void OnEnable()
     {
@@ -28,14 +27,13 @@ public class PlayFrameSprite : MonoBehaviour {
 
     void Play(PlayFrameSpriteData data)
     {
-        if (playAnimCor != null) StopCoroutine(playAnimCor);
+        StopCoroutine("PlayAnim");
         m_Data = data;
-        playAnimCor = PlayAnim(data);
-        StartCoroutine(playAnimCor);
+        StartCoroutine("PlayAnim", data);
     }
     public void Play(PlayFrameSpriteData data, DirNumType numType, int dirValue, System.Action overDel = null, System.Action finishDel = null)
     {
-        if (playAnimCor != null) StopCoroutine(playAnimCor);
+        StopCoroutine("PlayAnim");
 
         m_DirNumType = numType;
         m_CurDirType = dirValue;
@@ -43,8 +41,7 @@ public class PlayFrameSprite : MonoBehaviour {
         m_overDel = overDel;
         m_finishDel = finishDel;
         m_Data = data;
-        playAnimCor = PlayAnim(data);
-        StartCoroutine(playAnimCor);
+        StartCoroutine("PlayAnim", data);
     }
 
     // 当动画需要改变方向时，只改变offset使Index整体偏移，不是重新进行动画播放
@@ -88,7 +85,7 @@ public class PlayFrameSprite : MonoBehaviour {
     {
         SpriteRen.sprite = sp;
     }
-    public IEnumerator PlayAnim(PlayFrameSpriteData data)
+    IEnumerator PlayAnim(PlayFrameSpriteData data)
     {
         m_offsetSetFreshDel = null;
         
@@ -103,7 +100,7 @@ public class PlayFrameSprite : MonoBehaviour {
             case PlayFrameType.Repeat:
                 while (true)
                 {
-                    Vector2 posDetla;
+                    Vector2? posDetla = null;
                     if (m_FrameDic.ContainsKey(curNum)) { posDetla = m_FrameDic[curNum].m_PosDetla; }
                     if (m_DirNumType == DirNumType.Two) { FreshTexture(m_Data.SpriteList[curNum]); }
 
@@ -123,7 +120,7 @@ public class PlayFrameSprite : MonoBehaviour {
                 int direction = 1;
                 while (true)
                 {
-                    Vector2 posDetla;
+                    Vector2? posDetla = null;
                     if (m_FrameDic.ContainsKey(curNum)) { posDetla = m_FrameDic[curNum].m_PosDetla; }
                     if (m_DirNumType == DirNumType.Two) { FreshTexture(m_Data.SpriteList[curNum]); }
 
@@ -143,7 +140,7 @@ public class PlayFrameSprite : MonoBehaviour {
                 bool inverse = false;
                 while (true)
                 {
-                    Vector2 posDetla;
+                    Vector2? posDetla = null;
                     if (m_FrameDic.ContainsKey(curNum)) { posDetla = m_FrameDic[curNum].m_PosDetla; }
                     if (m_DirNumType == DirNumType.Two) { FreshTexture(m_Data.SpriteList[curNum]); }
 
@@ -178,7 +175,7 @@ public class PlayFrameSprite : MonoBehaviour {
             default:
                 while (true)
                 {
-                    Vector2 posDetla;
+                    Vector2? posDetla = null;
                     if (m_FrameDic.ContainsKey(curNum)) { posDetla = m_FrameDic[curNum].m_PosDetla; }
                     if (m_DirNumType == DirNumType.Two) { FreshTexture(m_Data.SpriteList[curNum]); }
 

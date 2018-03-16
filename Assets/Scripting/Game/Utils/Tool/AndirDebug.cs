@@ -13,17 +13,21 @@ public class AndirDebug : MonoBehaviour
         set
         {
             mLogLevel = value;
-            if (PlatformUtils.EnviormentTy == EnviormentType.Editor) TDebug.LogLevel = value;
-            else TDebug.LogLevel = TDebug.LogLevelType.ERROR;
+#if UNITY_ANDROID
+        TDebug.LogLevel = TDebug.LogLevelType.ERROR;
+#else
+            TDebug.LogLevel = value;
+#endif
         }
     }
 
-    [SerializeField]private TDebug.LogLevelType mLogLevel;
+    [SerializeField]
+    private TDebug.LogLevelType mLogLevel;
     public bool Log;
     public bool LogTrace;
 
     internal GUIStyle mSt;
-    private float mScreenRatio;     
+    private float mScreenRatio;
     private Vector2 mScroll;        //
     private bool mShowLog = true;   //是否显示log
     internal TDebug.LogLevelType mShowLogLevel = TDebug.LogLevelType.ERROR;
@@ -43,9 +47,9 @@ public class AndirDebug : MonoBehaviour
             {
                 tex.SetPixel(i, j, Color.black);
             }
-        } 
+        }
         mSt = new GUIStyle();
-        mScreenRatio = Screen.height/1920f;
+        mScreenRatio = Screen.height / 1920f;
         mSt.fontSize = Mathf.FloorToInt(24);
         mSt.normal.background = tex;
         TDebug.LogLevel = LogLevel;
@@ -53,19 +57,19 @@ public class AndirDebug : MonoBehaviour
         //gameObject.CheckAddComponent<FPSCounter>().m_FontSize = 30;
     }
 
-    void OnEnable()
+    internal void OnEnable()
     {
         if (mIsPrefsDebug)
             mLogCached = PlayerPrefs.GetString("logs", "");
         Application.logMessageReceived += HandleLog;
     }
 
-    void OnDisable()
+    internal void OnDisable()
     {
         Application.logMessageReceived -= HandleLog;
     }
 
-    private string mLogCached="";
+    private string mLogCached = "";
     private string mActionStr = "";
     /// <summary>
     /// 
@@ -83,14 +87,14 @@ public class AndirDebug : MonoBehaviour
             if (type == LogType.Error || type == LogType.Exception)
             {
                 if (LogTrace && !mLogCached.Contains(stackTrace))
-                    mLogCached += string.Format("<color=#ff0000ff>{0}\r\n{1}\r\n</color>", logString,stackTrace);
+                    mLogCached += string.Format("<color=#ff0000ff>{0}\r\n{1}\r\n</color>", logString, stackTrace);
                 else
                     mLogCached += string.Format("<color=#ff0000ff>{0}</color>\r\n", logString);
             }
             else
             {
                 if (type == LogType.Log)
-                    mLogCached += logString+"\r\n";
+                    mLogCached += logString + "\r\n";
                 else
                     mLogCached += string.Format("<color=#CD7F65FF>{0}</color>\r\n", logString);
             }
@@ -138,9 +142,9 @@ public class AndirDebug : MonoBehaviour
             if (GUI.Button(new Rect(Screen.width - 80 * mScreenRatio, 220 * mScreenRatio, 90 * mScreenRatio, 80 * mScreenRatio),
                 string.Format("<size=20>{0}</size>", "执行")))
             {
-                //if (AppBridge.Instance != null) AppBridge.Instance.DoAndirLog(mActionStr);
+                if (AppBridge.Instance != null) AppBridge.Instance.DoAndirLog(mActionStr);
             }
-        
+
         }
 
 

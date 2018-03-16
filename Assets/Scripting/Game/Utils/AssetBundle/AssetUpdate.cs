@@ -12,93 +12,51 @@ public class AssetUpdate :MonoBehaviour
     public const string DownloadingKey = "DownloadingAsset";  //需要断点续传的资源
     public const string BundleAssetUpdated = "BundleAssetUpdated";   //已经更新在persist的资源...如果安装包覆盖更新后，会被清空
     public const string TryUpdateBundleVer = "TryUpdateBundleVer:";
-    public const string SaveMD5 = "SaveMD5";                //当前已更新资源的md5
+    public const string SaveMD5 = "SaveMD5";
     public const string GameVersion = "GameVersionKey";
     public const string AssemDllFileName = "Assembly-CSharp.dll";
 
     static Dictionary<string, bool> UpdatedDict = null;
 
-    public static Dictionary<string, bool> InitUpdatedDict()
-    {
-        UpdatedDict = new Dictionary<string, bool>();
-        string str = PlayerPrefs.GetString(BundleAssetUpdated, "");
-        if (TDebug.LogLevel == TDebug.LogLevelType.DEBUG)
-            TDebug.LogFormat("已更新资源:{0}" , str);
-
-        bool needFreshSet = false;
-        string[] s = str.Split('|');
-        for (int i = 0; i < s.Length; i++)
-        {
-            if (s[i] == "") continue;
-            if (!UpdatedDict.ContainsKey(s[i]))
-            {
-                UpdatedDict.Add(s[i], true);
-            }
-            else
-            {
-                needFreshSet = true;
-            }
-        }
-        if (needFreshSet) //将重复的项去掉
-        {
-            FreshBundleAssetUpdated(UpdatedDict);
-        }
-        return UpdatedDict;
-    }
     public static bool IsUpdated(string bundleName)  //此资源是否已经更新过，若更新过，则在persist路径中
     {
         if (UpdatedDict == null)
         {
-            InitUpdatedDict();
+            UpdatedDict = new Dictionary<string, bool>();
+            string str = PlayerPrefs.GetString(BundleAssetUpdated, "");
+            TDebug.Log("已更新资源:" + str);
+            bool needFreshSet = false;
+            string[] s = str.Split('|');
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == "") continue;
+                if (!UpdatedDict.ContainsKey(s[i]))
+                {
+                    UpdatedDict.Add(s[i], true);
+                    needFreshSet = true;
+                }
+            }
+            if (needFreshSet) //将重复的项去掉
+            {
+                StringBuilder tempStr = new StringBuilder();
+                foreach (var temp in UpdatedDict)  
+                {
+                    if (tempStr.Length>0) tempStr.Append("|" + temp.Key);
+                    else tempStr.Append(temp.Key);
+                }
+                PlayerPrefs.SetString(BundleAssetUpdated, tempStr.ToString());
+            }
         }
         if (UpdatedDict.ContainsKey(bundleName))
         {
             string path = FileUtils.PersistentDataReadPath(FileUtils.GameResPath, bundleName);
             bool isExists = File.Exists(path);
             if (!isExists)
-            {
-                //这里还原了此资源的版本号，以便下次进入游戏重新下载资源
-                ResetMissedBundle(new List<string>() {bundleName});
                 TDebug.LogError(string.Format("资源已下载，但路径中没有此资源:{0}:[{1}]",bundleName, path));
-            }
             //TDebug.Log("已经下载"+bundleName);
             return isExists;
         }
         return false;
-    }
-    static void FreshBundleAssetUpdated(Dictionary<string, bool> updateDict)//根据UpdatedDict刷新
-    {
-        StringBuilder tempStr = new StringBuilder();
-        foreach (var temp in UpdatedDict)
-        {
-            if (tempStr.Length > 0) tempStr.Append("|" + temp.Key);
-            else tempStr.Append(temp.Key);
-        }
-        PlayerPrefs.SetString(BundleAssetUpdated, tempStr.ToString());
-    }
-
-    /// <summary>
-    /// 当bundle更新过，但加载失败时，则会重置此bundle信息，下次玩家进入后会重新下载
-    /// </summary>
-    /// <param name="bundleName"></param>
-    public static void ResetMissedBundle(List<string> bundleName)
-    {
-        string curMd5 = PlayerPrefs.GetString(SaveMD5, "");
-        List<CompareItem> diffList = MD5Compare.CompareVersion(GetStreamingMd5(), curMd5);
-        for (int i = 0; i < bundleName.Count; i++)
-        {
-            string curBundleName = bundleName[i].Replace("/", "\\");
-            foreach (var item in diffList)
-            {
-                if (item != null)
-                    item.IsUpdateOver = (item.ItemName != curBundleName);
-            }
-        }
-        string newMd5 = MD5Compare.GetNewMd5Str(diffList);
-        PlayerPrefs.SetString(SaveMD5, newMd5);
-        if (ServerInfo.BundleVersion >= 1)
-            PlayerPrefs.SetInt(AssetUpdate.BundleVersion + AppSetting.Version, ServerInfo.BundleVersion - 1);
-        PlayerPrefs.Save();
     }
 
     public List<CompareItem> mDiffList;  //md5
@@ -173,7 +131,7 @@ public class AssetUpdate :MonoBehaviour
     /// <param name="callBack">回调</param>
     void DoUpdate(List<CompareItem> itemList, string urlHead , string savePath , System.Action callBack)
     {
-        Window_LoadBar.Instance.Fresh(mCurUpdateIndex / (float)mNeedUpdateAmount, string.Format("更新资源(共{0}k)", (mResAmountSize).ToString()));
+        Window_LoadBar.Instance.Fresh(mCurUpdateIndex / (float)mNeedUpdateAmount, string.Format("更新资源(共{0}m)", (mResAmountSize / 1000f).ToString("f2")));
         CompareItem updateItem = null;
         if (itemList.Count > 0) //获得第一个需要下载的资源
         {
@@ -222,7 +180,7 @@ public class AssetUpdate :MonoBehaviour
     /// <summary>
     /// 根据m_DiffList，在AssetbundleManager中进行更新
     /// </summary>
-    static List<CompareItem> CompareVersion(string newMd5 , out bool haveUpdate)
+    List<CompareItem> CompareVersion(string newMd5 , out bool haveUpdate)
     {
         List<CompareItem> diffList = new List<CompareItem>();
         string oldMd5 = PlayerPrefs.GetString(SaveMD5, "");//找到旧md5
@@ -232,7 +190,7 @@ public class AssetUpdate :MonoBehaviour
             //TDebug.Log("初次进入，无版本信息" + oldMd5);
         }
 
-        diffList = MD5Compare.CompareVersion(oldMd5, newMd5); //得到需更新的列表
+        diffList = MD5Utility.CompareVersion(oldMd5, newMd5); //得到需更新的列表
         
         StringBuilder waitUpdate = new StringBuilder();
         for (int i = 0; i < diffList.Count; i++)
@@ -242,7 +200,7 @@ public class AssetUpdate :MonoBehaviour
         }
         if (waitUpdate.ToString() != "")
         {
-            TDebug.LogFormat("待更新资源{0}" , waitUpdate.ToString());
+            TDebug.Log("待更新资源" + waitUpdate.ToString());
             haveUpdate = true;
         }
         else
@@ -253,20 +211,16 @@ public class AssetUpdate :MonoBehaviour
         return diffList;
     }
 
-    //原始md5
     public static string GetStreamingMd5()
     {
-        byte[] data = null;
-        if (PlatformUtils.EnviormentTy == EnviormentType.Android)
-        {
-            string asstsPath = FileUtils.StreamingAssetsPathReadPath(FileUtils.GameResPath, MD5Utils.VersionMd5TxtName);
-            data = JavaHelper.Instance.GetStreamAssets(asstsPath);
-        }
-        else
-        {
-            string asstsPath = FileUtils.StreamingAssetsPathReadPath(FileUtils.GameResPath, MD5Utils.VersionMd5TxtName);
-            data = File.ReadAllBytes(asstsPath);
-        }
+#if UNITY_ANDROID && !UNITY_EDITOR
+        TDebug.Log("Android平台编译的代码!!!!!!!!!!!!!");
+        string asstsPath = FileUtils.StreamingAssetsPathReadPath(FileUtils.GameResPath, SharedAsset.VersionMd5TxtName);
+        byte[] data = JavaHelper.Instance.GetStreamAssets(asstsPath);
+# else
+        string asstsPath = FileUtils.StreamingAssetsPathReadPath(FileUtils.GameResPath, SharedAsset.VersionMd5TxtName);
+        byte[] data = File.ReadAllBytes(asstsPath);
+#endif
         return System.Text.Encoding.UTF8.GetString(data);
     }
 
@@ -276,7 +230,7 @@ public class AssetUpdate :MonoBehaviour
         TDebug.Log("更新储存的版本信息");
         if (mDiffList != null)
         {
-            string newMd5 = MD5Compare.GetNewMd5Str(mDiffList);
+            string newMd5 = MD5Utility.GetNewMd5Str(mDiffList);
             PlayerPrefs.SetString(SaveMD5, newMd5);
             PlayerPrefs.Save();
         }
@@ -316,7 +270,7 @@ public class AssetUpdate :MonoBehaviour
     public static  string Flag = "1001";
     public void UpdateDll()
     {
-        TDebug.LogFormat("=====更新游戏Flag：{0}" , Flag);
+        TDebug.Log("=====更新游戏Flag：" + Flag);
         if (mThreadDowner == null)
         {
             GameObject g = new GameObject("ThreadDownloader");
@@ -331,21 +285,21 @@ public class AssetUpdate :MonoBehaviour
     public IEnumerator LoadDll()
     {
         string path = AndroidDllPath();
-        TDebug.LogFormat(string.Format("进行dll下载:{0}/{1}     |{2}", FileUtils.ResURL , AssemDllFileName, path));
+        TDebug.Log(string.Format("进行dll下载:{0}     |{1}", FileUtils.ResURL + "/" + AssemDllFileName, path));
 
         WWW www = new WWW(FileUtils.ResURL + "/" + AssemDllFileName);
         Window_LoadBar.Instance.Init(www, "正在更新" , null);//显示进度条界面
         yield return www;
         if ((www.error != null) || www.bytes == null || www.bytes.Length == 0)
         {
-            TDebug.LogErrorFormat("下载错误: {0}",www.error);
+            TDebug.LogError("下载错误: "+www.error);
             UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(Application.Quit, string.Format("下载新版本资源错误({0})",AppSetting.Version), Color.red);
             yield break;
         }
         byte[] bytes = www.bytes;
         MemoryStream zipStream = new MemoryStream(bytes);
         FileUtils.UnGzipDirectoryFile(zipStream, path);
-        TDebug.LogFormat("是否存在：{0}", File.Exists(string.Format("{0}/{1}", path , AssemDllFileName)));
+        TDebug.Log("是否存在：" + File.Exists(path + "/" + AssemDllFileName));
         //FileUtils.SaveBytes(path, AssemDllFileName, bytes);
         PlayerPrefs.SetFloat(AssetUpdate.GameVersion, (float)ServerInfo.GameVersion);
         PlayerPrefs.Save();
@@ -355,10 +309,9 @@ public class AssetUpdate :MonoBehaviour
         UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk("更新完毕，即将为您重启游戏", Color.red);
         yield return new WaitForSeconds(1f);
         JavaHelper.Instance.AndroidRestart();
-        www.Dispose();
     }
 
-    public static string AndroidDllPath()
+    private static string AndroidDllPath()
     {
         string datapath = Application.dataPath;
         int start = datapath.IndexOf("com.");
@@ -371,10 +324,9 @@ public class AssetUpdate :MonoBehaviour
 
     public static bool IsOldDllExit() //当有旧版本dll存在，移除旧版本dll
     {
-        if (PlatformUtils.EnviormentTy != EnviormentType.Android)
-        {
-            return false;
-        }
+#if !UNITY_ANDROID || UNITY_EDITOR
+        return false;
+#endif
         FileInfo file = new FileInfo(AndroidDllPath()+"/" + AssemDllFileName);
         if (file.Exists)
         {
@@ -387,39 +339,55 @@ public class AssetUpdate :MonoBehaviour
 
 
 
-    #region 更新链接
-
-    public static void OpenAppStore()
-    {
-        try
-        {
-            string url="";
-            if (PlatformUtils.EnviormentTy == EnviormentType.iOS)
-            {
-                url = ServerInfo.GetCurStoreUrl();
-                //Application.OpenURL("itms-apps://itunes.apple.com/app/id" + appID);
-            }
-            else
-            {
-                url = ServerInfo.GetCurStoreUrl();
-                //Application.OpenURL("market://details?id=" + appID);
-            }
-
-            if (url.Length<=1)
-            {
-                UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk("跳转应用商店失败，劳驾道友自行到应用商店更新游戏" , Color.red);
-                return;
-            }
-            Application.OpenURL(url);
-        }
-        catch(Exception ex)
-        {
-            TDebug.LogErrorFormat("跳转商店失败：{0}" , ex.Message);
-            UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk("跳转应用商店失败，劳驾道友自行到应用商店更新游戏", Color.red);
-        }
-    }
-
-
+    #region 更新安装包
+    //public void CheckPackage()
+    //{
+    //    for (int i = 0; i < VerChecker.DiffList.Count; i++)
+    //    {
+    //        if (VerChecker.DiffList[i] == "package")
+    //        {
+    //            mDownloadInstall = gameObject.AddComponent<DownloadInstall>();
+    //            CheckAndDown(); 
+    //            return;//等待覆盖安装，不进行后续加载
+    //        }
+    //    }
+    //    //ChangeTo(UpdateState.UpdateNormalRes);
+    //}
+    //public void CheckAndDown()
+    //{
+    //    if (DownloadInstall.GetNetworkType() != NetworkType.WIFI)
+    //    {
+    //        System.Action okDel = delegate() { StartDownload(false); };
+    //        UIRootMgr.Instance.MessageBox.ShowInfo_HaveCancel("有新版本了(WIFI未开启),仍要下载请按确定", okDel, CheckAndDown);
+    //    }
+    //    else { StartDownload(true); }
+    //}
+    //public void StartDownload(bool haveTips)
+    //{
+    //    System.Action okDel = delegate()
+    //    {
+    //        TDebug.Log("安装包更新，进行下载安装", "download_package");
+    //        LoadProgressData progressData = mDownloadInstall.StartDownPackage();
+    //        if (progressData != null) { StartCoroutine(DownloadCor(progressData)); return; }
+    //        TDebug.LogError("错误，下载进度为空");
+    //    };
+    //    UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(okDel, "有新版本了,请更新...", Color.red);
+    //    TDebug.Log("安装包更新，提示下载", "download_package");
+    //}
+    //IEnumerator DownloadCor(LoadProgressData progressData)
+    //{
+    //    while (progressData.m_Progress < 1)
+    //    {
+    //        if (UIRootMgr.MainUI != null)
+    //        {
+    //            UIRootMgr.MainUI.m_Start.m_myView.m_LoadDecsText.gameObject.SetActive(true);
+    //            UIRootMgr.MainUI.m_Start.m_myView.m_LoadSceneScroll.gameObject.SetActive(true);
+    //            UIRootMgr.MainUI.m_Start.m_myView.m_LoadDecsText.text = "正在下载...";
+    //            UIRootMgr.MainUI.m_Start.m_myView.m_LoadSceneScroll.value = progressData.m_Progress;
+    //        }
+    //        yield return null;
+    //    }
+    //}
     #endregion
 
 }

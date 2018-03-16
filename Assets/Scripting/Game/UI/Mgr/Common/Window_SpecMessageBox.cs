@@ -37,8 +37,8 @@ public class Window_SpecMessageBox : WindowBase
         if (mViewObj == null) { mViewObj = new ViewObj(mViewBase); }
         OpenWin();
         Init();
-        //ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
-        string str = error == null ? string.Format("未知错误:{0}",codeStatus) : error.Name;
+        ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
+        string str = error == null ? "未知错误" : error.name;
         ShowInfo_OnlyOk(null, str, Color.red);
     }
     public override void CloseWindow(CloseActionType actionType = CloseActionType.None)
@@ -97,16 +97,16 @@ public class Window_SpecMessageBox : WindowBase
     /// </summary>
     public bool ShowStatus(int codeStatus,Action callBack=null)
     {
-        //ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
-        //string errorContext = error == null ? string.Format("未知错误:{0}",codeStatus) : error.Name;
-        //if (GameClient.IsShowWarn)
-        //{
-        //    UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, errorContext, Color.red);
-        //    return true;
-        //}
-        //else
+        ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
+        string errorContext = error == null ? "未知错误" : error.name;
+        if (GameClient.IsShowWarn)
         {
-            //TDebug.Log(string.Format("跳过客户端拦截:{0}", errorContext));
+            UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, errorContext, Color.red);
+            return true;
+        }
+        else
+        {
+            TDebug.Log(string.Format("跳过客户端拦截:{0}", errorContext));
             return false;
         }
     }
@@ -116,12 +116,12 @@ public class Window_SpecMessageBox : WindowBase
     /// </summary>
     public bool ShowStatus(string statusStr, Action callBack = null)
     {
-        //if (GameClient.IsShowWarn)
-        //{
-        //    UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, statusStr, Color.red);
-        //    return true;
-        //}
-        //else
+        if (GameClient.IsShowWarn)
+        {
+            UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, statusStr, Color.red);
+            return true;
+        }
+        else
         {
             TDebug.Log(string.Format("跳过客户端拦截:{0}", statusStr));
             return false;

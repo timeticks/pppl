@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using KEngine;
 using UnityEngine;
- 
+
 /// <summary>
 /// 主要功能：
 /// 1、同一接口加载Simulate和RealFromBundle资源
@@ -23,7 +23,7 @@ using UnityEngine;
 /// <summary>
 /// 所有资源Loader继承这个
 /// </summary>
-public class TLoader : IAsyncObject, ITLoader
+public class TLoader : IAsyncObject
 {
     private readonly List<Action<TLoader>> mFinishedCallbacks = new List<Action<TLoader>>();
 
@@ -260,15 +260,15 @@ public class TLoader : IAsyncObject, ITLoader
     protected virtual void DoDispose()
     {
         //Debug.Log("回收" + Url);
-        if (ResultObject != null && ((ResultObject is GameObject || ResultObject is Component)))
+        if (ResultObject!=null && ResultObject.GetType() == typeof(GameObject))
         {
             ResultObject = null;
             //Resources.UnloadUnusedAssets(); //AssetLoaderPool中时间间隔3分钟回收
         }
         else
         {
-            //TODO:这里在IL中会报错
-            if (ResultObject != null) Resources.UnloadAsset((UnityEngine.Object)ResultObject);//Resources.UnloadAsset仅能释放非GameObject和Component的资源，比如Texture、Mesh等真正的资源。对于由Prefab加载出来的Object或Component，则不能通过该函数来进行释放。
+            //TODO:先不强制回收
+            if (ResultObject!=null) Resources.UnloadAsset((UnityEngine.Object)ResultObject);
             ResultObject = null;
             //Resources.UnloadUnusedAssets();
         }
@@ -344,6 +344,45 @@ public class TLoader : IAsyncObject, ITLoader
         mShowRefCountObj.name = refCountName;
 #endif
     }
+
+
+    //// <summary>
+    ///// 统一的对象工厂
+    ///// </summary>
+    //protected static T AutoNew<T>(string url, LoaderDelgate callback = null) where T : AbstractLoader, new()
+    //{
+    //    Dictionary<string, AbstractLoader> typesDict = AssetLoaderMgr.GetTypeDict(typeof(T));
+    //    AbstractLoader loader;
+    //    if (string.IsNullOrEmpty(url))
+    //    {
+    //        Debug.LogError("[{0}:AutoNew]url为空");
+    //    }
+
+    //    if (!typesDict.TryGetValue(url, out loader))
+    //    {
+    //        loader = new T();
+    //        typesDict[url] = loader;
+    //        loader.Init(url);
+    //    }
+    //    else
+    //    {
+    //        if (loader.RefCount < 0)
+    //        {
+    //            Debug.LogError("Error RefCount!");
+    //        }
+    //    }
+    //    loader.RefCount++;
+
+    //    // RefCount++了，重新激活，在队列中准备清理的Loader
+    //    if (AssetLoaderMgr.UnUsesLoaders.ContainsKey(loader))
+    //    {
+    //        AssetLoaderMgr.UnUsesLoaders.Remove(loader);
+    //        loader.Revive();
+    //    }
+    //    loader.AddFinishCallback(callback);
+
+    //    return loader as T;
+    //}
 
 
 }

@@ -30,7 +30,7 @@ public class GameAssetsPool : MonoBehaviour
         if (EffectDict.ContainsKey(eName))
         {
             DestroySelf d = EffectDict[eName];
-            if (null != d && null!=d.gameObject && !d.gameObject.activeSelf)
+            if (d != null && !d.gameObject.activeSelf)
             {
                 return d;
             }
@@ -50,10 +50,7 @@ public class GameAssetsPool : MonoBehaviour
             des = obj.CheckAddComponent<DestroySelf>();
         }
         des.Init(eName, loader.Release);
-        if (EffectDict.ContainsKey(eName))
-            EffectDict[eName] = des;
-        else
-            EffectDict.Add(eName, des);
+        EffectDict.Add(eName, des);
         return des;
     }
 

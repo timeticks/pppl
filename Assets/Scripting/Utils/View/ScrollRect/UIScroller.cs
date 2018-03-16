@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+public interface IScrollWindow
+{
+    void FreshScrollItem(int n);
+    void Reset();
+}
 
 public class UIScroller : MonoBehaviour
 {
@@ -16,7 +21,7 @@ public class UIScroller : MonoBehaviour
     //默认加载的Item个数比可显示个数大1个
     public int viewCount = 6;
     private int mViewCount = 0;
-   // public GameObject itemPrefab;
+    // public GameObject itemPrefab;
     public RectTransform _content;
 
     private int _index = -1;
@@ -29,11 +34,10 @@ public class UIScroller : MonoBehaviour
     public ScrollRect ScrollView;
     public Scrollbar Scrollbar;
     public bool AutoHide;
-    private System.Action<int> freshScrollDel;
-
-    public void Init(System.Action<int> freshScroll, int dataCount)
+    public IScrollWindow MyWindow;
+    public void Init(IScrollWindow win, int dataCount)
     {
-        freshScrollDel = freshScroll;
+        MyWindow = win;
         DataCount = dataCount;
         ClearItemList();
         _itemList.Clear();
@@ -81,7 +85,7 @@ public class UIScroller : MonoBehaviour
             }
         }
     }
-    public UIViewBase GetNewObj(Transform par , GameObject prefab)
+    public UIViewBase GetNewObj(Transform par, GameObject prefab)
     {
         if (_poolItemList.Count > 0)
         {
@@ -89,7 +93,7 @@ public class UIScroller : MonoBehaviour
             _poolItemList.RemoveAt(0);
             //temp.gameObject.SetActive(true);
             return temp;
-            
+
         }
         return GameTools.AddChild(par, prefab).GetComponent<UIViewBase>();
     }
@@ -98,7 +102,7 @@ public class UIScroller : MonoBehaviour
     public void TurnIndexItem(int index)
     {
         index = Mathf.Clamp(index, 0, DataCount - (mViewCount - 1));
-        if (DataCount < viewCount) index = 0;           
+        if (DataCount < viewCount) index = 0;
         ScrollView.StopMovement();
         switch (_movement)
         {
@@ -115,8 +119,8 @@ public class UIScroller : MonoBehaviour
 
     public void OnValueChange(Vector2 pos)
     {
-        int index = GetPosIndex();  
-        index = Mathf.Max(0,index);
+        int index = GetPosIndex();
+        index = Mathf.Max(0, index);
         if (_index != index)
         {
             _index = index;
@@ -142,7 +146,7 @@ public class UIScroller : MonoBehaviour
                     if (item.Index == i) isOk = true;
                 }
                 if (isOk) continue;
-                freshScrollDel(i);
+                MyWindow.FreshScrollItem(i);
             }
         }
     }
@@ -182,7 +186,7 @@ public class UIScroller : MonoBehaviour
             ItemIndex item = _itemList[i];
             if (item.Index >= index) item.Index += 1;
         }
-        freshScrollDel(index);
+        MyWindow.FreshScrollItem(index);
     }
 
     private void DelItemFromPanel(int index)
@@ -212,7 +216,7 @@ public class UIScroller : MonoBehaviour
         }
         if (maxIndex < DataCount - 1)
         {
-            freshScrollDel(maxIndex);
+            MyWindow.FreshScrollItem(maxIndex);
         }
     }
 
@@ -262,7 +266,7 @@ public class UIScroller : MonoBehaviour
         get { return _dataCount; }
         set
         {
-            _dataCount = value;    
+            _dataCount = value;
             UpdateTotalWidth();
         }
     }

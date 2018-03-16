@@ -8,6 +8,7 @@ public enum BgName
     AudioBg_Main,
     AudioBg_Map,
     AudioBg_Sect,
+    AudioBg_Battle2,
 }
 public enum AudioName
 {
@@ -19,6 +20,7 @@ public enum AudioName
 
 public class AudioMgr : MonoBehaviour
 {
+
     public class ViewObj
     {
         public AudioSource AudioBg0;
@@ -31,7 +33,8 @@ public class AudioMgr : MonoBehaviour
         public AudioClip Audio_BattleWin;
         public AudioClip Audio_BattleLose;
         public AudioClip Audio_Click;
-        public AudioClip AudioBg_Sect;
+        public AudioClip AudioBg_Sect;
+        public AudioClip AudioBg_Battle2;
 
         public List<AudioSource> m_BgSource;
 
@@ -50,6 +53,7 @@ public class AudioMgr : MonoBehaviour
             Audio_BattleLose = view.GetCommon<AudioClip>("Audio_BattleLose");
             Audio_Click = view.GetCommon<AudioClip>("Audio_Click");
             AudioBg_Sect = view.GetCommon<AudioClip>("AudioBg_Sect");
+            AudioBg_Battle2 = view.GetCommon<AudioClip>("AudioBg_Battle2");
 
             m_BgSource = new List<AudioSource>();
             m_BgSource.Add(AudioBg0);
@@ -59,6 +63,7 @@ public class AudioMgr : MonoBehaviour
             m_BgClips.Add(BgName.AudioBg_Battle, AudioBg_Battle);
             m_BgClips.Add(BgName.AudioBg_Main, AudioBg_Main);
             m_BgClips.Add(BgName.AudioBg_Map, AudioBg_Map);
+            m_BgClips.Add(BgName.AudioBg_Battle2, AudioBg_Battle2);
             m_BgClips.Add(BgName.AudioBg_Sect,AudioBg_Sect);
 
             m_AudioClips = new Dictionary<AudioName, AudioClip>();
@@ -130,10 +135,9 @@ public class AudioMgr : MonoBehaviour
     {
         Instance = this;
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
-        if (PlatformUtils.EnviormentTy == EnviormentType.Android)
-        {
-            LoadClickSound();
-        }
+#if UNITY_ANDROID&& !UNITY_EDITOR
+        LoadClickSound();
+#endif
     }
 
 
@@ -145,6 +149,7 @@ public class AudioMgr : MonoBehaviour
 
     public void PlayeBg(BgName name)
     {
+        return;
         if (!mIsMusic) return;
         if (mCurBgSoure == null) mCurBgSoure = mViewObj.m_BgSource[bgSourceIndex];
         mCurBgSoure.clip = mViewObj.m_BgClips[name];
@@ -152,23 +157,16 @@ public class AudioMgr : MonoBehaviour
         mCurBgSoure.Play();
         mCurAudioName = name;
     }
-    private IEnumerator aduioFadeOut;
-    private IEnumerator aduioFadeIn;
+
     public void SwitchBgAudio(BgName name)
     {
         if (!mIsMusic) return;
-        if (mCurAudioName == name) return;
         if (mCurBgSoure != null)
         {
             mLastBgSoure = mCurBgSoure;
             mLastAudioName = mCurAudioName;
-            if (aduioFadeOut != null)
-            {
-                StopCoroutine(aduioFadeOut);
-                aduioFadeOut = null;
-            }
-            aduioFadeOut = AduioFadeOut();
-            StartCoroutine(aduioFadeOut);
+            StopCoroutine("AduioFadeOut");
+            StartCoroutine("AduioFadeOut");
         }
         bgSourceIndex += 1;
         if (bgSourceIndex > 1) bgSourceIndex = 0;
@@ -176,13 +174,8 @@ public class AudioMgr : MonoBehaviour
         mCurBgSoure.clip = mViewObj.m_BgClips[name];
         mCurAudioName = name;
         mCurBgSoure.loop = true;
-        if (aduioFadeIn != null)
-        {
-            StopCoroutine(aduioFadeIn);
-            aduioFadeIn = null;
-        }
-        aduioFadeIn = AduioFadeIn();
-        StartCoroutine(aduioFadeIn);
+        StopCoroutine("AduioFadeIn");
+        StartCoroutine("AduioFadeIn");
     }
     public void RePlayLastBgAudio()
     {
@@ -226,55 +219,19 @@ public class AudioMgr : MonoBehaviour
     }
 
     private float longAduioLength = 0;
-    private IEnumerator increaseBgAudio;
     //播放长音效
     public void PlayLongAudio(AudioName name)
     {
         if (!mIsAudio) return;
-        if (mViewObj == null)
-        {
-            TDebug.LogError("mViewObj is null");
-            return;
-        }
-        if (mViewObj.Audio == null)
-        {
-            TDebug.LogError("mViewObj.Audio is null");
-            return;
-        }
-        if (mViewObj.m_AudioClips == null)
-        {
-            TDebug.LogError("m_AudioClips is null");
-            return;
-        }
-        if (!mViewObj.m_AudioClips.ContainsKey(name))
-        {
-            TDebug.LogError("m_AudioClips is null"+ name);
-            return;
-        }
-        if (mViewObj.m_AudioClips[name]==null)
-        {
-            TDebug.LogError(name + "AudioClips is null");
-            return;
-        }
         mViewObj.Audio.clip = mViewObj.m_AudioClips[name];
         mViewObj.Audio.loop = false;
         mViewObj.Audio.Play();
-        if (mCurBgSoure == null || !mIsMusic)
+        if (mCurBgSoure == null||!mIsMusic) 
             return;
         mCurBgSoure.volume = 0.4f;
         longAduioLength = mViewObj.Audio.clip.length;
-        if (increaseBgAudio != null)
-        {
-            StopCoroutine(increaseBgAudio);
-            increaseBgAudio = null;
-        }
-        increaseBgAudio = IncreaseBgAudio();
-        if (increaseBgAudio == null)
-        {
-            TDebug.LogError("increaseBgAudio is null");
-            return;
-        }
-        StartCoroutine(increaseBgAudio);
+        StopCoroutine("IncreaseBgAudio");
+        StartCoroutine("IncreaseBgAudio");
     }
     IEnumerator IncreaseBgAudio()
     {
@@ -293,18 +250,15 @@ public class AudioMgr : MonoBehaviour
     public static void PlayClickAudio()
     {
         if (Instance == null || !Instance.mIsAudio) return;
-        if (PlatformUtils.EnviormentTy == EnviormentType.Android)
-        {
-            playSound(AudioClickId, 0.4f);
-        }
-        else if (PlatformUtils.EnviormentTy == EnviormentType.iOS)
-        {
-            Instance.PlayeAudio(AudioName.Audio_Click);
-        }
+#if !UNITY_ANDROID
+        Instance.PlayeAudio(AudioName.Audio_Click);
+#elif !UNITY_EDITOR
+        playSound(AudioClickId,0.4f);
+#endif
+
     }
 
-
-    /////////////////////////////////////////安卓播放////////////////////////////////////////////
+#if UNITY_ANDROID&&!UNITY_EDITOR
     public static AndroidJavaClass unityActivityClass;
     public static AndroidJavaObject activityObj;
     private static AndroidJavaObject soundObj;
@@ -340,9 +294,6 @@ public class AudioMgr : MonoBehaviour
     }
     private void Awake()
     {
-        if (PlatformUtils.EnviormentTy != EnviormentType.Android)
-            return;
-
         unityActivityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         activityObj = unityActivityClass.GetStatic<AndroidJavaObject>("currentActivity");
         soundObj = new AndroidJavaObject("com.placegame.nativeplugins.AudioCenter", 5, activityObj);
@@ -350,6 +301,7 @@ public class AudioMgr : MonoBehaviour
         AndroidJavaClass jc = new AndroidJavaClass("com.placegame.nativeplugins.Restart");
         jo = jc.CallStatic<AndroidJavaObject>("getInstance", gameObject.name);
     }
+#endif
 
     private AndroidJavaObject jo;
 

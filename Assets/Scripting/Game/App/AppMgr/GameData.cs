@@ -7,59 +7,44 @@ using System.Collections.Generic;
 
 public enum DataName : short
 {
-    Global = 0,
 
-    Remain = 50,
-    Stage,
+    //Dialogue,
 
-    Item = 60,   //道具
+    Equip,
+    Item,   //道具
 
-    City = 100,
-    CityBase,
-    CityLevelRight,
-    CityData,//以前用的，港口初始化还在占用
+    Hero,
 
-    GoodsBase = 110,    //贸易物品
-    GoodsBuyRate,
-    GoodsSoldRate,
-
-    GamblePoker = 120,//贸易打牌
-    GamblePoints,
-    Dialogue,
-
-    ShipData = 201,
-    ShipEquipData = 202,
-
-    NaviData = 301,
-    NaviEquipData = 302,
-
-    MonsterData,
-
-    MapArea = 401,
-    ExploreData = 402,//老
-    TerrainData = 403,
-
-    PassiveSkill,
-    SkillData = 501,
-    BuffData = 502,
-
-    AiData = 601,
-    ChatData = 602,
-    //Lua,
-
+    Skill ,
+    Buff ,
+    AttrTable,
+    EquipAttrAdd,
+    DropQualityRate,
+    GameConst,
+    Map,
+    AttrProb,
+    DropGrade,
+    MonsterPrefix,
+    MonsterRate,
+    MonsterLevelUp,
+    LobbyDialogue,
+    HeroLevelUp,
+    QualityTable,
     /**********文本配置表***********/
-    textBattle,
-    ItemText,
-    GoodsText,
-    SkillText,
-    ShipText,
-    NaviText,
-    BattleText,
-    StageText,
-    CityText,
-    RemainText,
-    AreaText,
-    InvestChatText,
+    //TextBattle,
+    //ItemText,
+    //GoodsText,
+    //SkillText,
+    //ShipText,
+    //NaviText,
+    //BattleText,
+    //StageText,
+    //CityText,
+    //RemainText,
+    //AreaText,
+    //InvestChatText,
+
+
     ServerTipsText = 9999
 }
 
@@ -85,17 +70,30 @@ public class GameData : MonoBehaviour
         {
             LoadDataBaseFromRes( ( DataName )Arry_name.GetValue( i ) );
         }
-        TDebug.LogFormat( "GameData load count==={0}" , Dic_DataBase.Count );
+        TDebug.Log( "GameData load count===" + Dic_DataBase.Count );
     }
 
     void LoadDataBaseFromRes( DataName _name )
     {
         try
         {
+            //进行litJson中int转long的方法，否则某些小于int.MaxValue的整数无法直接转为long   Can't assign value '0' (type System.Int32) to type System.Int64
+            LitJson.JsonMapper.RegisterImporter<int, long>((int value) =>
+            {
+                return (long)value;
+            });
+            LitJson.JsonMapper.RegisterImporter<string, Eint>((string value) =>
+            {
+                int temp = 0;
+                int.TryParse(value, out temp);
+                return (int)temp;
+            });
+
             TextAsset asset = SharedAsset.Instance.LoadAssetSyncObj_ImmediateRelease(BundleType.GameDataBundle, _name.ToString()) as TextAsset;
-            Dic_DataBase.Add(_name, (Hashtable)MiniJson.JsonDecode(asset.text));
+            ConfigHelper.Instance.Init(_name, asset.text);
+            //Dic_DataBase.Add(_name, (Hashtable)MiniJson.JsonDecode(asset.text));
         }
-        catch (System.Exception exc) { TDebug.LogErrorFormat("读取配置表:{0}===={1}" , _name , exc.Message); }
+        catch (System.Exception exc) { TDebug.LogError("读取配置表:" + _name +"===="+ exc.Message); }
     }
 
     
@@ -115,12 +113,11 @@ public class GameData : MonoBehaviour
     public Hashtable GetData(DataName _name, string keyStr)
     {
         Hashtable hash = GetData(_name);
-        if (_name == DataName.NaviData) { if (!hash.ContainsKey(keyStr)) hash = GetData(DataName.MonsterData); }
         if (hash.ContainsKey(keyStr))
         {
             return hash[keyStr]as Hashtable;
         }
-        TDebug.LogErrorFormat("GetData Error：{0}    key{1}" , _name.ToString() , keyStr);
+        TDebug.LogError("GetData Error：" + _name + "   key" + keyStr);
         return null;
     }
 

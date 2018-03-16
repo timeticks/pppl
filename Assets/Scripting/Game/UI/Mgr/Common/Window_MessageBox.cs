@@ -80,31 +80,22 @@ public class Window_MessageBox : MonoBehaviour
         mViewObj.BtnCancel.gameObject.SetActive(false);
     }
 
-    public void ShowInfo_NoOk(string msg, Color textCol)
-    {
-        Reset();
-        mViewObj.ConditionText.text = msg;
-        gameObject.SetActive(true);
-        mViewObj.BtnOk.gameObject.SetActive(false);
-        mViewObj.BtnCancel.gameObject.SetActive(false);
-    }
-
     /// <summary>
     /// 客户端拦截显示
     /// 返回是否进行拦截
     /// </summary>
     public bool ShowStatus(int codeStatus,Action callBack=null)
     {
-        //ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
-        //string errorContext = error == null ? string.Format("未知错误:{0}",codeStatus) : error.Name;
-        //if (GameClient.IsShowWarn)
-        //{
-        //    UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, errorContext, Color.red);
-        //    return true;
-        //}
-        //else
+        ErrorStatus error = ErrorStatus.ErrorStatusFetcher.GetErrorStatusByCopy(codeStatus);
+        string errorContext = error == null ? "未知错误" : error.name;
+        if (GameClient.IsShowWarn)
         {
-            //TDebug.Log(string.Format("跳过客户端拦截:{0}", errorContext));
+            UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, errorContext, Color.red);
+            return true;
+        }
+        else
+        {
+            TDebug.Log(string.Format("跳过客户端拦截:{0}", errorContext));
             return false;
         }
     }
@@ -114,12 +105,12 @@ public class Window_MessageBox : MonoBehaviour
     /// </summary>
     public bool ShowStatus(string statusStr, Action callBack = null)
     {
-        //if (GameClient.IsShowWarn)
-        //{
-        //    UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, statusStr, Color.red);
-        //    return true;
-        //}
-        //else
+        if (GameClient.IsShowWarn)
+        {
+            UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(callBack, statusStr, Color.red);
+            return true;
+        }
+        else
         {
             TDebug.Log(string.Format("跳过客户端拦截:{0}", statusStr));
             return false;

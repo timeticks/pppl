@@ -23,7 +23,7 @@ public class AssetLoader_Bundle : IAssetLoader
     public TLoader LoadAssetSync(string bundleName, string assetName, System.Type ty)
     {
         assetName = assetName.ToLower();
-        string url = string.Format("{0}/{1}", bundleName, assetName);
+        string url = bundleName + "/" + assetName;
         TLoader loader = null;
 
         bool isNewCreate;
@@ -36,11 +36,12 @@ public class AssetLoader_Bundle : IAssetLoader
             }
             try
             {
+                //TDebug.Log("加载Asset：" + assetName);
                 Object target = SharedAsset.Instance.BundleDict[bundleName].LoadAsset(assetName, ty);
                 loader.OnFinish(target);
             }catch (System.Exception e)
             {
-                TDebug.LogErrorFormat("加载失败--{0}   {1}" , assetName , e.Message);
+                TDebug.LogError("加载失败--" + assetName + "   " + e.Message);
             }
         }
         return loader;
@@ -48,7 +49,7 @@ public class AssetLoader_Bundle : IAssetLoader
 
     public TLoader LoadObjAsync(string bundleName, string assetName, System.Type ty, System.Action<TLoader> loadFinish)
     {
-        string url = string.Format("{0}/{1}", bundleName ,assetName);
+        string url = bundleName + "/" + assetName;
         TLoader loader = null;
         bool isNewCreate;
         loader = TLoader.AutoNew(bundleName, url, out isNewCreate);

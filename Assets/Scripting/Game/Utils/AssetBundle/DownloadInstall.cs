@@ -9,10 +9,12 @@ using System.IO;
 public class DownloadInstall : MonoBehaviour
 {
     internal string m_ApkPath = "";
+    internal ClientSetting m_setData = null;
     public Window_LoadBar.AsyncData m_DownProgress;  //下载进度
 
     public Window_LoadBar.AsyncData StartDownPackage()
     {
+        if (m_setData == null) m_setData = Resources.Load(ClientSetting.fileName, typeof(ClientSetting)) as ClientSetting;
         //m_ApkPath = SharedAsset.GetPersistentHeadPath(true) + m_setData.m_Data.m_PackageName;
 //#if !UNITY_EDITOR
 //        m_DownProgress = new LoadProgressData();

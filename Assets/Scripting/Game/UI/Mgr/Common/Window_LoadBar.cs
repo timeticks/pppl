@@ -35,7 +35,7 @@ public class Window_LoadBar : MonoBehaviour
 
     private AsyncOperation mAsyncOp;
     private WWW mWWW;
-    private LoadDataFromHTTP.HttpRequest mReqWWW;
+
 
     private AsyncData mAsyncData;
     private Action mFinishDeleg;
@@ -60,29 +60,8 @@ public class Window_LoadBar : MonoBehaviour
         }
         else if (mWWW != null)
         {
-            try
-            {
-                mAsyncData.IsDone = mWWW.isDone;
-                mAsyncData.Progress = mWWW.progress;
-            }
-            catch
-            {
-                mAsyncData.IsDone =true;
-                mAsyncData.Progress = 1;
-            }
-        }
-        else if (mReqWWW!=null)
-        {
-            try
-            {
-                mAsyncData.IsDone = mReqWWW.IsDone || mReqWWW.Www == null;
-                mAsyncData.Progress = mReqWWW.IsDone ? 1 : mReqWWW.Www.progress;
-            }
-            catch
-            {
-                mAsyncData.IsDone = true;
-                mAsyncData.Progress = 1;
-            }
+            mAsyncData.IsDone = mWWW.isDone;
+            mAsyncData.Progress = mWWW.progress;
         }
 
         if (mAsyncData != null)
@@ -115,7 +94,7 @@ public class Window_LoadBar : MonoBehaviour
     {
         if (mViewBase == null) mViewBase = GetComponent<UIViewBase>();
         Text TextVersion = mViewBase.GetCommon<Text>("TextVersion");
-        TextVersion.text = string.Format("游戏版本:v{0}", AppSetting.Version);
+        TextVersion.text = string.Format("游戏版本:v{0}", AppSetting.GameVersion);
     }
 
     public void Init(AsyncData async, Action finishDeleg)
@@ -138,16 +117,6 @@ public class Window_LoadBar : MonoBehaviour
         mFinishDeleg = finishDeleg;
         gameObject.SetActive(true);
     }
-    public void Init(LoadDataFromHTTP.HttpRequest reqWWW, string desc, Action finishDeleg)
-    {
-        if (IsDestroy) return;
-        Reset();
-        mReqWWW = reqWWW;
-        if (mAsyncData == null) mAsyncData = new AsyncData();
-        mAsyncData.Desc = desc;
-        mFinishDeleg = finishDeleg;
-        gameObject.SetActive(true);
-    }
 
     private void Reset()
     {
@@ -158,7 +127,6 @@ public class Window_LoadBar : MonoBehaviour
         mWWW = null;
         mAsyncOp = null;
         mFinishDeleg = null;
-        mReqWWW = null;
         if (mViewBase == null)
         {
             mViewBase = GetComponent<UIViewBase>();
@@ -201,7 +169,6 @@ public class Window_LoadBar : MonoBehaviour
         Fresh(mViewObj.ProgressScrollbar.size, str);
     }
 
-    private IEnumerator freshCor;
     /// <summary>
     /// 开启一个协程，进行插值显示
     /// </summary>
@@ -210,9 +177,7 @@ public class Window_LoadBar : MonoBehaviour
         if (IsDestroy) return;
         if (duration <= 0) duration = 0.1f;
         Fresh(startValue, str);
-        if (freshCor != null) StopCoroutine(freshCor);
-        freshCor = FreshCor(startValue, endValue, duration, str, overCallback);
-        StartCoroutine(freshCor);
+        StartCoroutine(FreshCor(startValue, endValue, duration, str, overCallback));
     }
 
     public IEnumerator FreshCor(float startValue, float endValue, float duration, string str, System.Action overCallback)
@@ -223,7 +188,7 @@ public class Window_LoadBar : MonoBehaviour
             yield return null;
             curTime += Time.deltaTime;
             float curValue = Mathf.Lerp(startValue, endValue, curTime / duration);
-            Fresh(curValue, str, false);
+            Fresh(curValue, str,false);
         }
         if (overCallback != null) overCallback();
     }

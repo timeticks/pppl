@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using System.IO;
+using UnityEditor;
+
+#endif
+
 
 public class AssetLoader_Res :IAssetLoader
 {
@@ -22,28 +28,29 @@ public class AssetLoader_Res :IAssetLoader
 
     public TLoader LoadAssetSync(string bundleName, string assetName, System.Type ty)
     {
-        if (PlatformUtils.EnviormentTy == EnviormentType.Editor)
+#if UNITY_EDITOR
+        assetName = assetName.ToLower();
+        string url = bundleName + assetName;
+        TLoader loader = null;
+        
+        bool isNewCreate;
+        loader = TLoader.AutoNew(bundleName,url, out isNewCreate);
+        if (isNewCreate)
         {
-            assetName = assetName.ToLower();
-            string url = bundleName + assetName;
-            TLoader loader = null;
-
-            bool isNewCreate;
-            loader = TLoader.AutoNew(bundleName, url, out isNewCreate);
-            if (isNewCreate)
+            string[] assetPaths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, assetName);
+            if (assetPaths.Length == 0)
             {
-                string[] assetPaths = EditorUtils.GetAssetPathsFromAssetBundleAndAssetName(bundleName, assetName);
-                if (assetPaths == null || assetPaths.Length == 0)
-                {
-                    Debug.LogError(string.Format("There is no asset with name {0} in {1}", assetName, bundleName));
-                    return null;
-                }
-                Object target = EditorUtils.LoadAssetAtPath(assetPaths[0], ty);
-                loader.OnFinish(target);
+                Debug.LogError(string.Format("There is no asset with name {0} in {1}", assetName, bundleName));
+                return null;
             }
-            return loader;
+            Object target = AssetDatabase.LoadAssetAtPath(assetPaths[0], ty);
+            loader.OnFinish(target);
         }
+        
+        return loader;
+#else
         return null;
+#endif
     }
 
     public TLoader LoadObjAsync(string bundleName, string assetName, System.Type ty, System.Action<TLoader> deleg)

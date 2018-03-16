@@ -78,32 +78,7 @@ public class TAppUtility : MonoBehaviour {
         }
         return curList;
     }
-    /// <summary>
-    /// 检查curList数量，如果不足needNum，则新建生成。如果多余，则隐藏多余的
-    /// </summary>
-    public List<T> AddItemIndexInstantiate<T>(List<T> curList, GameObject prefabObj, Transform parentTrans, int needNum, bool isRotateZero = true) where T : ItemIndexObj, new()
-    {
-        if (null == curList)
-        {
-            TDebug.LogError("需要在外部对list进行初始化！！！");
-            curList = new List<T>();
-        }
-        for (int i = curList.Count; i < needNum; i++)
-        {
-            GameObject g = Instantiate(prefabObj) as GameObject;
-            TUtility.SetParent(g.transform, parentTrans, false, isRotateZero);
-            UIViewBase p = g.GetComponent<UIViewBase>();
-            T t = new T();
-            t.Init(p);
-            curList.Add(t);
-        }
-        for (int i = 0; i < curList.Count; i++)
-        {
-            if (curList[i] != null && curList[i].View != null && curList[i].View.gameObject.activeSelf != (i < needNum))
-                curList[i].View.gameObject.SetActive(i < needNum);
-        }
-        return curList;
-    }
+
     // <summary>
     /// 检查curList数量，如果不足needNum，则新建生成。如果多余，则隐藏多余的
     /// </summary>
@@ -127,25 +102,6 @@ public class TAppUtility : MonoBehaviour {
                 curList[i].gameObject.SetActive(i < needNum);
         }
         return curList;
-    }
-    /// <summary>
-    /// 通过index 获取UiScroller列表中的Item
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="itemDic"></param>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public T GetIndexItemByIndex<T>(Dictionary<int, T> itemDic, int index)where T:ItemIndex
-    {
-        if (itemDic.ContainsKey(index))
-        {
-            T item = itemDic[index];
-            if (item.Index == index)
-                return item;
-            else
-                return null;
-        }
-        return null;
     }
 
     /// <summary>

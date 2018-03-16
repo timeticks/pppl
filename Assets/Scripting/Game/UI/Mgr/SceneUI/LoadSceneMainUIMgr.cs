@@ -13,7 +13,7 @@ public class LoadSceneMainUIMgr : BaseMainUIMgr
     {
         StartCoroutine(ShowLoadingCor(sceneAsync, del, sceneType));
     }
-    public IEnumerator ShowLoadingCor(AsyncOperation sceneAsync, System.Action<object> del, SceneType sceneType)
+    IEnumerator ShowLoadingCor(AsyncOperation sceneAsync, System.Action<object> del, SceneType sceneType)
     {
         if (sceneAsync != null)//取值范围在0.1 - 1
         {

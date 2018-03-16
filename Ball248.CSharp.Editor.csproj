@@ -130,32 +130,29 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Core\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="LitJson">
-      <HintPath>Assets\Core\LitJson.dll</HintPath>
-    </Reference>
     <Reference Include="SyntaxTree.Mono.Cecil">
       <HintPath>Assets\Editor\UnityVS\SyntaxTree.Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenEditor">
-      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\Editor\DOTweenEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween">
-      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="Debugger">
       <HintPath>Assets\Scripting\Utils\ThirdPlugins\Debugger.dll</HintPath>
     </Reference>
-    <Reference Include="TexturePackerImporter">
-      <HintPath>Assets\Scripting\Utils\ThirdPlugins\TexturePackerImporter\Editor\TexturePackerImporter.dll</HintPath>
+    <Reference Include="DOTween">
+      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="DOTween43">
       <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween43.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween46.dll</HintPath>
+    </Reference>
     <Reference Include="DOTween50">
       <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween50.dll</HintPath>
     </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\DOTween46.dll</HintPath>
+    <Reference Include="DOTweenEditor">
+      <HintPath>Assets\Scripting\Utils\ThirdPlugins\DOTween\Editor\DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="TexturePackerImporter">
+      <HintPath>Assets\Scripting\Utils\ThirdPlugins\TexturePackerImporter\Editor\TexturePackerImporter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

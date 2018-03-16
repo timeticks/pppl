@@ -7,48 +7,14 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Threading;
-using System.Net.Mail;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Text;
+
 /// <summary>
 /// 功能类。。。
 /// 所有的float -> int ，都是四舍五入取整
 /// </summary>
-public class TUtility
+public class TUtility:TUtilityBase
 {
-    /**
-     * 一天内的毫秒数
-     */
-    public const  int ONE_DAY       = 86400000;
-    /**
-     * 一小时内的毫秒数
-     */
-    public const  int ONE_HOUR      = 3600000;
-    /**
-     * 一分钟内的毫秒数
-     */
-    public const  int ONE_MINUTE    = 60000;
-    /**
-     * 半分钟内的毫秒数
-     */
-    public const  int HALF_MINUTE    = 30000;
-    /**
-     * 一秒钟内的毫秒数
-     */
-    public const  int ONE_SECOND    = 1000;
-    /**
-     * 一周内的毫秒数
-     */
-    public const  int ONE_WEEK      = 604800000;
-
     public const int LevelUpConfigId = 1204000000;//加上level得到当前level在技能表中的ID
-
-    /// <summary>
-    /// 按钮不可点击时，按钮文字颜色
-    /// </summary>
-    public static Color Color_Btn_Disable = new Color(163 / 255f, 163 / 255f, 163 / 255f);
 
     public static string[] PlayerNames = new string[]
     {"丽璐·阿歌特","佐伯·杏太郎","耶纳斯·帕沙","胡里奥·埃涅科","希恩·杨","切萨雷·托尼","艾米利奥·费龙","安吉洛·普契尼","卡洛·西诺","伊恩·杜可夫","梨花·薛",
@@ -61,7 +27,7 @@ public class TUtility
         if (playerId >= PlayerNames.Length)
         {
             int repeatPlayerId = playerId%(PlayerNames.Length - 1);
-            return string.Format("{0}{1}", PlayerNames[repeatPlayerId] , playerId.ToString());
+            return PlayerNames[repeatPlayerId] + playerId.ToString();
         }
         playerId = Mathf.Clamp(playerId, 0, PlayerNames.Length - 1);
         return PlayerNames[playerId];
@@ -71,7 +37,7 @@ public class TUtility
 
     public static Color Switch16ToColor(string colorString)//16进制转颜色
     {
-        if (colorString==null || colorString.Length < 6)
+        if (colorString.Length != 6)
             return Color.black;
         try
         {
@@ -198,7 +164,7 @@ public class TUtility
     {
         if (obj == null)
         {
-            TDebug.LogErrorFormat("{0}IsNull", obj.ToString());
+            TDebug.LogError(obj.ToString() + "IsNull");
             return true;
         }
         return false;
@@ -242,11 +208,303 @@ public class TUtility
         return new Vector2(rand.Next((int)limit[randNum].x, (int)limit[randNum].z), rand.Next((int)limit[randNum].w, (int)limit[randNum].y));
     }
 
+    public static string TryGetValOfAttr(AttrType type,int val)
+    {
+        if (type.ToInt() >=100)
+            return val.ToFloat_100().ToString("f1") + "%";
+        switch (type)
+        {
+            case AttrType.Hit:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.Dodge:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.CritDmg:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.CritPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.DoSkillPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.RevivePct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.UpExp:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.UpGold:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.UpDrop:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.StrengthPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.DefCrit:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.PhyDmgInc:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.MagDmgInc:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.AllDmgDec:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.MagDmgDec:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.PhyDmgDec:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.DizzyPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.PoisonPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.FrozenPct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            case AttrType.FirePct:
+                return val.ToFloat_100().ToString("f1") + "%";
+            default:
+                //TDebug.LogError("不存在的属性类型");
+                return val.ToString();
+        }
+    }
+    public static string TryGetStateName(int state)
+    {
+        switch(state)
+        {
+            case 1:
+                return "炼气期";
+            case 2:
+                return "筑基期";
+            case 3:
+                return "结丹期";
+            case 4:
+                return "元婴期";
+            case 5:
+                return "化神期";
+            case 6:
+                return "炼虚期";
+            case 7:
+                return "合体期";
+            case 8:
+                return "大乘期";
+            case 9:
+                return "渡劫期";
+            default:
+                return "";
+        }
+    }
+    public static string TryGetEquipQualityString(int quality)
+    {
+        switch (quality)
+        {
+            case 0:
+                return GetTextByQuality("白色", quality);
+            case 1:
+                return GetTextByQuality("绿色", quality);
+            case 2:
+                return GetTextByQuality("蓝色", quality);
+            case 3:
+                return GetTextByQuality("紫色", quality);
+            case 4:
+                return GetTextByQuality("橙色", quality);
+            case 5:
+                return GetTextByQuality("红色", quality);
+            case 6:
+                return GetTextByQuality("黑色", quality);
+            default:
+                return  GetTextByQuality("未知色", quality);;
+        }
+    }
+    public static string GetWealthIcon(WealthType type)
+    {
+        switch (type)
+        {
+            case WealthType.Diamond:
+                return "Icon_xianyu";
+            case WealthType.Gold:
+                return "Icon_lingshi";
+            case WealthType.Potentail:
+                return "Icon_qianneng";
+            default :
+                return "";
+        }
+    }
+
+
+    public static string GetTextByQuality(string content , int quality)
+    {
+        switch (quality)
+        {
+            case 0:
+                return string.Format("<color=#111111FF>{0}</color>", content);
+            case 1:
+                return string.Format("<color=#019B43FF>{0}</color>", content);
+            case 2:
+                return string.Format("<color=#0000FFFF>{0}</color>", content);
+            case 3:
+                return string.Format("<color=#FF00FFFF>{0}</color>", content);
+            case 4:
+                return string.Format("<color=#EF5F03FF>{0}</color>", content);
+            case 5:
+                return string.Format("<color=#FF0000FF>{0}</color>", content);
+            default:
+                return string.Format("<color=#EEEEEEFF>{0}</color>", content); 
+        }
+    }
+    /// <summary>
+    /// 2个字中间间隔2个空格，3个及以上不间隔
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
+    public static string GetTagStr(string tag)
+    {
+        return tag.Length == 2?tag.Insert(1, "  "):tag;
+    }
+
+    public static string TryGetLootGoodsName(LootType type,int id)
+    {
+        switch(type)
+        {
+            case LootType.Recipe:
+                Recipe recipe = Recipe.RecipeFetcher.GetRecipeByCopy(id);
+                return recipe == null ? "无效图纸" : recipe.name;
+            case LootType.Equip:
+                Equip equip = Equip.Fetcher.GetEquipCopy(id);
+                return equip == null ? "无效法宝" : GetTextByQuality(equip.name, equip.curQuality);
+            case LootType.Money:
+            {
+                WealthType wealth = (WealthType) id;
+                return wealth.GetDesc();
+            }
+            case LootType.Item:
+                Item item = Item.Fetcher.GetItemCopy(id);
+                return item == null ? "无效道具" : GetTextByQuality(item.name, item.quality);
+            case LootType.Pet:
+                Pet pet = Pet.PetFetcher.GetPetByCopy(id);
+                return pet == null ? "无效宠物" : pet.name;
+            //case LootType.spell:
+            //    OldSpell spell = OldSpell.SpellFetcher.GetSpellByCopy(id);
+            //    return spell == null ? "无效功法" : spell.name;
+            case LootType.Prestige:
+            {
+                PrestigeLevel.PrestigeType ty = (PrestigeLevel.PrestigeType)id;
+                return string.Format("{0}声望", ty.GetDesc());
+            }
+            default:
+                return null;
+        }
+    }
+    public static string TryGetPetIcon(Pet.PetTypeEnum? type)
+    {
+        switch (type)
+        {
+            case Pet.PetTypeEnum.Animal:
+                return "Icon_lingshou";
+            case Pet.PetTypeEnum.Ghost:
+                return "Icon_yinhun";
+            case Pet.PetTypeEnum.Puppet:
+                return "Icon_kuilei";
+            default :
+                return "";
+        }
+    }
+    public static string TryGetPetTypeString(Pet.PetTypeEnum? pos)
+    {
+        switch (pos)
+        {
+            case Pet.PetTypeEnum.None:
+                return "";
+            case Pet.PetTypeEnum.Animal:
+                return "Icon_lingshou";
+            case Pet.PetTypeEnum.Puppet:
+                return "Icon_kuilei";
+            case Pet.PetTypeEnum.Ghost:
+                return "Icon_yinhun";
+            default:
+                return "";
+        }
+    }
+    public static string TryGetAuxSkillTypeStr(AuxSkillLevel.SkillType type)
+    {
+        switch (type)
+        {
+            case AuxSkillLevel.SkillType.Forge:
+                return "炼器";
+            case AuxSkillLevel.SkillType.MakeDrug:
+                return "炼丹";
+            case AuxSkillLevel.SkillType.Mine:
+                return "挖矿";
+            case AuxSkillLevel.SkillType.GatherHerb:
+                return "采药";
+            default:
+                return "";
+        }
+    }
+
+    public static string TryGetAttrTypeStr(AttrType type)
+    {
+        switch (type)
+        {
+            case AttrType.Hp:
+                return "生命";
+                  case AttrType.Mp:
+                return "法力";
+                  case AttrType.Luk:
+                return "机缘";
+                  case AttrType.Hit:
+                return "命中";
+                  case AttrType.Dodge:
+                return "躲闪";
+                  default:
+                TDebug.LogError("不存在的属性类型");
+                return "";
+        }
+    }
+
+    public static string GetMoneyString(int num)
+    {
+        string tempStr;
+        if (num > 99999 && num< 10000 * 10000)
+        {
+            tempStr = string.Format("{0}万", num / 10000);
+        }
+        else if (num > 9999 * 10000)
+        {
+            tempStr = string.Format("{0}千万", num / 10000000);
+        }
+        else
+            tempStr = num.ToString();
+        return tempStr;
+    }
+
+    public static string GetRankNumStr(int num)
+    {
+        switch (num)
+        {
+            case 0:
+                return "零";
+            case 1:
+                return "壹";
+            case 2:
+                return "贰";
+            case 3:
+                return "叁";
+            case 4:
+                return "肆";
+            case 5:
+                return "伍";
+            case 6:
+                return "陆";
+            case 7:
+                return "柒";
+            case 8:
+                return "捌";
+            case 9:
+                return "玖";
+            case 10:
+                return "拾";
+            default :
+                return num.ToString();
+        }
+    }
+
 
     /// <summary>
     /// 在形如“111010;111012”的字符串中，获得数字列表
     /// </summary>
-    public static List<int> SplietToIntList(string str, char splitChar = ';', bool ignoreZero = true)
+    public static List<int> TryGetIntByStr(string str, char splitChar = ';', bool ignoreZero = true)
     {
         List<int> l = new List<int>();
         string[] s = str.Split(splitChar);
@@ -264,25 +522,10 @@ public class TUtility
         }
         return l;
     }
-    public static int[] SplitToIntArray(string str, char splitChar = '|')
-    {
-        string[] s = str.Split(splitChar);
-        int[] l = new int[s.Length];
-        if (s != null && s.Length > 0)
-        {
-            for (int i = 0; i < s.Length; i++)
-            {
-                int temp = 0;
-                int.TryParse(s[i], out temp);
-                l[i] = temp;
-            }
-        }
-        return l;
-    }
     /// <summary>
     /// 在形如“111010;111012”的字符串中，获得数字列表
     /// </summary>
-    public static List<float> SplitToFloatList(string str, char splitChar = ';', bool ignoreZero = true)
+    public static List<float> TryGetFloatListByStr(string str, char splitChar = ';', bool ignoreZero = true)
     {
         List<float> l = new List<float>();
         string[] s = str.Split(splitChar);
@@ -301,7 +544,44 @@ public class TUtility
         return l;
     }
 
-    
+
+    public static Color GetColorByQuality(int quality)
+    {
+        quality = Mathf.Clamp(quality, 0, 4);
+        switch (quality)
+        {
+            case 0:
+                return new Color(42f,229f,90f);
+            case 1:
+                return new Color(0f, 171f, 255f);
+            case 2:
+                return new Color(255f, 142f, 0f);
+            case 3:
+                return new Color(149f, 88f, 255f);
+            case 4:
+                return new Color(182f, 0f, 0f);
+        }
+        return new Color(42f, 229f, 90f);
+    }
+    public static string GetColorStringByQuality(int quality)
+    {
+        quality = Mathf.Clamp(quality, 0, 4);
+        switch (quality)
+        {
+            case 0:
+                return "2AE459";
+            case 1:
+                return "00AAFF";
+            case 2:
+                return "9558FF";
+            case 3:
+                return "FF8E00";
+            case 4:
+                return "B50000";
+        }
+        return "2AE459";
+    }
+
 
     public static Vector2 GetDirByDisAndCenter(Vector2 curPos, Vector2 forward, float forwardDis, Vector2 centerPos, float radius)//用于绕某圆心运动
     {
@@ -320,6 +600,9 @@ public class TUtility
         targetPos = new Vector3(v2.x, curPos.y, v2.y);
         return targetPos;
     }
+
+    
+
 
     public static void SetParent(Transform childTran, Transform parentTran, bool isRectTransformZero=false,bool isRotationZero=true)  //设置子物体后，重置位置信息
     {
@@ -347,20 +630,20 @@ public class TUtility
     /// <summary>
     /// 秒数转化时:分:秒string返回
     /// </summary>
-    public static string TimeSecondsToDayStr_LCD( int total)
+    public static string TimeSecondsToDayStr_LCD( int total )
     {
         // TDebug.LogWarning("----------------" + total);
         int sec = total % 60;
         int min = total / 60 % 60;
         int hour = total / 60 / 60;
-        return string.Format("{0}:{1}:{2}", hour.ToString().PadLeft(2, '0'), min.ToString().PadLeft(2, '0'), sec.ToString().PadLeft(2, '0'));
+        return ( hour < 10 ? "0" + hour : "" + hour ) + ":" + ( min < 10 ? "0" + min : "" + min ) + ":" + ( sec < 10 ? "0" + sec : "" + sec );
     }
     /// <summary>
-    /// 时间戳转为C#格式UTC时间
+    /// 时间戳转为C#格式时间
     /// </summary>
     public static DateTime stampToDateTime(long timeStamp)
     {
-        DateTime dateTimeStart = TimeUtils.timeStampStart;
+        DateTime dateTimeStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
         try
         {
             return dateTimeStart.AddSeconds(timeStamp);
@@ -370,106 +653,58 @@ public class TUtility
             return dateTimeStart;
         }
     }
-    /// <summary>
-    /// 时间戳转北京时间
-    /// </summary>
-    /// <param name="timeStamp"></param>
-    /// <returns></returns>
     public static DateTime ConvertToDateTime(long timeStamp)
     {
-        long curTimeTick = timeStamp * 10000 + TimeUtils.timeStampStartTicks;
-        DateTime utcTime = new DateTime(curTimeTick , DateTimeKind.Utc);
-        TimeSpan offset = new TimeSpan(TimeUtils.TIME_UTC_OFFSET_TICKS); // utc时间+8小时 = 北京时间
-        return utcTime.Add(offset);
-    }
+        DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+        long lTime = long.Parse(timeStamp.ToString() + "0000");
+        TimeSpan toNow = new TimeSpan(lTime);
+        return dtStart.Add(toNow);
+    } 
     /// <summary>
-    /// 时间戳转手机本地时间
+    /// 将时间戳转化为与现在的倒计时,转化时:分:秒string 返回
     /// </summary>
-    public static DateTime ConvertToLocalDateTime(long timeStamp)
+    public static string GetUnixTimeToDayStr(int total)
     {
-        long curTimeTick = timeStamp * 10000 + TimeUtils.timeStampStartTicks;
-        DateTime localTime = new DateTime(curTimeTick , DateTimeKind.Utc).ToLocalTime();
-        return localTime;
+        //得到当前时间的时间戳
+        TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        int curStamp = Convert.ToInt32(ts.TotalSeconds);
+        //时间戳相减,得到剩余秒数
+        int remainTime = total - curStamp;
+        //转化为时分秒返回
+        return TimeSecondsToDayStr_LCD(remainTime);
     }
 
-    //public static DateTime ConvertToDateTime(long timeStamp)
-    //{
-    //    DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-    //    long lTime = long.Parse(timeStamp.ToString() + "0000");
-    //    TimeSpan toNow = new TimeSpan(lTime);
-    //    return dtStart.Add(toNow);
-    //} 
-
     /// <summary>
-    /// C#格式时间(本地时间)转为时间戳
+    /// C#格式时间转为时间戳
     /// </summary>
     public static long DateTimeToStamp(DateTime time)
     {
-        DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
+        System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
         return (long)(time - startTime).TotalMilliseconds;
     }
 
-    ///// <summary>
-    ///// 时间戳（毫秒）转为C#时间，返回豪秒
-    ///// </summary>
-    ///// <param name="timeStamp"></param>
-    ///// <returns></returns>
-    //public static long GetDiffToNow(long timeStamp)
-    //{
-    //    DateTime stampDataTime = ConvertToDateTime(timeStamp);
-    //    TimeSpan diff = DateTime.Now.Subtract(stampDataTime);
-    //    long r = Convert.ToInt64(diff.TotalMilliseconds);
-    //    return r;
-    //}
-
-    ///// <summary>
-    ///// 和当前时间的差值 字符串 X年/月/天/小时/分钟
-    ///// </summary>
-    //public static string GetStringDiffToNow(long timeStamp)
-    //{
-    //    long second = GetDiffToNow(timeStamp);
-    //    return GetStringDiff(second);
-    //}
+    /// <summary>
+    /// 时间戳（毫秒）转为C#时间，返回豪秒
+    /// </summary>
+    /// <param name="timeStamp"></param>
+    /// <returns></returns>
+    public static long GetDiffToNow(long timeStamp)
+    {
+        DateTime stampDataTime = ConvertToDateTime(timeStamp);
+        TimeSpan diff = DateTime.Now.Subtract(stampDataTime);
+        long r = Convert.ToInt64(diff.TotalMilliseconds);
+        return r;
+    }
 
     /// <summary>
-    /// 获取startTime周的周一的零点时间戳
+    /// 和当前时间的差值 字符串 X年/月/天/小时/分钟
     /// </summary>
-    public static long GetCurrWeekOfDay(long startTime , int day)
+    public static string GetStringDiffToNow(long timeStamp)
     {
-        long startTimeTick = startTime * 10000 + TimeUtils.timeStampStartTicks;
-        DateTime dt = new DateTime(startTimeTick,DateTimeKind.Utc);
-        dt = dt.AddHours(8);// utc 时间转北京时间 +8小时
-        DateTime startWeek = dt.AddDays(1 - Convert.ToInt32(dt.DayOfWeek.ToString("d")));  //本周周一  
-        DateTime endWeek = startWeek.AddDays(day-1);  //本周周n
-        endWeek = DateTime.Parse(endWeek.ToString("yyyy-MM-dd") + " 00:00:00"); //零点
-        
-        long tempTime = (endWeek.ToUniversalTime().Ticks - TimeUtils.timeStampStartTicks) / (long)10000;
-        if (tempTime > startTime && day <= 1) //如果但当前时间为星期天时，会进入下个星期。进行修正，即周一零点为每周的最小时间
-        {
-            tempTime -= ONE_WEEK;
-        }
-        return tempTime;
-    }
-
-
-    // 转换为XX天XX小时
-    public static string GetDayHourTime(long second)
-    {
-        string str = "";
-        long hourNum = second / 60 / 60 % 24;
-        long dayNum = second / 60 / 60 / 24;
-        if (dayNum > 0)
-        {
-            str += string.Format("{0}天", dayNum);
-        }
-        if (hourNum > 0)
-        {
-            if (dayNum <= 0) hourNum += 1; // 当时间不足一天时，小于一个小时按一个小时算
-            str += string.Format("{0}小时", hourNum);
-        }        
-        return str;
-    }
-
+        long second = GetDiffToNow(timeStamp);
+        return GetStringDiff(second);
+    }    
+    
     /// <summary>
     /// 差值转换时间字符串 X年/月/天/小时/分钟
     /// </summary>
@@ -520,17 +755,17 @@ public class TUtility
         long secNum = second % 60;
         if (dayNum > 0)
         {
-            str += string.Format("{0}天", dayNum);
+            str += dayNum+"天";
         }
         if (hourNum > 0)
         {
-            str += string.Format("{0}小时", hourNum);
+            str += hourNum + "小时";
         }
         if (minNum > 0)
         {
-            str += string.Format("{0}分", minNum);
+            str += minNum + "分";
         }
-        str += string.Format("{0}秒", Math.Max(0, secNum));
+        str += Math.Max(0,secNum) + "秒";
         return str;
     }
     /// <summary>
@@ -538,6 +773,7 @@ public class TUtility
     /// </summary>
     public static string GetStringTime2(long second)
     {
+        string str = "";
         long minNum = second / 60 % 60;
         long hourNum = second / 60 / 60 % 24;
         long dayNum = second / 60 / 60 / 24;
@@ -556,14 +792,39 @@ public class TUtility
         }
         return Math.Max(0, secNum) + "秒";
     }
-    public static void WatchPerformanceUseTime(Action del)
+    public static void WatchPerformance(Action del)
     {
         float startTime = Time.realtimeSinceStartup;
         if (del != null) { del(); }
-        TDebug.Log((Time.realtimeSinceStartup - startTime).ToString());
+        TDebug.Log(Time.realtimeSinceStartup - startTime);
     }
 
     #endregion
+
+
+    /// <summary>
+    /// 缓存当前角色游历挂机中某大事件选择完成的小事件，ID小于等于0移除键值
+    /// </summary>
+    /// <param name="eventIdx"></param>
+    /// <param name="smallTravelEventID"></param>
+    public static void SetTravelChooseSmallEventCache(int eventIdx, int smallTravelEventID)
+    {
+        if (smallTravelEventID<=0)
+            PlayerPrefs.DeleteKey(PlayerPrefsBridge.Instance.PlayerData.PlayerUid + eventIdx.ToString());
+        else
+            PlayerPrefs.SetInt(PlayerPrefsBridge.Instance.PlayerData.PlayerUid+eventIdx.ToString(), smallTravelEventID);
+    }
+    /// <summary>
+    /// 获取当前角色游历挂机中某大事件选择完成的小事件
+    /// </summary>
+    /// <param name="idx"></param>
+    /// <returns></returns>
+    public static int GetTravelChooseSmallEventCach(int idx)
+    {
+        return PlayerPrefs.GetInt(PlayerPrefsBridge.Instance.PlayerData.PlayerUid + idx.ToString());
+    }
+
+
 
     /// <summary>
     /// 返回curValue是否包含二次幂的enumValue
@@ -604,89 +865,5 @@ public class TUtility
         }
         return l;
     }
-
-    public static bool IsNewUnlock(int lastLevel, int curLevel, int unlockLevel)
-    {
-        if (curLevel >= unlockLevel && lastLevel < unlockLevel)
-        {
-            return true;
-        }
-        return false;
-    }
-
-
-    public static BinaryReader StringToBinaryReader(string str)
-    {
-        int i = 0;
-        byte[] writeArray = System.Text.Encoding.ASCII.GetBytes(str);
-        BinaryWriter binWriter = new BinaryWriter(new MemoryStream());
-        BinaryReader binReader = new BinaryReader(binWriter.BaseStream);
-        try
-        {
-            for (i = 0; i < writeArray.Length; i++)
-            {
-                binWriter.Write(writeArray[i]);
-            }
-            // Set the stream position to the beginning of the stream.
-            binReader.BaseStream.Position = 0;
-            return binReader;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-
-    public static string TransStringToLine(string str)
-    {
-        if (str.Trim().Length <= 0)
-        {
-            return str;
-        }
-        string s = Regex.Replace(str, @"[^\u4E00-\u9FA5A-Za-z0-9~!！@#\$%\^&\*\（(\)）《》\-+=\|\\\}\]\{\[:：.。…；;,，\?？\""“”]+", "*", RegexOptions.IgnoreCase).Trim();
-        return s;
-    }
-
-
-    public static string SaveScreen(Camera camera, string picName)
-    {
-        string ssname = picName;
-        string sspath = Path.Combine(FileUtils.PersistentDataPurePath, ssname);
-        if (File.Exists(sspath))
-        {
-            File.Delete(sspath);
-            TDebug.LogFormat( "{0} deleted first!",ssname);
-        }
-        Texture2D texture1 = CaptureCamera(camera, new Rect(0, 0, Screen.width * 0.7f, Screen.height * 0.7f));
-        byte[] bytes = texture1.EncodeToPNG();
-        File.WriteAllBytes(sspath, bytes);
-
-        TDebug.LogFormat("Screenshot saved: {0}" ,sspath);
-        return sspath;
-    }
-
-    public static Texture2D CaptureCamera(Camera camera, Rect rect)
-    {
-        RenderTexture rt = new RenderTexture((int)rect.width, (int)rect.height, 0);
-        RenderTexture originRT = camera.targetTexture;      // 临时把camera中的targetTexture替换掉
-        camera.targetTexture = rt;
-        camera.RenderDontRestore();                         // 手动渲染
-        camera.targetTexture = originRT;
-
-        RenderTexture.active = rt;
-        Texture2D screenShot = new Texture2D((int)rect.width, (int)rect.height);
-        screenShot.ReadPixels(rect, 0, 0);                  // 读取的是 RenderTexture.active 中的像素
-        screenShot.Apply();
-        GameObject.Destroy(rt);
-        RenderTexture.active = null;
-        return screenShot;
-    }
-
-
-
-    #region 与游戏逻辑相关
-
-    #endregion
 }
  

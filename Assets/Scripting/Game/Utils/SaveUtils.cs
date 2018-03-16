@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 public class SaveUtils
 {
-    
-    private static int mUid {
+    public static readonly string TryUpdateBundleVer = "TryUpdateBundleVer:";
+    private static int mUid
+    {
         get
         {
-            return 0;
+            if (PlayerPrefsBridge.Instance == null || PlayerPrefsBridge.Instance.PlayerData == null) return 0;
+            return PlayerPrefsBridge.Instance.PlayerData.PlayerUid;
         }
     }
 
     private static int[] UidCode = new int[4] { 7821, 4209, 4312, 2093 };
 
-    private static char UidMod{
-        get{
+    private static char UidMod
+    {
+        get
+        {
             if (mUid % 21946 == 0) return (char)21947;
             return (char)(mUid % 21946);
         }
@@ -47,32 +50,47 @@ public class SaveUtils
     }
 
 
+    /// <summary>
+    /// 用于游戏存档读写，暂时用PlayerPrefs
+    /// </summary>
+    public static string GetGameSave(string key, string defaultString = "")
+    {
+        //获取路径
+        string tempStr = FileUtils.ReadBytesString(FileUtils.PersistentDataPath, key);
+        if (tempStr.Length <= 0) return defaultString;
+        return tempStr;
+    }
+    public static void SetGameSave(string key, string setString)
+    {
+        FileUtils.SaveBytesString(FileUtils.PersistentDataPath, key, setString);
+    }
 
-    
-    public static string GetStringInPlayer(string key , string defaultString="")
+    public static string GetStringInPlayer(string key, string defaultString = "")
     {
         return PlayerPrefs.GetString(GetKey(key), defaultString);
     }
     public static void SetStringInPlayer(string key, string setString)
     {
         string playerKey = GetKey(key);
+        if (AppEvtMgr.Instance != null) AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.ChangePrefsKey, playerKey));
         PlayerPrefs.SetString(playerKey, setString);
     }
 
-    public static int GetIntInPlayer(string key, int defaultValue =0)
+    public static int GetIntInPlayer(string key, int defaultValue = 0)
     {
         return PlayerPrefs.GetInt(GetKey(key), defaultValue);
     }
     public static void SetIntInPlayer(string key, int setValue)
     {
         string playerKey = GetKey(key);
+        if (AppEvtMgr.Instance != null) AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.ChangePrefsKey, playerKey));
         PlayerPrefs.SetInt(playerKey, setValue);
     }
     public static void DeleteKeyInPlayer(string key)
     {
         PlayerPrefs.DeleteKey(GetKey(key));
     }
-     
+
     public static bool HasKeyInPlayer(string key)
     {
         return PlayerPrefs.HasKey(GetKey(key));
@@ -85,12 +103,13 @@ public class SaveUtils
     public static void SetFloatInPlayer(string key, float setValue)
     {
         string playerKey = GetKey(key);
+        if (AppEvtMgr.Instance != null) AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.ChangePrefsKey, playerKey));
         PlayerPrefs.SetFloat(playerKey, setValue);
     }
 
     private static string GetKey(string key)
     {
-        return string.Format("{0}:{1}" , mUid , key);
+        return mUid + ":" + key;
     }
 }
 

@@ -12,7 +12,7 @@ public class PlayFrameByUVBase : MonoBehaviour
     private bool m_waitOffsetWait = false;
     public int m_Offset = 0;
     internal Texture m_CurTex;     //当前的贴图
-    private IEnumerator playAnimCor;
+
 
     void OnEnable()
     {
@@ -38,21 +38,19 @@ public class PlayFrameByUVBase : MonoBehaviour
     void Play(PlayUVFrameData data)
     {
         m_Offset = 0;
-        if (playAnimCor != null) StopCoroutine(playAnimCor);
+        StopCoroutine("PlayAnim");
         m_Data = data;
-        playAnimCor = PlayAnim(data);
-        StartCoroutine(playAnimCor);
+        StartCoroutine("PlayAnim", data);
     }
     public void Play(PlayUVFrameData data , int dirOffset, System.Action overDel=null , System.Action finishDel = null)
     {
-        if (playAnimCor != null) StopCoroutine(playAnimCor);
+        StopCoroutine("PlayAnim");
         m_Offset = dirOffset;
         if (m_overDel != null) m_overDel();
         m_overDel = overDel;
         m_finishDel = finishDel;
         m_Data = data;
-        playAnimCor = PlayAnim(data);
-        StartCoroutine(playAnimCor);
+        StartCoroutine("PlayAnim", data);
     }
 
     // 当动画需要改变方向时，只改变offset使Index整体偏移，不是重新进行动画播放
@@ -89,11 +87,12 @@ public class PlayFrameByUVBase : MonoBehaviour
     }
 
 
+    public void Stop() { StopCoroutine("PlayAnim"); }
     public virtual void SetTexture(Texture tex){ }
     public virtual void SetTextureScale(Vector2 scale){}
     public virtual void SetTextureOffst(Vector2 num){}
 
-    public IEnumerator PlayAnim(PlayUVFrameData data)
+    IEnumerator PlayAnim(PlayUVFrameData data)
     {
         m_offsetSetFreshDel = null;
         if (data.m_Tex != null)

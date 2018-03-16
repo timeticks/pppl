@@ -81,15 +81,15 @@ public class FastLoadAllBundle : MonoBehaviour
         GameData.Instance.LoadAllDataBase();
     }
 
-    //void OnGUI()
-    //{
-    //    if (m_isLoading)
-    //    {
-    //        GUIStyle st = new GUIStyle();
-    //        st.fontSize = 60;
-    //        //st.normal.textColor = Color.white;
-    //        GUI.Button(new Rect(0, 0, Screen.width, Screen.height), "正在加载资源...", st);
-    //    }
+    void OnGUI()
+    {
+        if (m_isLoading)
+        {
+            GUIStyle st = new GUIStyle();
+            st.fontSize = 60;
+            //st.normal.textColor = Color.white;
+            GUI.Button(new Rect(0, 0, Screen.width, Screen.height), "正在加载资源...", st);
+        }
         
-    //}
+    }
 }

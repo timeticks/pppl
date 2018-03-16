@@ -145,6 +145,7 @@ public class CameraCtrl : MonoBehaviour
 
     void OnDestroy()
     {
+        if (AppBridge.Instance == null) return;
         if (FingerGestureUtility.gestureEnlargeDelegate != null)
             FingerGestureUtility.gestureEnlargeDelegate -= new FingerGestureUtility.EnlargeGesture_Del(EnlargeCamera);
         if (FingerGestureUtility.scrollWheelDelegate != null)
@@ -156,8 +157,10 @@ public class CameraCtrl : MonoBehaviour
         if (FingerGestureUtility.touchOverDelegate != null)
             FingerGestureUtility.touchOverDelegate -= new FingerGestureUtility.Touch_Del(EndDragCamera);
     }
-
-    private IEnumerator shakeCameraCor;
+    void OnGUI()
+    {
+       
+    }
     public void ShockCam()
     {
         if (m_isShaking)
@@ -165,10 +168,8 @@ public class CameraCtrl : MonoBehaviour
             transform.position = m_lastPos;
             transform.rotation = m_lastRot;
         }
-        if (shakeCameraCor != null)
-            StopCoroutine(shakeCameraCor);
-        shakeCameraCor = ShakeCamera();
-        StartCoroutine(shakeCameraCor);
+        StopCoroutine("ShakeCamera");
+        StartCoroutine("ShakeCamera");
     }
     Vector3 m_lastPos ;
     Quaternion m_lastRot;
@@ -176,7 +177,7 @@ public class CameraCtrl : MonoBehaviour
     float m_shakeStrength = 0.1f;
     float m_rate = 2f;
     float m_shakeTime = 0.4f;
-    public IEnumerator ShakeCamera()
+    IEnumerator ShakeCamera()
     {
         m_isShaking = true;
         float shake_intensity = m_shakeTime;

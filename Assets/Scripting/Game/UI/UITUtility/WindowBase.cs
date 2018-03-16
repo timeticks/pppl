@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class WindowBase : MonoBehaviour 
 {
 
+    private Dictionary<NetCode_S, ServPacketHander> mServPackHanderDic;
+
     protected WindowView mViewBase;
 
     public WinName WindowName
@@ -225,6 +227,17 @@ public class WindowBase : MonoBehaviour
                     m_HideWindow = null;
                 }
             }
+		    //if (SetCurrentWin)
+		    {
+                if (Window_Guide.IsGuiding && WindowName != WinName.Window_ExitGame) //如果当前有引导且不是强制引导
+                {
+                    GuideStep guideStep = GuideStep.GuideStepFetcher.GetGuideStepNoCopy(Window_Guide.Instance.CurGuideStep);
+                    if (guideStep != null && (guideStep.MyMaskStatus == GuideStep.MaskStatus.NoMask || guideStep.MyMaskStatus== GuideStep.MaskStatus.NoMaskFinishByOut))
+                    {
+                        Window_Guide.Instance.CloseGuide(false);
+                    }
+                }
+		    }
 		}
 	}
 	private void DoOpenEvent()
@@ -270,6 +283,20 @@ public class WindowBase : MonoBehaviour
             return;
         transform.SetAsLastSibling( );
     }
+    public void RegisterNetCodeHandler(NetCode_S netcode, ServPacketHander hander)
+    {
+        if (mServPackHanderDic == null) mServPackHanderDic = new Dictionary<NetCode_S, ServPacketHander>();
+        if (!mServPackHanderDic.ContainsKey(netcode))
+        {
+            mServPackHanderDic.Add(netcode, hander);
+            GameClient.Instance.RegisterNetCodeHandler(netcode, hander);
+        }
+        else
+        {
+            mServPackHanderDic[netcode] = hander;
+            GameClient.Instance.RegisterNetCodeHandler(netcode, hander);
+        }
+    }
     /// <summary>
     /// 打开切页型子窗口，完成子窗口之间的切换，跟随大窗口关闭
     /// </summary>
@@ -310,6 +337,14 @@ public class WindowBase : MonoBehaviour
         {
             if (mAssetLoaderList[i] == null) continue;
             mAssetLoaderList[i].Release();
+        }
+        if (mServPackHanderDic != null)
+        {
+            foreach (var item in mServPackHanderDic)
+            {
+                GameClient.Instance.RegisterNetCodeHandler(item.Key, null);
+            }
+            mServPackHanderDic = null; 
         }
     }
 

@@ -12,7 +12,7 @@ public class MainUIMgrContainer:MonoBehaviour
     public static StartSceneMainUIMgr StartUI { get { return MainUI.m_Start; } }
 
 
-    [HideInInspector]public MainUIMgrType CurMgr = MainUIMgrType.None;
+    [HideInInspector]public MainUIMgrType? CurMgr;
     protected Transform m_MainUIRoot;
 
     /// <summary>
@@ -22,17 +22,17 @@ public class MainUIMgrContainer:MonoBehaviour
     /// <param name="mgrType"></param>
     public void InitMainUI<T>(MainUIMgrType mgrType)where T:BaseMainUIMgr
     {
-        if (CurMgr != MainUIMgrType.None)
+        if (CurMgr.HasValue)
         {
-            if (CurMgr == mgrType)
+            if (CurMgr.Value == mgrType)
                 return;
-            BaseMainUIMgr mainUi = MainUI.GetMgrByType(CurMgr);
+            BaseMainUIMgr mainUi = MainUI.GetMgrByType(CurMgr.Value);
 
             for (int i = 0; i < mainUi.m_RefList.Count; i++)
             {
                 Destroy(mainUi.m_RefList[i]);
             }
-            GameObject.Destroy(MainUI.GetMgrObjByType(CurMgr));
+            GameObject.Destroy(MainUI.GetMgrObjByType(CurMgr.Value));
         }
 
         CurMgr = mgrType;
@@ -56,16 +56,15 @@ public class MainUIMgrContainer:MonoBehaviour
 
     public BaseMainUIMgr GetCurMainUI()
     {
-        if (CurMgr == MainUIMgrType.None) return null;
-        return MainUI.GetMgrByType(CurMgr);
+        return MainUI.GetMgrByType(CurMgr.Value);;
     }
 
 
     public void DestroyMainUI()
     {
-        if (CurMgr != MainUIMgrType.None)
+        if (CurMgr.HasValue)
         {
-            GameObject.Destroy(MainUI.GetMgrObjByType(CurMgr));
+            GameObject.Destroy(MainUI.GetMgrObjByType(CurMgr.Value));
         }
     }
 
@@ -112,7 +111,6 @@ public class AllMainUIMgr
 }
 public enum MainUIMgrType   //与Mgr资源名一一对应
 {
-    None=-1,
     StartSceneMainUIMgr  =0,
     LobbySceneMainUIMgr   =1,
     LoadSceneMainUIMgr   =2,

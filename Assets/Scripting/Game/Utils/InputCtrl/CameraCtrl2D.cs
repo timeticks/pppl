@@ -28,7 +28,7 @@ public class CameraCtrl2D : MonoBehaviour
 
     public void CanEnlargeGestureToCam()
     {
-        //if (AppBridge.Instance != null)//注册缩放事件
+        if (AppBridge.Instance != null)//注册缩放事件
         {
             FingerGestureUtility.gestureEnlargeDelegate += new FingerGestureUtility.EnlargeGesture_Del(EnlargeCamera);
             FingerGestureUtility.scrollWheelDelegate += new FingerGestureUtility.EnlargeGesture_Del(EnlargeCamera);
@@ -172,6 +172,7 @@ public class CameraCtrl2D : MonoBehaviour
 
     void OnDestroy()
     {
+        if (AppBridge.Instance == null) return;
         if (FingerGestureUtility.gestureEnlargeDelegate != null)
             FingerGestureUtility.gestureEnlargeDelegate -= new FingerGestureUtility.EnlargeGesture_Del(EnlargeCamera);
         if (FingerGestureUtility.scrollWheelDelegate != null)

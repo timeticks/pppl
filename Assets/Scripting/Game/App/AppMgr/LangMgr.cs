@@ -17,18 +17,18 @@ public static class LangMgr
         {
             switch (LangMgr.LangType)
             {
-                case LanguageType.ZHCN: return TUtilityBase.TryGetValueStr(tab, "zhcn", "");
-                case LanguageType.EN: return TUtilityBase.TryGetValueStr(tab, "en", "");
+                case LanguageType.ZHCN: return TUtility.TryGetValueStr(tab, "zhcn", "");
+                case LanguageType.EN: return TUtility.TryGetValueStr(tab, "en", "");
             }
         }
-        TDebug.LogErrorFormat("服务器语言文本里没有此ServerTipsText: {0}", id.ToString());
+        TDebug.LogError("服务器语言文本里没有此ServerTipsText: " + id);
         return "";
     }
 
     public static string GetText(DataName dataName, string textIdx)
     {
         Hashtable hash = GameData.Instance.GetData(dataName, textIdx);
-        return TUtilityBase.TryGetValueStr(hash, LangType.ToString().ToLower(), "");
+        return TUtility.TryGetValueStr(hash, LangType.ToString().ToLower(), "");
     }
 
     public static string GetText(string textKey)  //根据语言读取文本
@@ -38,21 +38,21 @@ public static class LangMgr
         Hashtable tab = null;
         switch (pre)
         {
-            case "Goods": case "GoodsText": tab = GameData.Instance.GetData(DataName.GoodsText, textKey); break;
-            case "Skill": case "SkillText": tab = GameData.Instance.GetData(DataName.SkillText, textKey); break;
-            case "City": case "CityText": tab = GameData.Instance.GetData(DataName.CityText, textKey); break;
-            case "ChatText": case "InvestChatText": tab = GameData.Instance.GetData(DataName.InvestChatText, textKey); break;
+            //case "Goods": case "GoodsText": tab = GameData.Instance.GetData(DataName.GoodsText, textKey); break;
+            //case "Skill": case "SkillText": tab = GameData.Instance.GetData(DataName.SkillText, textKey); break;
+            //case "City": case "CityText": tab = GameData.Instance.GetData(DataName.CityText, textKey); break;
+            //case "ChatText": case "InvestChatText": tab = GameData.Instance.GetData(DataName.InvestChatText, textKey); break;
             default: break;
         }
         if (tab != null)
         {
             switch (LangMgr.LangType)
             {
-                case LanguageType.ZHCN: return TUtilityBase.TryGetValueStr(tab, "zhcn", "");
-                case LanguageType.EN: return TUtilityBase.TryGetValueStr(tab, "en", "");
+                case LanguageType.ZHCN: return TUtility.TryGetValueStr(tab, "zhcn", "");
+                case LanguageType.EN: return TUtility.TryGetValueStr(tab, "en", "");
             }
         }
-        TDebug.LogErrorFormat("语言文本里没有此textKey: {0}", textKey);
+        TDebug.LogError("语言文本里没有此textKey: " + textKey);
         return "";
     }
     #endregion

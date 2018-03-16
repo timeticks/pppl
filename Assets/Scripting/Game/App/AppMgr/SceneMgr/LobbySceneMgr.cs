@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 
 public class LobbySceneMgr : SceneMgrBase {
-    internal static Vector3 LastShipPos = Vector3.one*10000;
+    internal static Vector3? LastShipPos=null;
     public static LobbySceneMgr Instance { get; private set; }
-    //internal Transform m_MoveAim;
+    internal Transform m_MoveAim;
     internal List<int> m_FoundRemain = new List<int>();
 
     void Awake() 
@@ -18,18 +18,25 @@ public class LobbySceneMgr : SceneMgrBase {
     }
 	void Start () 
     {
-        //m_WorldCam.Init();
+        m_WorldCam.Init();
         if (AppBridge.Instance.AppScene.SceneData.m_ToScene == SceneType.LobbyScene)
         {
-            //UIRootMgr.Instance.TopBlackMask = true;
+            StartCoroutine(WaitInit());
         }
-        UIRootMgr.LobbyUI.Init();
-        //UIRootMgr.Instance.TopBlackMask = false;
     }
 
-    void WaitInit()
+    IEnumerator WaitInit()
     {
+        UIRootMgr.Instance.MyUICam.enabled = false;
+        while (Time.timeScale == 0 || UIRootMgr.LobbyUI==null) yield return 0;
+        UIRootMgr.LobbyUI.Init();
+        UIRootMgr.Instance.MyUICam.enabled = true;
+        //bool haveHangEvent = true;
+        //yield return new WaitForSeconds(0.5f);
+        //if (haveHangEvent)
+        //    UIRootMgr.Instance.OpenWindow<Window_HangInfo>(WinName.Window_HangInfo).OpenWindow();
     }
+
 
 
     void Init()  //初始化玩家和AI

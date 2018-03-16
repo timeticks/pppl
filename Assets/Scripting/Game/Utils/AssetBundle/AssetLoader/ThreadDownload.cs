@@ -68,7 +68,7 @@ public class ThreadDownload :MonoBehaviour
         {
             Directory.CreateDirectory(fileDir);
         }
-        TDebug.LogFormat("开始下载：{0}  {1}   {2}" , url , filePath , fileDir);
+        TDebug.Log("开始下载：" + url + "    " + filePath + "    " + fileDir);
         mThread = new Thread(delegate()//开启子线程下载
         {
             //TDebug.Log(string.Format("子线程准备下载:{0}", url));
@@ -165,7 +165,7 @@ public class ThreadDownload :MonoBehaviour
     {
         string md5 = AssetUpdate.GetStreamingMd5();
         TDebug.Log(md5);
-        Dictionary<string,string> dict = MD5Compare.ParseVersionFile(md5);
+        Dictionary<string,string> dict = MD5Utility.ParseVersionFile(md5);
         List<string> bbb = new List<string>(dict.Keys);
         if (aaa == 0)
         {
@@ -207,13 +207,13 @@ public class ThreadDownload :MonoBehaviour
     {
         AsyncOperation asyncData = new AsyncOperation();
         ClientExit = false;
-        TDebug.LogFormat("开始解压：{0}" , bundleList.Count);
+        TDebug.Log("开始解压：" + bundleList.Count);
         for (int i = 0; i < bundleList.Count; i++)
         {
             string url = "file://" + FileUtils.StreamingAssetsPath + "/Res/" + bundleList[i].Replace("\\", "/");
             string filePath = FileUtils.PersistentDataPath + "/" + bundleList[i].Replace("\\", "/");
             WWW www = new WWW(url);
-            TDebug.LogFormat("{0}  {1}", i , url);
+            TDebug.Log(i +"   "+ url);
             yield return www;
             if (www.error != null) TDebug.LogError(www.error);
             FileUtils.SaveBytes(filePath, www.bytes);

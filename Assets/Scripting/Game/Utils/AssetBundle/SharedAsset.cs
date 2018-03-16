@@ -3,51 +3,51 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Object = UnityEngine.Object;
+
+#if UNITY_EDITOR
+using UnityEditor;
 using System;
+#endif
 public class SharedAsset : MonoBehaviour
 {
     //public static List<string> StartList = new List<string> { "ui/baseui", "ui/startui", "model/gamedata", "model/scene" };
-    public static List<string> StartList;//= new List<string> { "ui/baseui", "ui/startui", "model/scene" };
+    public static List<string> StartList = new List<string> { "ui/baseui", "ui/startui", "model/scene" };
+    public const string VersionMd5TxtName     = "versionMd5.txt";
 
 
+#if UNITY_EDITOR
     public static bool SimulateAssetBundleInEditor
     {
-        get { return PlayerPrefs.GetInt("SimulateAssetBundleInEditor", 0) == 1; }
-        set { PlayerPrefs.SetInt("SimulateAssetBundleInEditor", value ? 1 : 0); }
+        get { return EditorPrefs.GetBool("SimulateAssetBundleInEditor", true); }
+        set { EditorPrefs.SetBool("SimulateAssetBundleInEditor", value); }
     }
+#endif
     public static SharedAsset Instance { get; private set; }
 
-    public Dictionary<string, int> VersionDict;      //版本信息.根据DiffList更改
+    public Dictionary<string, int> VersionDict = new Dictionary<string, int>();      //版本信息.根据DiffList更改
     public IAssetLoader AssetLoader;
     public AssetLoaderType LoaderType = AssetLoaderType.Bundle;
-    public Dictionary<string, AssetBundle> WaitBundleDict ; 
-    public Dictionary<string, AssetBundle> BundleDict;
+    public Dictionary<string, AssetBundle> WaitBundleDict = new Dictionary<string, AssetBundle>(); 
+    public Dictionary<string, AssetBundle> BundleDict = new Dictionary<string, AssetBundle>();
     [HideInInspector] public AssetBundleManifest BundleManifest;
     void Awake()
     {
-        VersionDict = new Dictionary<string, int>();
-        WaitBundleDict = new Dictionary<string, AssetBundle>();
-        BundleDict = new Dictionary<string, AssetBundle>();
-        StartList = new List<string> { "ui/baseui", "ui/startui", "model/scene","ui/spriteprefab/headiconatlas" };
         Instance = this;
 
-        if (PlatformUtils.EnviormentTy == EnviormentType.Editor)
+#if UNITY_EDITOR
+        LoaderType = SimulateAssetBundleInEditor ? AssetLoaderType.TResources : AssetLoaderType.Bundle;
+        if (LoaderType == AssetLoaderType.TResources)
         {
-            LoaderType = SimulateAssetBundleInEditor ? AssetLoaderType.TResources : AssetLoaderType.Bundle;
-            if (LoaderType == AssetLoaderType.TResources)
-            {
-                AssetLoader = new AssetLoader_Res();
-            }
-            else
-            {
-                AssetLoader = new AssetLoader_Bundle();
-            }
+            AssetLoader = new AssetLoader_Res();
         }
         else
         {
-            LoaderType = AssetLoaderType.Bundle;
             AssetLoader = new AssetLoader_Bundle();
         }
+#else
+        LoaderType = AssetLoaderType.Bundle;
+        AssetLoader = new AssetLoader_Bundle();
+#endif
         AssetLoader.Init();
         //StartCoroutine(AssetLoader.LoadAsyncUpdate());
     }
@@ -70,7 +70,7 @@ public class SharedAsset : MonoBehaviour
     public TLoader LoadAssetSync(string bundleName, string assetName)
     {
         TLoader loader = AssetLoader.LoadAssetSync(bundleName, assetName);
-        if (!loader.IsCompleted) TDebug.LogErrorFormat("加载错误{0}" , assetName);
+        if (!loader.IsCompleted) TDebug.LogError("加载错误" + assetName);
         return loader;
     }
 
@@ -80,7 +80,7 @@ public class SharedAsset : MonoBehaviour
     public Object LoadAssetSyncObj_ImmediateRelease(BundleType ty, string assetName)
     {
         TLoader loader = AssetLoader.LoadAssetSync(ty.BundleDictName(), assetName);
-        if (!loader.IsCompleted) TDebug.LogErrorFormat("加载错误{0}" , assetName);
+        if (!loader.IsCompleted) TDebug.LogError("加载错误" + assetName);
         Object t = loader.ResultObject as Object;
         loader.Release();
         return t;
@@ -92,7 +92,7 @@ public class SharedAsset : MonoBehaviour
     public TLoader LoadAssetSyncByType<T>(BundleType ty, string assetName)
     {
         TLoader loader = AssetLoader.LoadAssetSync(ty.BundleDictName(), assetName, typeof(T));
-        if (!loader.IsCompleted || loader.ResultObject == null) TDebug.LogErrorFormat("加载错误{0}" , assetName);
+        if (!loader.IsCompleted || loader.ResultObject == null) TDebug.LogError("加载错误" + assetName);
         return loader;
     }
 
@@ -104,7 +104,7 @@ public class SharedAsset : MonoBehaviour
     public Object LoadSpritePrefabObj(string assetName) 
     {
         TLoader loader = AssetLoader.LoadAssetSync(string.Format("{0}{1}", BundleType.SpritePrefabBundle.BundleDictName(), assetName.ToLower()), assetName+"Prefab");
-        if (!loader.IsCompleted) TDebug.LogErrorFormat("加载错误{0}" , assetName);
+        if (!loader.IsCompleted) TDebug.LogError("加载错误" + assetName);
         Object t = loader.ResultObject as Object;
         //loader.Release();
         return t;
@@ -137,18 +137,8 @@ public class SharedAsset : MonoBehaviour
     public TLoader LoadSpritePart<T>(string assetName)where T:Object
     {
         TLoader loader = AssetLoader.LoadAssetSync(string.Format("{0}{1}", BundleType.SpritePartBundle.BundleDictName(), assetName.ToLower()), assetName , typeof(T));
-        if (!loader.IsCompleted || loader.ResultObject==null) TDebug.LogErrorFormat("加载错误{0}", assetName);
+        if (!loader.IsCompleted || loader.ResultObject==null) TDebug.LogError("加载错误" + assetName);
         return loader;
-    }
-
-    /// <summary>
-    /// 返回的obj泛型，且不释放
-    /// </summary>
-    public T LoadObjNoRelease<T>(string assetName) where T : Object
-    {
-        TLoader loader = AssetLoader.LoadAssetSync(string.Format("{0}{1}", BundleType.SpritePartBundle.BundleDictName(), assetName.ToLower()), assetName, typeof(T));
-        if (!loader.IsCompleted || loader.ResultObject == null) TDebug.LogErrorFormat("加载错误{0}" , assetName);
-        return loader.ResultObjTo<T>();
     }
 
     //[Obsolete("使用GameAssetPool生成特效资源，特效资源需要绑定DestroySelf")]
@@ -185,9 +175,8 @@ public class SharedAsset : MonoBehaviour
         if (bundleNameList == null) return;
         if (BundleManifest == null) //加载manifest文件
         {
-            string path = "";
-            bool isUpdated = AssetUpdate.IsUpdated("Res");
-            if (isUpdated)
+            string path = ""; 
+            if (AssetUpdate.IsUpdated("Res"))
             {
                 path=FileUtils.PersistentDataReadPath(FileUtils.GameResPath, "Res");
             }
@@ -200,9 +189,7 @@ public class SharedAsset : MonoBehaviour
                 AssetBundle mainAb = AssetBundle.LoadFromFile(path);
                 if (mainAb == null)
                 {
-                    if (isUpdated)
-                        AssetUpdate.ResetMissedBundle(new List<string>() {"Res"});
-                    TDebug.LogErrorFormat("资源因为被删除,已经丢失{0}" , path);
+                    TDebug.LogError("资源因为被删除,已经丢失" + path);
                     return;
                 }
                 AssetBundleManifest manifest = (AssetBundleManifest) mainAb.LoadAsset("AssetBundleManifest");
@@ -211,15 +198,16 @@ public class SharedAsset : MonoBehaviour
             }
             catch
             {
-                TDebug.LogError(string.Format("加载bundle错误 {0}", "BundleManifest"));
             }
         }
         for (int i = 0; i < bundleNameList.Count; i++)
         {
+
             //已经加载过，跳过
             if (BundleDict.ContainsKey(bundleNameList[i])) continue;
             if (WaitBundleDict.ContainsKey(bundleNameList[i])) continue;//以便循环加载依赖
             if (!WaitBundleDict.ContainsKey(bundleNameList[i])) WaitBundleDict.Add(bundleNameList[i] , null);
+            
 
             //先判断依赖关系
             string[] depens = BundleManifest.GetAllDependencies(bundleNameList[i]);
@@ -243,9 +231,7 @@ public class SharedAsset : MonoBehaviour
                 AssetBundle ab = AssetBundle.LoadFromFile(path);
                 if (ab == null)
                 {
-                    if (isUpdated)
-                        AssetUpdate.ResetMissedBundle(new List<string>() {bundleNameList[i]});
-                    TDebug.LogErrorFormat("资源因为被删除,已经丢失{0}" , path); return;
+                    TDebug.LogError("资源因为被删除,已经丢失" + path); return;
                 }
                 BundleDict.Add(bundleNameList[i], ab);
             }

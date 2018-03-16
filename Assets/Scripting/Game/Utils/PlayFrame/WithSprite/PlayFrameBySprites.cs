@@ -19,7 +19,7 @@ public class PlayFrameBySprites : MonoBehaviour
     public PlayFrameType m_PlayType;
     public PlayFrameEndType m_EndType;
     public float m_PlaySpd=0.1f;   //每一帧的间隔
-    private IEnumerator animStartCor;
+
 
 
 
@@ -39,17 +39,15 @@ public class PlayFrameBySprites : MonoBehaviour
 
     public void Play()
     {
-        animStartCor = AnimStart();
-        StartCoroutine(animStartCor);
+        StartCoroutine("AnimStart");
     }
 
     public void Stop()
     {
-        if (animStartCor != null)
-            StopCoroutine(animStartCor);
+        StopCoroutine("AnimStart");
     }
 
-    public IEnumerator AnimStart()
+    IEnumerator AnimStart()
     {
         if (m_EnableDelay > 0.001f) {
             m_MyImage.enabled = false;
@@ -138,9 +136,9 @@ public class PlayFrameBySPritesEditor : Editor
                     Sprite sp = AssetDatabase.LoadAssetAtPath<Sprite>(resourcesAssets[i]);
                     sprites.Add(sp);
                 }
-                catch { TDebug.LogErrorFormat("Not Sprite {0}", selection[i].name); }
+                catch { TDebug.LogError("Not Sprite " + selection[i].name); }
             }
-            TDebug.LogFormat("obj amount: {0}     sprite amount: {1}",selection.Length , sprites.Count);
+            TDebug.Log("obj amount: " + selection.Length + "     sprite amount: " + sprites.Count);
             targetIns.m_SpriteList = sprites;
         }
     }

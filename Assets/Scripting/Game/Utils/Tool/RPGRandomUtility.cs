@@ -51,11 +51,9 @@ public class RPGRandomUtility
         if (percentAmount == 0)
         {
             string pctString = "数组为:";
-            for (int i = 0; i < count; i++)
-            {
-                pctString = string.Format("{0}{1} ", pctString,pct[i]);
-            }
-            TDebug.LogErrorFormat("错误,总概率为0,{0}", pctString); return 0;
+            for (int i = 0; i < count;i++ )
+            {   pctString+=pct[i]+" ";   }
+            TDebug.LogError("错误,总概率为0," + pctString); return 0;
         }
         float percentRatio = 1.0f / percentAmount; //概率总和归一后，每个概率需要乘的倍数
 
@@ -79,7 +77,7 @@ public class RPGRandomUtility
         string pctString2 = "数组为:";
         for (int i = 0; i < count; i++)
         { pctString2 += pct[i] + " "; }
-        TDebug.LogErrorFormat("错误{0}" , pctString2);
+        TDebug.LogError("错误" + pctString2);
         return 0;
     }
 	//根据一个形如 { 0f, 0.1f, 0.1f }的数组，在排除withoutList中的index之后，根据概率返回index
@@ -123,14 +121,12 @@ public class RPGRandomUtility
             }
             percentAmount += (float)f.getPercent;
         }
-        if (percentAmount == 0)
+        if (percentAmount == 0) 
         {
-            System.Text.StringBuilder pctString = new System.Text.StringBuilder("列表为:");
+            string pctString = "列表为:";
             for (int i = 0; i < count; i++)
-            {
-                pctString.Append(string.Format("({0},{1})", list[i].getPercent, list[i].objectId));
-            }
-            TDebug.LogErrorFormat("错误,总概率为0,{0}" , pctString); return list[0].objectId; 
+            { pctString += "(" + list[i].getPercent + "," + list[i].objectId + " "; }
+            TDebug.LogError("错误,总概率为0," + pctString); return list[0].objectId; 
         }
         float percentRatio = 1.0f / percentAmount; //概率总和归一后，每个概率需要乘的倍数
 
@@ -152,12 +148,10 @@ public class RPGRandomUtility
             }
         }
 
-        System.Text.StringBuilder pctString2 = new System.Text.StringBuilder("列表为:");
+        string pctString2 = "列表为:";
         for (int i = 0; i < count; i++)
-        {
-            pctString2.Append(string.Format("({0},{1})", list[i].getPercent, list[i].objectId));
-        }
-        TDebug.LogErrorFormat("错误,总概率为0,{0}" , pctString2); return list[0].objectId; 
+        { pctString2 += "(" + list[i].getPercent + "," + list[i].objectId + " "; }
+        TDebug.LogError("错误,总概率为0," + pctString2); return list[0].objectId; 
     }
 
 
@@ -221,31 +215,7 @@ public class RPGRandomUtility
     }
 
 
-	/// <summary>
-    /// 将总数根据每个元素代表的值，得出每个元素所需要的数量
-    /// 如amount=1000   indexValue={10,110}
-    /// 此时要凑够1000,需要最少元素为9个110，1个10。那么就返回{1,9}
-    /// 需要大的数在后面
-    /// </summary>
-    /// <param name="amount"></param>
-    /// <param name="indexValue"></param>
-    /// <returns></returns>
-    public static int[] GetIndexNumByValue(int amount, int[] indexValue)//将总数根据每个元素代表的值，得出元素数量最少下，每个元素所需要的数量
-    {
-        
-        int[] indexNum = new int[indexValue.Length];//长度与indexValue相同,全为零
-        for (int i = indexValue.Length-1; i >= 0; i--)
-        {
-            if (indexValue[i] <= 0) continue;
-            int getNum = amount / indexValue[i];
-            if (getNum >= 1)
-            {
-                amount -= getNum * indexValue[i];
-                indexNum[i] = getNum;
-            }
-        }
-        return indexNum;
-    }
+
 
 
 

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// 所有场景中，所有界面的管理器
 /// 
 /// </summary>
-public class UIRootMgr : MainUIMgrContainer,IAssetUser
+public class UIRootMgr : MainUIMgrContainer, IAssetUser
 {
     public static UIRootMgr Instance { get; private set; }
 
@@ -39,7 +39,6 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
         public Transform TopBlackMask;
         public GameObject Part_Badge;
         public GameObject Window_Reconnect;
-        public Transform Window_Introduce;
         public Image ImageNightMask;
         public ViewObj(UIViewBase view)
         {
@@ -64,7 +63,6 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
             Part_Badge = view.GetCommon<GameObject>("Part_Badge");
             Window_Reconnect = view.GetCommon<GameObject>("Window_Reconnect");
             ImageNightMask = view.GetCommon<Image>("ImageNightMask");
-            Window_Introduce = view.GetCommon<Transform>("Window_Introduce");
 
         }
     }
@@ -90,17 +88,15 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
 
     public class CommonWindowContainer
     {
-        public static Transform Window_Loading{ get { return UIRootMgr.Instance.MyViewObj.Window_Loading; } }
+        public static Transform Window_Loading { get { return UIRootMgr.Instance.MyViewObj.Window_Loading; } }
         public static Transform TopMask { get { return UIRootMgr.Instance.MyViewObj.TopMask; } }
         public static Transform Window_MessageBox { get { return UIRootMgr.Instance.MyViewObj.Window_MessageBox; } }
         public static Transform Window_UpTips { get { return UIRootMgr.Instance.MyViewObj.Window_UpTips; } }
         public static Transform Window_LoadBarTrans { get { return UIRootMgr.Instance.MyViewObj.Window_LoadBar; } }
-        public static Transform Window_Introduce { get { return UIRootMgr.Instance.MyViewObj.Window_Introduce; } }
     }
 
     public Window_MessageBox MessageBox { get; private set; }
-
-    public Window_UpTips Window_UpTips  { get; private set; }
+    public Window_UpTips Window_UpTips { get; private set; }
     public Window_LoadBar Window_LoadBar { get; private set; }
     public LoadingCircleCtrl Window_Loading { get; private set; }
 
@@ -153,7 +149,8 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
 
     public bool m_IsFullScreen  //用于在打开全屏窗口后，可以禁用场景摄像机以减少消耗...UI游戏暂时不用
     {
-        get;set;
+        get;
+        set;
         //get { return mOpenWinList.Exists((item) => { return item.m_DisplayType == WinDisplayType.FullScreen; }); }
         //set
         //{
@@ -176,11 +173,6 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
 
     public void AwakeInit()
     {
-        mOpenWinList = new List<WindowBase>();
-        mDisableWinList = new List<WindowBase>();
-        mUIObjects = new Dictionary<string, Object>();
-        mPutTopDict = new Dictionary<WinName, List<SetTopTrans>>(); 
-
         MyViewObj = new ViewObj(GetComponent<UIViewBase>());
         Init();
     }
@@ -200,12 +192,13 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
             Window_UpTips.Init();
             Window_Loading = CommonWindowContainer.Window_Loading.gameObject.CheckAddComponent<LoadingCircleCtrl>();
             Window_Loading.Init();
-            bool isNight = PlayerPrefs.GetInt("IsNight", 0)==1;
+
+            bool isNight = PlayerPrefs.GetInt("IsNight", 0) == 1;
             IsNight = isNight;
         }
     }
 
-    
+
 
     #region 窗口列表管理
 
@@ -214,7 +207,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     {
         if (CurOpenWindow == null)
         {
-            TDebug.LogErrorFormat("没有打开的窗口！----{0}" , winName);
+            TDebug.LogError("没有打开的窗口！----" + winName);
             return null;
         }
         else if (CurOpenWindow.name != winName)
@@ -235,7 +228,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                 return (T)mOpenWinList[i];
             }
         }
-        TDebug.LogFormat("列表中没有打开的窗口！---{0}" , winName);
+        TDebug.Log("列表中没有打开的窗口！---" + winName, "UIRootMgr");
         return default(T);
     }
 
@@ -270,7 +263,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     }
 
     //当窗口打开，不带参数
-    public T OpenWindow<T>(WinName winName , CloseUIEvent closeUIEvent = CloseUIEvent.CloseAll)where T :WindowBase
+    public T OpenWindow<T>(WinName winName, CloseUIEvent closeUIEvent = CloseUIEvent.CloseAll) where T : WindowBase
     {
         return OpenWindow<T>(winName.ToString(), closeUIEvent);
     }
@@ -281,7 +274,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     /// <typeparam name="T"></typeparam>
     /// <param name="winName"></param>
     /// <param name="hideWin">需要先被打开/渲染层级在下的在前</param>
-    public T OpenWindowWithHide<T>(WinName winName ,params WinName[] hideWin) where T : WindowBase
+    public T OpenWindowWithHide<T>(WinName winName, params WinName[] hideWin) where T : WindowBase
     {
         return OpenWindow<T>(winName.ToString(), CloseUIEvent.HideCurrent, hideWin);
     }
@@ -294,7 +287,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
         WindowBase[] hideWindow = null;
         if (CurOpenWindow != null && CurOpenWindow.name == _name)
         {
-            if (!CurOpenWindow.gameObject.activeSelf) TDebug.LogErrorFormat("当前窗口被隐藏--{0}" , _name);
+            if (!CurOpenWindow.gameObject.activeSelf) TDebug.LogError("当前窗口被隐藏--" + _name);
             openWin = GetCurWindow(winName);
         }
         else
@@ -305,22 +298,12 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                 for (int i = 0; i < hideWin.Length; i++)
                 {
                     WindowBase window = GetOpenListWindow(hideWin[i]);
-                    hideWindow[i] = window;               
+                    hideWindow[i] = window;
                 }
-            }      
+            }
             else
                 CloseWindow(closeUIEvent);
-            bool openWinExist = false;
-            bool disableWinExist = false;
-            foreach (var tempWin in mOpenWinList)
-            {
-                if (tempWin.name == winName) { openWinExist = true; break; }
-            }
-            foreach (var tempWin in mDisableWinList)
-            {
-                if (tempWin.name == winName) { disableWinExist = true; break; }
-            }
-            if (openWinExist)
+            if (mOpenWinList.Exists(x => { return x.name == winName; }))
             {
                 for (int i = 0; i < mOpenWinList.Count; i++)
                 {
@@ -333,7 +316,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                     }
                 }
             }
-            else if (disableWinExist) //如果窗口之前打开过，没有被销毁
+            else if (mDisableWinList.Exists(x => { return x.name == winName; })) //如果窗口之前打开过，没有被销毁
             {
                 for (int i = 0; i < mDisableWinList.Count; i++)
                 {
@@ -346,7 +329,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                         openWin.transform.SetAsLastSibling();
                         break;
                     }
-                }              
+                }
             }
             else
             {
@@ -356,12 +339,6 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
 
                 UnityEngine.Object Obj = (UnityEngine.Object)loader.ResultObject;
                 GameObject go = Instantiate(Obj, UIRootContainer.NormalWindowRoot) as GameObject;
-#if UNITY_EDITOR
-                if (go.GetComponent<T>() != null)
-                {
-                    Debug.LogError("窗口Prefab上不能直接绑定逻辑脚本！");
-                }
-#endif
                 openWin = go.CheckAddComponent<T>();
                 openWin.InitView();
                 openWin.SetEnable(true);
@@ -385,15 +362,16 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
             }
         }
         openWin.SetHideWindow(hideWindow);
-        m_IsFullScreen = false;
-        for (int i = 0; i < mOpenWinList.Count; i++)
+        m_IsFullScreen = mOpenWinList.Exists((item) => { return item.m_DisplayType.Equals(WinDisplayType.FullScreen); });
+
+        if (Window_Guide.IsGuiding && openWin != null && (openWin.WindowName != WinName.Window_ExitGame && openWin.WindowName != WinName.Window_Guide)) //如果当前有引导且不是强制引导
         {
-            if (mOpenWinList[i] != null && mOpenWinList[i].m_DisplayType.Equals(WinDisplayType.FullScreen))
+            GuideStep guideStep = GuideStep.GuideStepFetcher.GetGuideStepNoCopy(Window_Guide.Instance.CurGuideStep);
+            if (guideStep != null)// && guideStep.MyMaskStatus == GuideStep.MaskStatus.NoMask)
             {
-                m_IsFullScreen = true;
+                Window_Guide.Instance.CloseGuide(false);
             }
         }
-
         return openWin as T;
     }
 
@@ -447,7 +425,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                 }
                 break;
             case CloseUIEvent.CloseAll:
-                for (int i = mOpenWinList.Count-1; i >=0; i--)
+                for (int i = mOpenWinList.Count - 1; i >= 0; i--)
                 {
                     mOpenWinList[i].CloseWindow();
                 }
@@ -457,13 +435,13 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
 
     public WindowBase HideWindow()
     {
-        WindowBase window=null;
+        WindowBase window = null;
         if (CurOpenWindow != null)
         {
             window = CurOpenWindow;
             CurOpenWindow.CloseWindow();
         }
-        return window;  
+        return window;
     }
 
 
@@ -492,7 +470,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
                 return;
             }
         }
-        TDebug.LogFormat("没有此窗口{0}" , winName);
+        TDebug.Log("没有此窗口" + winName);
     }
     /// <summary>
     /// 获取打开的窗口
@@ -500,9 +478,9 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     /// <typeparam name="T"></typeparam>
     /// <param name="winName"></param>
     /// <returns></returns>
-    public T GetOpenWindow<T>(WinName winName) where T:WindowBase
+    public T GetOpenWindow<T>(WinName winName) where T : WindowBase
     {
-        for (int i = 0,length= mOpenWinList.Count; i < length; i++)
+        for (int i = 0, length = mOpenWinList.Count; i < length; i++)
         {
             if (mOpenWinList[i].WindowName == winName)
             {
@@ -512,43 +490,23 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
         return null;
     }
 
-    public void FreshBadgeInOpenWindow()
-    {
-        for (int i = 0, length = mOpenWinList.Count; i < length; i++)
-        {
-            if (mOpenWinList[i].IsActiveShow)
-            {
-                mOpenWinList[i].FreshBadge();
-            }
-        }
-    }
-
     /// <summary>
     /// 在打开窗口列表中移除指定窗口
     /// </summary>
     public void RemoveWindowInOpen(WindowBase win)
     {
         mOpenWinList.Remove(win);
-        m_IsFullScreen = false;
-        for (int i = 0; i < mOpenWinList.Count; i++)
-        {
-            if (mOpenWinList[i] != null && mOpenWinList[i].m_DisplayType.Equals(WinDisplayType.FullScreen))
-            {
-                m_IsFullScreen = true;
-            }
-        }
+        m_IsFullScreen = mOpenWinList.Exists((item) => { return item.m_DisplayType.Equals(WinDisplayType.FullScreen); });
         if (mOpenWinList.Count == 0)
         {
             //TDebug.Log("所有被窗口关闭");
             //BaseMainUIMgr baseui = GetCurMainUI();
             //if (baseui != null) baseui.ShowMainUI();
-            if (showUICor != null) StopCoroutine(showUICor);
-            showUICor = ShowUICor();
-            StartCoroutine(showUICor);
+            StopCoroutine("ShowUICor");
+            StartCoroutine("ShowUICor");
         }
     }
 
-    private IEnumerator showUICor;
     public IEnumerator ShowUICor()
     {
         yield return null;
@@ -560,7 +518,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     }
 
     //将此窗口，放于list末尾
-    public void FreshWindowInDisable(WindowBase win) 
+    public void FreshWindowInDisable(WindowBase win)
     {
         if (win.CloseEvent == CloseWinType.Disable)
         {
@@ -595,9 +553,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
             {
                 if (mOpenWinList[i].WindowName == destroyWin.WindowName)
                 {
-#if UNITY_EDITOR
-                    TDebug.LogErrorFormat("正在使用的窗口，被添加到了废弃列表{0}", destroyWin.WindowName);
-#endif
+                    TDebug.LogError("正在使用的窗口，被添加到了废弃列表" + destroyWin.WindowName);
                     isOpen = true;
                 }
             }
@@ -614,11 +570,11 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
     /// <summary>
     /// 将窗口的某一部分暂放在TopWindow下，并且添加进关联表，在此窗口关闭时还原回去
     /// </summary>
-    public void SetRootInTopLobby(WinName winName, Transform panelRoot, bool setToTopWindowRoot =false)
+    public void SetRootInTopLobby(WinName winName, Transform panelRoot, bool setToTopWindowRoot = false)
     {
         if (panelRoot == null) return;
         if (!mPutTopDict.ContainsKey(winName)) mPutTopDict.Add(winName, new List<SetTopTrans>());
-       
+
         List<SetTopTrans> tempList = mPutTopDict[winName];
         for (int i = 0; i < tempList.Count; i++)
         {
@@ -654,7 +610,6 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
             {
                 if (tempList[i].MyTrans == null) continue;
                 tempList[i].MyTrans.SetParent(tempList[i].OriginParent);
-                tempList[i].MyTrans.gameObject.SetActive(false);
             }
             tempList.Clear();
         }
@@ -668,7 +623,7 @@ public class UIRootMgr : MainUIMgrContainer,IAssetUser
         {
             if (mOpenWinList[i].WindowName == winName)
             {
-                if (!mOpenWinList[i].gameObject.activeSelf) TDebug.LogErrorFormat("当前窗口被隐藏：{0}" , winName);
+                if (!mOpenWinList[i].gameObject.activeSelf) TDebug.LogError("当前窗口被隐藏：" + winName);
                 return true;
             }
         }
