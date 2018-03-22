@@ -118,13 +118,18 @@ public class Window_BallBattle : WindowBase {
         MapData.SetNode(pos.m_X, pos.m_Y, ballCtrl.MyData);
         BallList.Add(ballCtrl);
     }
-    //移除球
-    public void DisableBall(BallBaseCtrl ballCtrl)
+
+    public void RemoveBallInMap(BallBaseCtrl ballCtrl)
     {
         if (ballCtrl.MyData != null && ballCtrl.MyData.Pos != null)
         {
             MapData.SetNode(ballCtrl.MyData.Pos.m_X, ballCtrl.MyData.Pos.m_Y, null);
         }
+    }
+
+    //禁用球
+    public void DisableBall(BallBaseCtrl ballCtrl)
+    {
         if (BallList.Contains(ballCtrl))
         {
             ballCtrl.MyData = null;
@@ -141,8 +146,8 @@ public class Window_BallBattle : WindowBase {
         List<BallNodeData> bList = GetEqualNumNearList(nodeData);
         bList.Add(nodeData);
         if (bList.Count < 3) return;
-        if (mJumpAni != null)
-            StopCoroutine(mJumpAni);
+        //if (mJumpAni != null)             //不停止上一个跳跃动画
+        //    StopCoroutine(mJumpAni);
         for (int i = 0; i < bList.Count; i++)
         {
             bList[i].IsDisable = true;
@@ -159,6 +164,19 @@ public class Window_BallBattle : WindowBase {
     IEnumerator DisableJumpAni(List<BallNodeData> nodeList, List<BallNodeData> linklessList, Vector3 boomCenter)
     {
         float curTime = 0f;
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            nodeList[i].BallCtrl.MyTrans.SetParent(mViewObj.FreeRoot);
+        }
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            RemoveBallInMap(nodeList[i].BallCtrl);
+        }
+        for (int i = 0; i < linklessList.Count; i++)
+        {
+            RemoveBallInMap(linklessList[i].BallCtrl);
+        }
+        UIRootMgr.Instance.TopMasking = false;
         while (curTime < 1.5f)
         {
             for (int i = 0; i < nodeList.Count; i++)
@@ -208,6 +226,7 @@ public class Window_BallBattle : WindowBase {
     }
     IEnumerator RotCoroutine(float rot)
     {
+        rot *= 0.03f;    //缩小旋转幅度
         float startSpdPct = 1f;
         float spd = rot * startSpdPct;
         float curRot = 0f;

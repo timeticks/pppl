@@ -210,4 +210,8 @@ public class XyCoordRef
         m_Y = xy.m_Y;
     }
 
+    public string ToString()
+    {
+        return string.Format("({0},{1})", m_X, m_Y);
+    }
 }

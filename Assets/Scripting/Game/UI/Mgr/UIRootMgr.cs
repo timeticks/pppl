@@ -127,7 +127,10 @@ public class UIRootMgr : MainUIMgrContainer, IAssetUser
     public bool TopMasking   //最高层遮罩，全屏且完全透明的遮罩
     {
         get { return MyViewObj.TopMask.gameObject.activeSelf; }
-        set { mIsYieldTopMasking = false; MyViewObj.TopMask.gameObject.SetActive(value); }
+        set
+        {
+            Debug.Log("TopMasking:"+value.ToString()); mIsYieldTopMasking = false; MyViewObj.TopMask.gameObject.SetActive(value);
+        }
     }
 
     private bool mIsYieldTopMasking = false;
@@ -173,6 +176,7 @@ public class UIRootMgr : MainUIMgrContainer, IAssetUser
 
     void Awake()    //TODO:正式删除
     {
+        TDebug.LogLevel = TDebug.LogLevelType.DEBUG;
         AwakeInit();
     }
 

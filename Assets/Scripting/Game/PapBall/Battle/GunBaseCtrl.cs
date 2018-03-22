@@ -46,11 +46,9 @@ public class GunBaseCtrl : MonoBehaviour {
     }
     public void GunFireBall()
     {
+        UIRootMgr.Instance.TopMasking = true;
         IsMovingGun = false;
-        if (mCurWaitBall != null)
-        {
-            mCurWaitBall.StartRun(mLastDir);
-        }
+        mCurWaitBall.StartRun(mLastDir);
         InitWaitBall();
     }
     void InitWaitBall()
@@ -60,6 +58,7 @@ public class GunBaseCtrl : MonoBehaviour {
         ballCtrl.transform.position = mTrans.position;
         ballCtrl.transform.localScale = Vector3.one;
         ballCtrl.transform.localPosition += Vector3.up * 50;
+        ballCtrl.transform.rotation = Quaternion.identity;
         mCurWaitBall = ballCtrl;
     }
 

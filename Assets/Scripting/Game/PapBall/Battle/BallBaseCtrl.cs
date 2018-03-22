@@ -10,7 +10,7 @@ public class BallBaseCtrl : MonoBehaviour {
     public Text m_BallText;
     public BallState m_BallState;
 
-    internal float mMoveSpeed = 2000;
+    internal float mMoveSpeed = 2800;
     internal BallNodeData MyData;
     internal Transform MyTrans;
     private Vector3 mMoveDir;
@@ -19,7 +19,7 @@ public class BallBaseCtrl : MonoBehaviour {
 
     void Awake()
     {
-        mMoveSpeed = 5000f;
+        mMoveSpeed = 2000f;
     }
 
     public void Init(Window_BallBattle parentWin)
@@ -53,6 +53,7 @@ public class BallBaseCtrl : MonoBehaviour {
         {
             if (Mathf.Abs(MyTrans.localPosition.y) > 3000 || Mathf.Abs(MyTrans.localPosition.x) > 2000) //超出边界消失
             {
+                UIRootMgr.Instance.TopMasking = false;
                 mParentWin.DisableBall(this);
             }
             MyTrans.localPosition += dir * Time.deltaTime * mMoveSpeed;
@@ -92,6 +93,10 @@ public class BallBaseCtrl : MonoBehaviour {
         BallBaseCtrl otherBallCtrl = otherCol.GetComponent<BallBaseCtrl>();
         if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag("CenterAnchor"))
             return;
+        UIRootMgr.Instance.TopMasking = false;
+        if (mRunCor != null)
+            StopCoroutine(mRunCor);
+
         mAttached = true;
         m_BallState = BallState.Idle;
         //Vector3 ballLocalPosInMyTrans = mTrans.worldToLocalMatrix.MultiplyPoint(otherCol.transform.position);
@@ -108,8 +113,6 @@ public class BallBaseCtrl : MonoBehaviour {
         mParentWin.DestroyEqualNum(MyData, true);
         mParentWin.StartRot(MyTrans.position, mMoveDir);
 
-        if (mRunCor != null)
-            StopCoroutine(mRunCor);
     }
 
     void FreshDataAfterAttach(XyCoordRef xy) //附着后，刷新信息

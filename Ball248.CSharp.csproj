@@ -269,11 +269,12 @@
     <Compile Include="Assets\Scripting\Game\ObjCtrl\Role\RoleBattle_Base.cs" />
     <Compile Include="Assets\Scripting\Game\ObjCtrl\TColObj.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BallBaseCtrl.cs" />
-    <Compile Include="Assets\Scripting\Game\PapBall\Battle\BallGroupMgr.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BattleSceneMgr.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BattleSceneUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\GunBaseCtrl.cs" />
+    <Compile Include="Assets\Scripting\Game\PapBall\Battle\HexaMapData.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\HexagonGridMgr.cs" />
+    <Compile Include="Assets\Scripting\Game\PapBall\Battle\Window_BallBattle.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\CheckOut\BallBaseCtrlTest.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Class\BallClass.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\TUtility\HexaMathf.cs" />
@@ -456,6 +457,7 @@
     <Compile Include="Assets\Scripting\Utils\View\WindowView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Build\GameData\IllegalText.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\OneWaySDK-jar\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\res\layout\tj_native.xml" />

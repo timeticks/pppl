@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class HexaMapData
 {
     public static Vector2 StartPos;
-    public static float Radius = 38f;
+    public static float Radius = 36f;
     public static float HeightRatio = Radius*1.732f;       //根号3
 
     public int Width, Height;
@@ -114,7 +114,7 @@ public class HexaMapData
                 {
                     nearestDis = dis;
                     nearestXy = new XyCoordRef(i, j);
-                    TDebug.Log(nearestDis + "  " + nearestXy.ToString());
+                    TDebug.Log(string.Format("dis:{0}|xy:{1}", nearestDis, nearestXy.ToString()));
                 }
             }
         }
