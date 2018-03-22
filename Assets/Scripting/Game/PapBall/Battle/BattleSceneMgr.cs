@@ -4,10 +4,7 @@ using System.Collections.Generic;
 
 public class BattleSceneMgr : MonoBehaviour {
     public static BattleSceneMgr instance
-    { get; private set; }
-
-    public BallGroupMgr m_BallGroupMgr;
-    
+    { get; private set; }    
 
 
     void Awake()

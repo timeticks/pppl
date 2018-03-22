@@ -1,0 +1,1766 @@
+fileFormatVersion: 2
+guid: a7c992aa3170ad644a6ced8965ea9c03
+timeCreated: 1513925837
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ACommon_Mask
+    21300002: Bg_kuang
+    21300004: Bg_kuangx
+    21300006: Bg_kuangz
+    21300008: Bg_zhucexian
+    21300010: Btn_yuan
+    21300012: Icon_Wujiao
+    21300014: Icon_Wujiao2
+    21300016: Panel_BG_ChengS
+    21300018: Panel_BG_ChengS2
+    21300020: SP_HexagonImage
+    21300022: SP_Money1
+    21300024: SP_Money2
+    21300026: SP_TiLi
+    21300028: SP_TiLi2
+    21300030: SP_TiLi_BG
+    21300032: Bg_ditu_01
+    21300034: Bg_ditu_02
+    21300036: Bg_juanzhou
+    21300038: Bg_kuang_01
+    21300040: Bg_kuang_02
+    21300042: Bg_xiala_01
+    21300044: Bg_xiala_02
+    21300046: Bg_zhucexian 1
+    21300048: Btn_fangh
+    21300050: Btn_jiantou
+    21300052: Btn_mo_01
+    21300054: Btn_mo_02
+    21300056: Icon_jia1
+    21300058: Icon_jia_2
+    21300060: Icon_lingshi
+    21300062: Icon_qianneng
+    21300064: Icon_xianyu
+    21300066: Btn_fang
+    21300068: Btn_fang_02
+    21300070: Bg_xuecao_1
+    21300072: Bg_xuecao_2
+    21300074: Bg_xuetiaoh_1
+    21300076: Bg_xuetiaoh_2
+    21300078: Bg_xuetiaol_1
+    21300080: Bg_xuetiaol_2
+    21300082: Btn_jian
+    21300084: Btn_jian1
+    21300086: Btn_shang_1
+    21300088: Btn_shang_2
+    21300090: Btn_xia_1
+    21300092: Btn_xia_2
+    21300094: Icon_danyao
+    21300096: Icon_diaozhui
+    21300098: Icon_fangju
+    21300100: Icon_jiezhi
+    21300102: Icon_kuangshi
+    21300104: Icon_lingye
+    21300106: Icon_maozi
+    21300108: Icon_peishi
+    21300110: Icon_renwu
+    21300112: Icon_shoupi
+    21300114: Icon_star
+    21300116: Icon_star2
+    21300118: Icon_wuqi
+    21300120: Icon_yaocao
+    21300122: Bg_kuang_03
+    21300124: Bg_kuang_04
+    21300126: Bg_lingshou
+    21300128: Icon_danyao 1
+    21300130: Icon_fangyu
+    21300132: Icon_gongji
+    21300134: Icon_jiezhi 1
+    21300136: Icon_kuangshi 1
+    21300138: Icon_kuilei
+    21300140: Icon_lingshou
+    21300142: Icon_lingye 1
+    21300144: Icon_peishi 1
+    21300146: Icon_pifeng
+    21300148: Icon_renwu 1
+    21300150: Icon_shoupi 1
+    21300152: Icon_wuqi 1
+    21300154: Icon_xianglian
+    21300156: Icon_xinfa
+    21300158: Icon_yaocao 1
+    21300160: Icon_yifu
+    21300162: Icon_yinhun
+    21300164: Icon_zawu
+    21300166: Btn_you_1
+    21300168: Btn_zuo_1
+    21300170: Btn_jia1
+    21300172: Btn_jia_2
+    21300174: Btn_mo2
+    21300176: Bg_ditu_00
+    21300178: Icon_tubiaodi
+    21300180: Bg_kuang_05
+    21300182: Bg_kuang_06
+    21300184: Bg_youkuang2
+    21300186: Bg_ditu_03
+    21300188: Bg_ditu_04
+    21300190: Bg_ditu_05
+    21300192: Bg_kuang_07
+    21300194: Icon_hd
+    21300196: Bg_xuetiaob_1
+    21300198: Bg_xuetiaob_2
+    21300200: Bg_kuang_08
+    21300202: Bg_kuang_09
+    21300204: Bg_huakuang_01
+    21300206: Bg_huakuang_02
+    21300208: Bg_kuang_10
+    21300210: Btn_chongzhi_01
+    21300212: Fr_chongzhi_1
+    21300214: Bg_chongzhi_2
+    21300216: Bg_youkuang1
+    21300218: Fr_guang
+    21300220: TextBg
+    21300222: Btn_anniu_3
+    21300224: Bg_point
+    21300226: Bg_kuang_11
+    21300228: Bg_HeadIcon
+    21300230: Bg_txdi_1
+    21300232: Bg_txdi_2
+    21300234: Bg_txkuang_1
+    21300236: Bg_txkuang_2
+    21300238: Bg_chongzhi_3
+    21300240: Btn_anniu_4
+    21300242: Bg_kuangj
+    21300244: Icon_yueka
+    21300246: BTN5
+    21300248: BTN_1
+    21300250: BTN_2
+    21300252: BTN_3
+    21300254: BTN_4
+    21300256: SP_1
+    21300258: SP_2
+    21300260: SP_3
+    21300262: SP_5
+    21300264: SP_6
+    21300266: SP_7
+    21300268: SP_8
+    21300270: BG_Panel_1
+    21300272: SP_shadow
+    21300274: SP_4
+    21300276: BG_Panel_4
+    21300278: BG_Panel_5
+    21300280: SP_10
+    21300282: SP_9
+    21300284: SP_18
+    21300286: SP_16
+    21300288: SP_14
+    21300290: SP_11
+    21300292: SP_12
+    21300294: BG_Panel_2
+    21300296: SP_20
+    21300298: SP_21
+    21300300: Btn_Back
+    21300302: Btn_Tab
+    21300304: SP_22
+    21300306: BTN_5
+    21300308: SP_23
+    21300310: SP_24
+    21300312: SP_13
+    21300314: BG_Panel_3
+    21300316: BG_Panel_6
+    21300318: BG_Panel_7
+    21300320: BTN_6
+    21300322: SP_15
+    21300324: SP_17
+    21300326: SP_19
+    21300328: SP_25
+    21300330: SP_26
+    21300332: SP_27
+    21300334: SP_28
+    21300336: BTN_7
+    21300338: BTN_8
+    21300340: SP_29
+    21300342: SP_30
+    21300344: SP_31
+    21300346: SP_32
+    21300348: SP_33
+    21300350: SP_34
+    21300352: SP_35
+    21300354: SP_36
+    21300356: SP_37
+    21300358: SP_38
+    21300360: SP_39
+    21300362: SP_40
+    21300364: SP_41
+    21300366: BG_Panel_8
+    21300368: Bg_back_1
+    21300370: Icon_npc
+    21300372: SP_42
+    21300374: SP_43
+    21300376: SP_44
+    21300378: SP_45
+    21300380: SP_46
+    21300382: SP_47
+    21300384: SP_48
+    21300386: SP_49
+    21300388: SP_50
+    21300390: BTN_9
+    21300392: SP_51
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 0
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: 12
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: 32
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: 34
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+  - buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ACommon_Mask
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 992
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_1
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 450
+        width: 88
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 41, y: 50, z: 46, w: 41}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_2
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 619
+        width: 73
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 33, y: 36, z: 39, w: 26}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_3
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 447
+        width: 32
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 12, y: 24, z: 19, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_4
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 790
+        width: 33
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 24, z: 18, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_5
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 422
+        width: 69
+        height: 70
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 41, z: 37, w: 27}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_6
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 750
+        width: 33
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 12, y: 23, z: 20, w: 14}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BG_Panel_7
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 408
+        width: 32
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 12, y: 24, z: 19, w: 12}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN5
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 805
+        width: 40
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 17, y: 25, z: 22, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_1
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 727
+        width: 138
+        height: 141
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_2
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 870
+        width: 142
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_3
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 800
+        width: 207
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_4
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 585
+        width: 41
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 25, z: 25, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_5
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 890
+        width: 38
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 11, y: 22, z: 26, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_6
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 776
+        width: 30
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_7
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 626
+        width: 41
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 16, y: 28, z: 24, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_8
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 846
+        width: 40
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 28, z: 24, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BTN_9
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 609
+        width: 127
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_back_1
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 597
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_chongzhi_3
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 790
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 3, y: 3, z: 3, w: 3}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_ditu_01
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 340
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 13, z: 13, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_ditu_02
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 374
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 13, z: 13, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_ditu_03
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 896
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_ditu_04
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 902
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_ditu_05
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 908
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 1, z: 1, w: 1}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_01
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 471
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 24, z: 30, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_02
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 347
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_03
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 347
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_04
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 405
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_05
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 413
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_06
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 413
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_07
+      rect:
+        serializedVersion: 2
+        x: 363
+        y: 569
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 30, y: 24, z: 30, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_kuang_11
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 479
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 32, y: 24, z: 32, w: 24}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_lingshou
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 818
+        width: 95
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_point
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 379
+        width: 90
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_txdi_1
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 587
+        width: 8
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 0, z: 1, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_txdi_2
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 812
+        width: 8
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 1, y: 0, z: 1, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_txkuang_2
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 842
+        width: 51
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 24, y: 25, z: 24, w: 25}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xiala_01
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 847
+        width: 19
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 7, z: 6, w: 8}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xiala_02
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 689
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 5, z: 4, w: 5}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xuecao_1
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 915
+        width: 256
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xuecao_2
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 781
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 23, y: 23, z: 23, w: 23}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xuetiaob_1
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 701
+        width: 40
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 8, z: 13, w: 9}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xuetiaoh_1
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 723
+        width: 40
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 8, z: 13, w: 8}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_xuetiaol_1
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 745
+        width: 40
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 9, z: 13, w: 8}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Bg_zhucexian
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 1004
+        width: 143
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_Back
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 547
+        width: 73
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_Tab
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 505
+        width: 106
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_fang
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 124
+        width: 76
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_fangh
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 159
+        width: 76
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_jia1
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 479
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_jiantou
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 802
+        width: 138
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_mo2
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 588
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 15, z: 15, w: 15}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_you_1
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 58
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Btn_zuo_1
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 356
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Fr_chongzhi_1
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 557
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Icon_hd
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 568
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Icon_lingshi
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 778
+        width: 50
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Icon_npc
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 321
+        width: 77
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Icon_qianneng
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 721
+        width: 58
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Icon_xianyu
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 417
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_1
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 549
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_10
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 831
+        width: 27
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 35, z: 0, w: 32}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_11
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 622
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 10, z: 9, w: 7}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_12
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 667
+        width: 202
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_13
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 906
+        width: 239
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_14
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 669
+        width: 133
+        height: 131
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 66, y: 65, z: 66, w: 65}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_15
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 852
+        width: 208
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_17
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 706
+        width: 117
+        height: 110
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 58, y: 55, z: 58, w: 54}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_19
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 494
+        width: 70
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 12, y: 60, z: 56, w: 11}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_2
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 884
+        width: 255
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_20
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 714
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 13, y: 13, z: 13, w: 13}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_21
+      rect:
+        serializedVersion: 2
+        x: 992
+        y: 743
+        width: 30
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 15, z: 15, w: 15}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_22
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 684
+        width: 33
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 16, y: 15, z: 16, w: 15}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_23
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 569
+        width: 45
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 19, y: 29, z: 25, w: 20}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_24
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 767
+        width: 40
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 19, y: 18, z: 20, w: 17}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_25
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 483
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_26
+      rect:
+        serializedVersion: 2
+        x: 841
+        y: 487
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_27
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 670
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 21, y: 21, z: 20, w: 20}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_28
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 662
+        width: 55
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 24, y: 33, z: 30, w: 23}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_29
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 573
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 7, z: 9, w: 7}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_3
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 662
+        width: 122
+        height: 42
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_30
+      rect:
+        serializedVersion: 2
+        x: 211
+        y: 829
+        width: 46
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 29, z: 25, w: 23}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_31
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 621
+        width: 47
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 32, z: 26, w: 21}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_32
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 522
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 22, y: 23, z: 22, w: 21}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_33
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 677
+        width: 48
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 23, y: 23, z: 24, w: 23}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_34
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 896
+        width: 61
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_35
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 914
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 5, z: 5, w: 4}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_36
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 622
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_38
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 827
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 9, y: 8, z: 9, w: 9}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_39
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 591
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 7, z: 9, w: 8}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_4
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 400
+        width: 81
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_40
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 996
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 5, z: 5, w: 6}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_41
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 1010
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 6, y: 5, z: 5, w: 6}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_42
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 545
+        width: 174
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 79, y: 87, z: 93, w: 71}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_43
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 544
+        width: 125
+        height: 116
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_44
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 285
+        width: 77
+        height: 195
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_45
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 471
+        width: 65
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 25, y: 45, z: 39, w: 28}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_46
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 475
+        width: 101
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 33, y: 46, z: 66, w: 84}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_48
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 318
+        width: 104
+        height: 185
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_49
+      rect:
+        serializedVersion: 2
+        x: 743
+        y: 482
+        width: 88
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 79, y: 17, z: 8, w: 20}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_5
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 960
+        width: 320
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_50
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 726
+        width: 49
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_51
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 717
+        width: 33
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 16, y: 15, z: 16, w: 15}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_6
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 641
+        width: 43
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 19, y: 0, z: 19, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_7
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 707
+        width: 192
+        height: 91
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_8
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 642
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 8, y: 10, z: 9, w: 7}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_9
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 590
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 14, z: 0, w: 15}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_TiLi
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 926
+        width: 11
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 0, z: 4, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_TiLi2
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 961
+        width: 11
+        height: 33
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 4, y: 0, z: 4, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_TiLi_BG
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 535
+        width: 17
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 0, z: 7, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_shadow
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 928
+        width: 537
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 173, y: 0, z: 173, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: TextBg
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 870
+        width: 160
+        height: 43
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: ui/mainui
+  assetBundleVariant: 

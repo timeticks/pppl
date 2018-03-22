@@ -145,7 +145,7 @@ public class WindowBase : MonoBehaviour
             }
         }
 
-        AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.OpenWin, WindowName.ToString()));
+        //AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.OpenWin, WindowName.ToString()));
         if (SetToCurrentWin && UIRootMgr.Instance != null)
 		{
             if (UIRootMgr.Instance.CurOpenWindow != null && !m_staticDepth)

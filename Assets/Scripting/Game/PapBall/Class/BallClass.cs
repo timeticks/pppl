@@ -20,13 +20,13 @@ public class BallNodeData
         Num = num;
         Pos = null;
     }
-    public BallNodeData(XyCoordRef pos , int num)
+    public BallNodeData(XyCoordRef pos , int num , HexaMapData mapData)
     {
         Pos = pos;
         NearList = HexaMathf.GetInRange(1, Pos.m_X, Pos.m_Y);
         for (int i = NearList.Count-1; i >= 0; i--)
         {
-            if (!BallGroupMgr.Instance.MapData.IsLegal(NearList[i].m_X, NearList[i].m_Y))
+            if (!mapData.IsLegal(NearList[i].m_X, NearList[i].m_Y))
                 NearList.RemoveAt(i);
         }
         Num = num;

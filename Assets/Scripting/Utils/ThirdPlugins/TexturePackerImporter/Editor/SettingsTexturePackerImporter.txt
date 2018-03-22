@@ -1,5 +1,11 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
+- Assets/Art/Effect/Frame/biaoxue/fe_biaoxue.tpsheet
+- Assets/Art/UI/Common/CommonAtlas.tpsheet
 textureFileNames:
+- Assets/Art/Effect/Frame/biaoxue/fe_biaoxue.png
+- Assets/Art/UI/Common/CommonAtlas.png
 normalmapFileNames:
+- 
+- 

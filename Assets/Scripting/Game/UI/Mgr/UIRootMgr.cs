@@ -171,6 +171,11 @@ public class UIRootMgr : MainUIMgrContainer, IAssetUser
         set { mCurWin = value; }
     }
 
+    void Awake()    //TODO:正式删除
+    {
+        AwakeInit();
+    }
+
     public void AwakeInit()
     {
         MyViewObj = new ViewObj(GetComponent<UIViewBase>());

@@ -1,0 +1,16 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# Sprite sheet: fe_biaoxue.png (256 x 256)
+# $TexturePacker:SmartUpdate:7f327d0a2b592b8bd6ebdb3034028cf0:d7b4a69767542694c68ebf4875e4c0fb:cce2447e57c82e250997ced1c9898c86$
+#
+
+0;84;92;80;80;0.5;0.5
+1;166;174;80;80;0.5;0.5
+2;84;174;80;80;0.5;0.5
+3;2;10;80;80;0.5;0.5
+4;2;92;80;80;0.5;0.5
+5;2;174;80;80;0.5;0.5

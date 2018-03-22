@@ -112,6 +112,7 @@
     <Compile Include="Assets\Plugins\BuglyPlugins\BuglyInit.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Build\GameData\IllegalText.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\OneWaySDK-jar\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\res\layout\tj_native.xml" />

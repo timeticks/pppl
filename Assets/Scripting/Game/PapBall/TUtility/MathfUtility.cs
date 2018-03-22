@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MathfUtility : MonoBehaviour
+public class MathfUtility
 {
 
     //public Vector2 testA;

@@ -14,16 +14,18 @@ public class BallBaseCtrl : MonoBehaviour {
     internal BallNodeData MyData;
     internal Transform MyTrans;
     private Vector3 mMoveDir;
+    private Window_BallBattle mParentWin;
     bool mAttached = false;
 
     void Awake()
     {
-        MyTrans = transform;
         mMoveSpeed = 5000f;
     }
 
-    public void Init()
+    public void Init(Window_BallBattle parentWin)
     {
+        MyTrans = transform;
+        mParentWin = parentWin;
         MyData = new BallNodeData(Random.Range(0, 4));
         m_BallText.text = MyData.Num.ToString();
         mAttached = false;
@@ -51,7 +53,7 @@ public class BallBaseCtrl : MonoBehaviour {
         {
             if (Mathf.Abs(MyTrans.localPosition.y) > 3000 || Mathf.Abs(MyTrans.localPosition.x) > 2000) //超出边界消失
             {
-                BattleSceneMgr.instance.m_BallGroupMgr.DisableBall(this);
+                mParentWin.DisableBall(this);
             }
             MyTrans.localPosition += dir * Time.deltaTime * mMoveSpeed;
             yield return null;
@@ -88,7 +90,7 @@ public class BallBaseCtrl : MonoBehaviour {
             return;
         }
         BallBaseCtrl otherBallCtrl = otherCol.GetComponent<BallBaseCtrl>();
-        if (otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable)
+        if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag("CenterAnchor"))
             return;
         mAttached = true;
         m_BallState = BallState.Idle;
@@ -96,15 +98,15 @@ public class BallBaseCtrl : MonoBehaviour {
         //ballLocalPosInMyTrans = mTrans.InverseTransformPoint(otherCol.transform.position);
         //Debug.Log(ballLocalPosInMyTrans +" "+m_myTrans.worldToLocalMatrix.MultiplyPoint(m_myTrans.position) + m_myTrans.localPosition);
 
-        Vector3 localPosWithCenter = BallGroupMgr.Instance.CenterAnchor.InverseTransformPoint(MyTrans.position); //球相对于中心球的位置
-        XyCoordRef xyPos = BallGroupMgr.Instance.MapData.GetNearestXy(new Vector2(localPosWithCenter.x, localPosWithCenter.y), true);
+        Vector3 localPosWithCenter = mParentWin.InverseTransformPointWithCenter(MyTrans); //球相对于中心球的位置
+        XyCoordRef xyPos = mParentWin.MapData.GetNearestXy(new Vector2(localPosWithCenter.x, localPosWithCenter.y), true);
 
         //得到与col的相对位置
         //HexagonPosType posType = HexagonGridMgr.CurHexagon.GetHexagonPosType(Vector2.zero, offsetPos);
         TDebug.LogFormat("xy:{0}" , xyPos.ToString());
-        BattleSceneMgr.instance.m_BallGroupMgr.AddBall(this, xyPos);
-        BallGroupMgr.Instance.DestroyEqualNum(MyData,true);
-        BattleSceneMgr.instance.m_BallGroupMgr.StartRot(MyTrans.position, mMoveDir);
+        mParentWin.AddBall(this, xyPos);
+        mParentWin.DestroyEqualNum(MyData, true);
+        mParentWin.StartRot(MyTrans.position, mMoveDir);
 
         if (mRunCor != null)
             StopCoroutine(mRunCor);
