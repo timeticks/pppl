@@ -114,7 +114,7 @@ public class HexaMapData
                 {
                     nearestDis = dis;
                     nearestXy = new XyCoordRef(i, j);
-                    TDebug.Log(string.Format("dis:{0}|xy:{1}", nearestDis, nearestXy.ToString()));
+                    //TDebug.Log(string.Format("dis:{0}|xy:{1}", nearestDis, nearestXy.ToString()));
                 }
             }
         }

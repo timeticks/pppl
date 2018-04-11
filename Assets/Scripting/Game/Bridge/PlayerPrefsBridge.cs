@@ -23,6 +23,8 @@ public partial class PlayerPrefsBridge
 
     #endregion
 
+    
+
 
     private GamePlayer mPlayerData = new GamePlayer();
     public GamePlayer PlayerData { get { return mPlayerData; } }
@@ -256,7 +258,7 @@ public partial class PlayerPrefsBridge
     #endregion
 
 
-    
+    #region 旧
 
     #region 战斗
 
@@ -274,7 +276,7 @@ public partial class PlayerPrefsBridge
 
         Equip[] equipList = PlayerPrefsBridge.Instance.GetEquipBarInfo();
         //Pet[] petList = PlayerPrefsBridge.Instance.GetPetBarInfo();
-        hero.Properties(equipList,equipSpellList, player.AddProm,null, player.Level);
+        hero.Properties(equipList, equipSpellList, player.AddProm, null, player.Level);
         return hero;
     }
 
@@ -358,7 +360,7 @@ public partial class PlayerPrefsBridge
             bool isWeared = false;
             for (int j = 0; j < mPlayerData.SpellList.Length; j++)
             {
-                if (spellAllList[i].idx == mPlayerData.SpellList[j] && mPlayerData.SpellList[j]!=0)
+                if (spellAllList[i].idx == mPlayerData.SpellList[j] && mPlayerData.SpellList[j] != 0)
                 {
                     isWeared = true; break;
                 }
@@ -383,7 +385,7 @@ public partial class PlayerPrefsBridge
     /// </summary>
     /// <returns></returns>
     public List<Spell> GetSpellAllListCopy()
-    {       
+    {
         return GetSpellAllList(true);
     }
     /// <summary>
@@ -426,17 +428,17 @@ public partial class PlayerPrefsBridge
     /// <param name="pos"></param>
     /// <returns></returns>
     public Spell GetSpellCurWear(Spell.PosType pos)
-    {     
-       int InventoryIndex = mPlayerData.SpellList[(int)pos];
-       Spell spell = GetInventorySpellByPos(InventoryIndex);
-       if (spell != null)
-       {
-           return spell;
-       }
-       else
-       {
-           return null;
-       }
+    {
+        int InventoryIndex = mPlayerData.SpellList[(int)pos];
+        Spell spell = GetInventorySpellByPos(InventoryIndex);
+        if (spell != null)
+        {
+            return spell;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -447,7 +449,7 @@ public partial class PlayerPrefsBridge
     public Spell GetInventorySpellByPos(int partIdx)
     {//getIventorySpellsByPos
         Spell spell = (Spell)mSpellInventory.GetGoodsByPos(partIdx);
-        if(spell != null)
+        if (spell != null)
         {
             return spell.Clone();
         }
@@ -469,12 +471,12 @@ public partial class PlayerPrefsBridge
         return spellNum;
     }
 
-    
+
     #endregion
 
     #region 法宝
-   
-    
+
+
     private List<Equip> GetEquipAllList(bool isCopy)//得到所有的法宝列表
     {
         List<Equip> equipList = new List<Equip>();
@@ -499,11 +501,11 @@ public partial class PlayerPrefsBridge
         return GetEquipAllList(false);
     }
 
-     
-    public Equip GetInventoryEquipByPos(int pos , bool isCopy=false)
+
+    public Equip GetInventoryEquipByPos(int pos, bool isCopy = false)
     {//getIventoryEquipsByPos
         Equip equip = (Equip)mEquipsInventory.GetGoodsByPos(pos);
-        if (equip != null&&equip.idx!=0)
+        if (equip != null && equip.idx != 0)
         {
             if (isCopy) return equip.Clone();
             else return equip;
@@ -532,7 +534,7 @@ public partial class PlayerPrefsBridge
     public Equip RemovEquipByPos(int pos)
     {
         Equip removeEquip = (Equip)mEquipsInventory.ReplaceGoodsOnPos(pos, new Equip());
-        if (removeEquip == null || removeEquip.idx ==0)
+        if (removeEquip == null || removeEquip.idx == 0)
         {
             TDebug.LogWarning("移除背包中的装备失败,装备不存在 | pos=" + pos);
             return null;
@@ -770,7 +772,7 @@ public partial class PlayerPrefsBridge
     {
         BaseObject item = mItemsInventory.GetGoodsById(idx);
         if (item == null)
-        {           
+        {
             return 0;
         }
         return ((Item)item).num;
@@ -843,16 +845,16 @@ public partial class PlayerPrefsBridge
     }
 
     //保存秘境信息
-    public void SetMapSave(List<NetMapSaveItem> saveList, System.Action setOverCallback , DungeonMapData.MapType mapType)
+    public void SetMapSave(List<NetMapSaveItem> saveList, System.Action setOverCallback, DungeonMapData.MapType mapType)
     {
         TDebug.Log("SetMapSave");
         if (saveList == null || saveList.Count == 0) return;
         bool needWaitHandler = true;
         if (saveList.Count == 1 && saveList[0].SaveType == DungeonMapAccessor.MapSaveType.RolePos) needWaitHandler = false;
         //if (mapType == MapData.MapType.NewerMap) needWaitHandler = false; //新手秘境，也不保存在服务器
-        
+
         mDungeonMap.SetMapSave(saveList); //内存修改
-        
+
         ServPacketHander hander;
         if (needWaitHandler)
         {
@@ -868,8 +870,8 @@ public partial class PlayerPrefsBridge
         {
             hander = delegate(BinaryReader ios)
             {
-                if (setOverCallback != null) 
-                    setOverCallback(); 
+                if (setOverCallback != null)
+                    setOverCallback();
                 setOverCallback = null;
             };
         }
@@ -877,17 +879,17 @@ public partial class PlayerPrefsBridge
         GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapSave, hander);
         GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_MapSave(saveList, mDungeonMap.RolePos));
     }
-    public void SetMapSave(DungeonMapAccessor.MapSaveType saveType , int saveId, int saveValue)
+    public void SetMapSave(DungeonMapAccessor.MapSaveType saveType, int saveId, int saveValue)
     {
-        NetMapSaveItem saveItem = new NetMapSaveItem(saveType , saveId,  saveValue);
-        SetMapSave(new List<NetMapSaveItem>() {saveItem}, null  , DungeonMapData.MapType.SectMap);
+        NetMapSaveItem saveItem = new NetMapSaveItem(saveType, saveId, saveValue);
+        SetMapSave(new List<NetMapSaveItem>() { saveItem }, null, DungeonMapData.MapType.SectMap);
     }
 
     //获取某一个值，返回是否成功
     public bool GetMapSaveCondition(DungeonMapAccessor.MapSaveType saveType, int saveId, out int saveValue)
     {
         saveValue = 0;
-        if (mDungeonMap==null || !mDungeonMap.IsEntered)
+        if (mDungeonMap == null || !mDungeonMap.IsEntered)
             return false;
         switch (saveType)
         {
@@ -951,7 +953,7 @@ public partial class PlayerPrefsBridge
     public void S2C_SnapshotMapEvent(BinaryReader ios)
     {
         NetPacket.S2C_SnapshotMapEvent msg = MessageBridge.Instance.S2C_SnapshotMapEvent(ios);
-        if (msg.MapId!=0)
+        if (msg.MapId != 0)
             mMapEventAccessor.MapList.Add(msg.MapId); //将已同步的地图id存入，之后不再重复
         foreach (var temp in msg.EventStatusPool)
         {
@@ -994,7 +996,7 @@ public partial class PlayerPrefsBridge
         if (LobbySceneMainUIMgr.Instance != null) LobbySceneMainUIMgr.Instance.FreshLobbyInfo();
     }
 
-  
+
     #endregion
 
     #region 游历挂机
@@ -1004,7 +1006,7 @@ public partial class PlayerPrefsBridge
         mTravelAccessor.InitTravelAccessor(msg);
         OnSnapShotHappend(PrefsSnapShotEventType.SnapShotTravelBotting);
     }
-  
+
     public void S2C_SnapshotTravelEvent(BinaryReader ios)
     {
         NetPacket.S2C_SnapshotTravelEvent msg = MessageBridge.Instance.S2C_SnapshotTravelEvent(ios);
@@ -1018,12 +1020,12 @@ public partial class PlayerPrefsBridge
         }
         if (mTravelAccessor.TravelEventDic.ContainsKey(msg.TravelIdx))
         {
-            if ( msg.SmallEventIndex>travelEvent.EventList.Length - 1 )//越界，该大事件已做完
+            if (msg.SmallEventIndex > travelEvent.EventList.Length - 1)//越界，该大事件已做完
             {
                 mTravelAccessor.TravelEventDic.Remove(msg.TravelIdx);
                 TDebug.Log(string.Format("{0}==小事件进度为{1},超过最大长度{2}，移除", travelEvent.name, msg.SmallEventIndex, travelEvent.EventList.Length));
             }
-                
+
             else
             {
                 mTravelAccessor.TravelEventDic[msg.TravelIdx] = msg.SmallEventIndex;
@@ -1033,7 +1035,7 @@ public partial class PlayerPrefsBridge
         }
         else
         {
-            if (msg.SmallEventIndex<= travelEvent.EventList.Length - 1)
+            if (msg.SmallEventIndex <= travelEvent.EventList.Length - 1)
             {
                 travelEvent.CurSmallEventIndex = msg.SmallEventIndex;
                 mTravelAccessor.TravelEventDic.Add(msg.TravelIdx, msg.SmallEventIndex);
@@ -1053,7 +1055,7 @@ public partial class PlayerPrefsBridge
         }
         else
         {
-            mTravelAccessor.TravelEventProgressList.Add(msg.TravelId,msg.TravelEventProgressList);
+            mTravelAccessor.TravelEventProgressList.Add(msg.TravelId, msg.TravelEventProgressList);
         }
     }
     public TravelAccessor GetTravel()
@@ -1075,13 +1077,13 @@ public partial class PlayerPrefsBridge
     }
     public long NextEventTime
     {
-        get 
+        get
         {
             if (mTravelAccessor.TravelIdx != 0)
                 return mTravelAccessor.NextEventTime;
             else
                 return long.MaxValue;
-        }    
+        }
     }
     public int GetCurTravelSite()
     {
@@ -1098,7 +1100,7 @@ public partial class PlayerPrefsBridge
     {
         List<TravelEvent> eventList = new List<TravelEvent>();
         if (mTravelAccessor.TravelIdx != 0)
-        {         
+        {
             foreach (var item in mTravelAccessor.TravelEventDic)
             {
                 TravelEvent travelEvent = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(item.Key);
@@ -1109,7 +1111,7 @@ public partial class PlayerPrefsBridge
                 return eventList;
             else
                 return null;
-        }         
+        }
         else
             return null;
     }
@@ -1127,7 +1129,7 @@ public partial class PlayerPrefsBridge
                     eventList.Add(new TravelEvent(travelEvent));
                     break;
                 }
-                  
+
             }
             if (eventList.Count > 0)
                 return mTravelAccessor.TravelIdx;
@@ -1156,7 +1158,7 @@ public partial class PlayerPrefsBridge
         {
             int travelSmallIndex = mTravelAccessor.TravelEventDic[travelEventId];
             TravelEvent travel = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(travelEventId);
-            int travelSmallEventId =0;
+            int travelSmallEventId = 0;
             if (travelSmallIndex <= travel.EventList.Length - 1)
             {
                 travelSmallEventId = travel.EventList[travelSmallIndex];
@@ -1168,9 +1170,9 @@ public partial class PlayerPrefsBridge
                     return null;
             }
             else
-                return null;                 
+                return null;
         }
-      
+
         return null;
     }
     public List<TravelEventProgress> GetTravelEventProgressCopy(int travelID)
@@ -1182,8 +1184,8 @@ public partial class PlayerPrefsBridge
         if (progressList == null)
             return null;
         for (int i = 0; i < progressList.Count; i++)
-        { 
-            if(progressList[i]!=null)
+        {
+            if (progressList[i] != null)
                 tempList.Add(new TravelEventProgress(progressList[i]));
         }
         return tempList;
@@ -1202,7 +1204,7 @@ public partial class PlayerPrefsBridge
     public void S2C_SnapShotProduce(BinaryReader ios)
     {
         NetPacket.S2C_SnapShotProduce msg = MessageBridge.Instance.S2C_SnapShotProduce(ios);
-        bool isExist =false;
+        bool isExist = false;
         for (int i = 0; i < mProduceAccessor.ProduceList.Count; i++)
         {
             if (mProduceAccessor.ProduceList[i].RecipeID == msg.ProduceItem.RecipeID)
@@ -1213,7 +1215,7 @@ public partial class PlayerPrefsBridge
         }
         if (!isExist)
             mProduceAccessor.ProduceList.Add(msg.ProduceItem);
-        TDebug.Log("S2C_SnapShotProduce==" + (msg.ProduceItem.FinishTime-AppTimer.CurTimeStampMsSecond )+ "==" + msg.ProduceItem.RecipeID + "==" + msg.ProduceItem.MyRecipeType);
+        TDebug.Log("S2C_SnapShotProduce==" + (msg.ProduceItem.FinishTime - AppTimer.CurTimeStampMsSecond) + "==" + msg.ProduceItem.RecipeID + "==" + msg.ProduceItem.MyRecipeType);
         OnSnapShotHappend(PrefsSnapShotEventType.SnapShotProduce);
     }
 
@@ -1284,7 +1286,7 @@ public partial class PlayerPrefsBridge
     public void S2C_SnapshotPrestigeTask(BinaryReader ios)
     {
         NetPacket.S2C_SnapshotPrestigeTask msg = MessageBridge.Instance.S2C_SnapshotPrestigeTask(ios);
-         mActivityAccessor.TaskFreeFreshNum = msg.FreeFreshNum;
+        mActivityAccessor.TaskFreeFreshNum = msg.FreeFreshNum;
         if (!mActivityAccessor.TaskMap.ContainsKey(msg.Type))
         {
             mActivityAccessor.TaskMap.Add(msg.Type, msg.TaskList);
@@ -1322,14 +1324,14 @@ public partial class PlayerPrefsBridge
                 {
                     if (mMailAccessor.MailList[j].idx == msg.MailList[i].idx)
                     {
-                        mMailAccessor.MailList[j] = msg.MailList[i]; 
+                        mMailAccessor.MailList[j] = msg.MailList[i];
                         idxHave = true;
                         break;
                     }
                 }
                 if (!idxHave) mMailAccessor.MailList.Add(msg.MailList[i]);
             }
-            
+
         }
         else
         {
@@ -1396,7 +1398,7 @@ public partial class PlayerPrefsBridge
 
     public void OnSnapShotHappend(PrefsSnapShotEventType ty)//有对应的同步事件发生
     {
-        if (mSnapShotHandlers.ContainsKey(ty) && mSnapShotHandlers[ty]!=null)
+        if (mSnapShotHandlers.ContainsKey(ty) && mSnapShotHandlers[ty] != null)
         {
             mSnapShotHandlers[ty]();
         }
@@ -1404,7 +1406,7 @@ public partial class PlayerPrefsBridge
     #endregion
 
     #region 打坐闭关
-    
+
     public long GetCurSitStartTime()
     {
         return mExerciseAccessor.ZazenStartTime;
@@ -1501,17 +1503,17 @@ public partial class PlayerPrefsBridge
     }
     public List<Achieve> GetAchievementLastFinish()
     {
-        List<Achieve> tempList = new List<Achieve>();    
+        List<Achieve> tempList = new List<Achieve>();
         Achievement ach;
         if (mAchievementAccessor.SecondLastFinish != 0)
         {
             ach = Achievement.AchievementFetcher.GetAchievementByCopy(mAchievementAccessor.SecondLastFinish);
-            tempList.Add(new Achieve(ach,mAchievementAccessor.SecondLastFinishPos-1,true));
+            tempList.Add(new Achieve(ach, mAchievementAccessor.SecondLastFinishPos - 1, true));
         }
         if (mAchievementAccessor.LastFinish != 0)
         {
             ach = Achievement.AchievementFetcher.GetAchievementByCopy(mAchievementAccessor.LastFinish);
-            tempList.Add(new Achieve(ach, mAchievementAccessor.LastFinishPos-1, true));
+            tempList.Add(new Achieve(ach, mAchievementAccessor.LastFinishPos - 1, true));
         }
         return tempList;
     }
@@ -1522,7 +1524,7 @@ public partial class PlayerPrefsBridge
     public void FreshAchieveProgress(AchievementAccessor.ClientCountType type, int num)
     {
         switch (type)
-        {       
+        {
             case AchievementAccessor.ClientCountType.AdvertNum:
                 mAchievementAccessor.AdvertNum += num;
                 break;
@@ -1531,17 +1533,17 @@ public partial class PlayerPrefsBridge
                 break;
             case AchievementAccessor.ClientCountType.ConsumeGold:
                 mAchievementAccessor.ConsumeGold += num;
-                break;        
+                break;
             case AchievementAccessor.ClientCountType.ConsumeDiamond:
-                if(num<0)
-                mAchievementAccessor.ConsumeDiamond += num;
+                if (num < 0)
+                    mAchievementAccessor.ConsumeDiamond += num;
                 break;
             case AchievementAccessor.ClientCountType.LevelUpPet:
                 mAchievementAccessor.LevelUpPet += num;
                 break;
             case AchievementAccessor.ClientCountType.EvolvePet:
                 mAchievementAccessor.EvolvePet += num;
-                break;            
+                break;
         }
     }
 
@@ -1580,7 +1582,7 @@ public partial class PlayerPrefsBridge
             }
             return false;
         }
-        int index =mAchievementAccessor.AchievementInfo[achieve.idx];
+        int index = mAchievementAccessor.AchievementInfo[achieve.idx];
         if (index >= achieve.Names.Length) //成就已做完
             return false;
         else if (achieve.ConValue[index] <= value)
@@ -1596,67 +1598,12 @@ public partial class PlayerPrefsBridge
     {
         NetPacket.S2C_PullInfo msg = MessageBridge.Instance.S2C_PullInfo(ios);
         UIRootMgr.Instance.IsLoading = false;
-        GameClient.Instance.RegisterNetCodeHandler(NetCode_S.PullInfo,null);
+        GameClient.Instance.RegisterNetCodeHandler(NetCode_S.PullInfo, null);
     }
+    #endregion
     #endregion
 
 
-    /////////////////////////////////////////////////////////////////////////
-    #region 新
-
-    public void MonsterDrop(PVEHero monster)
-    {
-        DropInfo dropItem = new DropInfo();
-        dropItem.monsterLevel = monster.GetLevel();
-        //dropItem.monsterLevel = 1;//////////////////////
-
-        dropItem.monsterQuality = MonsterPrefix.GetPrefixQuality(monster.monsterPrefix);
-        //dropItem.dropQuality = 5;//MonsterPrefix.GetPrefixQuality(monster.monsterPrefix);
-        Dictionary<DropGrade.DropType, List<object>> dropMap = DropGrade.RunDrop(dropItem);
-
-        //添加经验掉落
-        int addExp = monster.hero.dropExp;
-        dropMap.Add(DropGrade.DropType.Exp, new List<object>() {addExp});
-
-        TDebug.LogWarning("进行掉落" + dropItem.monsterQuality + "   " + dropMap.Count);
-
-        foreach (var temp in dropMap)
-        {
-            for (int i = 0; i < temp.Value.Count; i++)
-            {
-                switch (temp.Key)
-                {
-                    case DropGrade.DropType.Gold:
-                        TDebug.Log(string.Format("{0}X{1}", "金币", temp.Value[i]));
-                        Panel_Battle.Instance.AppendDesc(string.Format("{0}X{1}", "金币", temp.Value[i]), true);
-                        PlayerPrefsBridge.Instance.addGold((int)temp.Value[i],"");
-                        break;
-                    case DropGrade.DropType.Diamond:
-                        TDebug.Log(string.Format("{0}X{1}", "钻石", temp.Value[i]));
-                        Panel_Battle.Instance.AppendDesc(string.Format("{0}X{1}", "钻石", temp.Value[i]), true);
-                        PlayerPrefsBridge.Instance.addDiamond((int)temp.Value[i]);
-                        break;
-                    case DropGrade.DropType.Exp:
-                        TDebug.Log(string.Format("{0}X{1}", "经验", temp.Value[i]));
-                        Panel_Battle.Instance.AppendDesc(string.Format("{0}X{1}", "经验", temp.Value[i]), true);
-                        PlayerPrefsBridge.Instance.addExp((int)temp.Value[i]);
-                        break;
-                    case DropGrade.DropType.Item:
-                    case DropGrade.DropType.StrengthenItem:
-                        break;
-                    case DropGrade.DropType.Equip:
-                        Equip tempEquip = (Equip) (temp.Value[i]);
-                        TDebug.Log(string.Format("name:{0},quality:{1}", ((Equip)(temp.Value[i])).name,((Equip)(temp.Value[i])).curQuality));
-                        Panel_Battle.Instance.AppendDesc(TUtility.GetTextByQuality(tempEquip.name, tempEquip.curQuality) , true);
-                        PlayerPrefsBridge.Instance.addEquip(tempEquip, "杀怪");
-                        break;
-                }
-            }
-        }
-    }
-
-
-    #endregion
 
 }
 public enum PrefsSnapShotEventType

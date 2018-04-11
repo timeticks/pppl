@@ -6,121 +6,112 @@ using UnityEngine.UI;
 
 public class BallBaseCtrl : MonoBehaviour {
 
-    public Image m_BallImage;
-    public Text m_BallText;
-    public BallState m_BallState;
+    public BallType MyBallType;
 
-    internal float mMoveSpeed = 2800;
+    internal float mMoveSpeed = 300;
     internal BallNodeData MyData;
     internal Transform MyTrans;
-    private Vector3 mMoveDir;
-    private Window_BallBattle mParentWin;
+    internal Window_BallBattle ParentWin;
+    internal Vector3 MoveDir;
     bool mAttached = false;
 
-    void Awake()
+    public class ViewObj
     {
-        mMoveSpeed = 2000f;
+        public Image MyImage;
+        public Rigidbody2D MyRigibody;
+        public CircleCollider2D MyCollider;
+        public Text TextNum;
+        public ViewObj(UIViewBase view)
+        {
+            if (MyImage != null) return;
+            MyImage = view.GetCommon<Image>("Part_BattleBall");
+            MyRigibody = view.GetCommon<Rigidbody2D>("Part_BattleBall");
+            MyCollider = view.GetCommon<CircleCollider2D>("Part_BattleBall");
+            TextNum = view.GetCommon<Text>("TextNum");
+        }
     }
+
+    private ViewObj mViewObj;
 
     public void Init(Window_BallBattle parentWin)
     {
+        if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         MyTrans = transform;
-        mParentWin = parentWin;
-        MyData = new BallNodeData(Random.Range(0, 4));
-        m_BallText.text = MyData.Num.ToString();
+        ParentWin = parentWin;
+        MyData = new BallNodeData(Random.Range(0, 3));
+        mViewObj.TextNum.text = MyData.Num.ToString();
+        SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = false;
-        m_BallState = BallState.Idle;
+        mViewObj.MyCollider.isTrigger = true;
+        MyBallType = BallType.IdleBall;
         MyTrans.tag = "Untagged";
     }
 
-    private IEnumerator mRunCor;
-    public void StartRun(Vector3 dir)
+    public void StartRun(Vector3 dir , BallType ballType)
     {
-        mMoveDir = dir;
-        m_BallState = BallState.Run;
-        if (mRunCor != null)
-            StopCoroutine(mRunCor);
-        mRunCor = RunCoroutine(dir);
-        StartCoroutine(mRunCor);
+        SetRigibodyAndVelocity(false, false, dir.normalized * mMoveSpeed);
+        mViewObj.MyCollider.isTrigger = false;
+        MyBallType = ballType;
+        gameObject.CheckAddComponent<BallStop>().Init(this);
     }
 
-    
-
-    IEnumerator RunCoroutine(Vector3 dir)
+    public void ChangeVelocity(Vector3 velocity)
     {
-        dir =dir.normalized;
-        while (m_BallState == BallState.Run)
-        {
-            if (Mathf.Abs(MyTrans.localPosition.y) > 3000 || Mathf.Abs(MyTrans.localPosition.x) > 2000) //超出边界消失
-            {
-                UIRootMgr.Instance.TopMasking = false;
-                mParentWin.DisableBall(this);
-            }
-            MyTrans.localPosition += dir * Time.deltaTime * mMoveSpeed;
-            yield return null;
-        }
+        MoveDir = velocity.normalized;
+        mViewObj.MyRigibody.velocity = velocity;
     }
 
-    
-    //当飞出的球碰到物体后
-    void OnTriggerEnter2D(Collider2D col)
+    public bool IsInLegalPos()
     {
-        if (m_BallState == BallState.Idle) return;
-        if (col.gameObject.CompareTag("Ball") || col.gameObject.CompareTag("CenterAnchor")) //附着
-        {
-            Attach(col);
-        }
-        else if (col.gameObject.name.Contains("Border")) //反弹
-        {
-            mMoveDir = new Vector3(-mMoveDir.x, mMoveDir.y, mMoveDir.z);
-            StartRun(mMoveDir);
-        }
-        else if (col.gameObject.name.Contains("Down")) //底部
-        {
-            mMoveDir = new Vector3(mMoveDir.x, -mMoveDir.y, mMoveDir.z);
-            StartRun(mMoveDir);
-        }
+        if (Mathf.Abs(MyTrans.localPosition.y) > 2000 || Mathf.Abs(MyTrans.localPosition.x) > 1500)
+            return false;
+        return true;
     }
 
-    int aaaa = 0;
-    void Attach(Collider2D otherCol)
+    public void Attach(Collider2D otherCol)
     {
         if (mAttached)
         {
-            TDebug.LogErrorFormat("已经在转盘上：{0}", ++aaaa);
+            TDebug.LogErrorFormat("已经在转盘上");
             return;
         }
         BallBaseCtrl otherBallCtrl = otherCol.GetComponent<BallBaseCtrl>();
         if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag("CenterAnchor"))
             return;
+
         UIRootMgr.Instance.TopMasking = false;
-        if (mRunCor != null)
-            StopCoroutine(mRunCor);
 
+        mViewObj.MyCollider.isTrigger = true;
+        SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = true;
-        m_BallState = BallState.Idle;
-        //Vector3 ballLocalPosInMyTrans = mTrans.worldToLocalMatrix.MultiplyPoint(otherCol.transform.position);
-        //ballLocalPosInMyTrans = mTrans.InverseTransformPoint(otherCol.transform.position);
-        //Debug.Log(ballLocalPosInMyTrans +" "+m_myTrans.worldToLocalMatrix.MultiplyPoint(m_myTrans.position) + m_myTrans.localPosition);
+        Destroy(GetComponent<BallStop>());
 
-        Vector3 localPosWithCenter = mParentWin.InverseTransformPointWithCenter(MyTrans); //球相对于中心球的位置
-        XyCoordRef xyPos = mParentWin.MapData.GetNearestXy(new Vector2(localPosWithCenter.x, localPosWithCenter.y), true);
+        Vector3 localPosWithCenter = ParentWin.InverseTransformPointWithCenter(MyTrans); //球相对于中心球的位置
+        XyCoordRef xyPos = ParentWin.MapData.GetNearestXy(new Vector2(localPosWithCenter.x, localPosWithCenter.y), true);
+
+        Vector2 hitDir = otherCol.transform.localPosition - MyTrans.localPosition;
 
         //得到与col的相对位置
         //HexagonPosType posType = HexagonGridMgr.CurHexagon.GetHexagonPosType(Vector2.zero, offsetPos);
         TDebug.LogFormat("xy:{0}" , xyPos.ToString());
-        mParentWin.AddBall(this, xyPos);
-        mParentWin.DestroyEqualNum(MyData, true);
-        mParentWin.StartRot(MyTrans.position, mMoveDir);
+        ParentWin.AddBall(this, xyPos);
+        if (MyBallType== BallType.RunByGunBall)
+            ParentWin.DestroyEqualNum(MyData, hitDir);
+        ParentWin.StartRot(MyTrans.position, MoveDir);
 
+        MyBallType = BallType.IdleBall;
     }
 
-    void FreshDataAfterAttach(XyCoordRef xy) //附着后，刷新信息
+
+    public void SetRigibodyAndVelocity(bool isKinematic , bool useGravity , Vector2? velocity)
     {
-        //BallCellData colData = colBall.m_myData;
-        
+        mViewObj.MyRigibody.isKinematic = isKinematic;
+        mViewObj.MyRigibody.gravityScale = useGravity ? 60f : 0f;
+        if (velocity != null)
+        {
+            ChangeVelocity(velocity.Value);
+        }
     }
-
 
     #region 相邻测试
     bool needDeleteNear = false;
@@ -179,9 +170,10 @@ public class BallBaseCtrl : MonoBehaviour {
 }
 
 
-public enum BallState
+public enum BallType
 {
-    Idle,
-    Run
+    IdleBall,       
+    RunByGunBall,   //炮台发射的球
+    ForceAddBall,   //强制增加的球，此球不引发掉落
 }
 

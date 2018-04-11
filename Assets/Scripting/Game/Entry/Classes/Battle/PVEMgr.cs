@@ -29,21 +29,6 @@ public class PVEMgr:MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (CurMapId == 0) return;
-
-        if (PVEJob.Instance == null || PVEJob.Instance.curPVEStatus == PVEJob.PVEStatus.CanNext || PVEJob.Instance.curPVEStatus == PVEJob.PVEStatus.None)
-        {
-            RunPVE();
-        }
-        if (dropMonsterList.Count > 0)
-        {
-            PlayerPrefsBridge.Instance.MonsterDrop(dropMonsterList[0]);
-            dropMonsterList.RemoveAt(0);
-        }
-    }
-
     private List<PVEHero> dropMonsterList = new List<PVEHero>();
     public void AddDropMonster(PVEHero monster)
     {

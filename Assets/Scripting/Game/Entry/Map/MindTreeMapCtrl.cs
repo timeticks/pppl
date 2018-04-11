@@ -80,7 +80,7 @@ public class MindTreeMapCtrl
         }
         if (saveList.Count > 0)
         {
-            PlayerPrefsBridge.Instance.SetMapSave(saveList, delegate() { DoNodeList(setList); }, MyMapType);
+            //PlayerPrefsBridge.Instance.SetMapSave(saveList, delegate() { DoNodeList(setList); }, MyMapType);
             return true;
         }
         return false;

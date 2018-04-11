@@ -176,6 +176,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Map\MindTreeNode.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Map\NodeMapData.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Map\YamlParse.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Player\BallMapData.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\GamePlayer.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PVEHero.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PlayerAttribute.cs" />
@@ -269,6 +270,7 @@
     <Compile Include="Assets\Scripting\Game\ObjCtrl\Role\RoleBattle_Base.cs" />
     <Compile Include="Assets\Scripting\Game\ObjCtrl\TColObj.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BallBaseCtrl.cs" />
+    <Compile Include="Assets\Scripting\Game\PapBall\Battle\BallStop.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BattleSceneMgr.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\BattleSceneUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\PapBall\Battle\GunBaseCtrl.cs" />

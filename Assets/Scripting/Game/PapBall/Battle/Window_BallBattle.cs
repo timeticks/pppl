@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 public class Window_BallBattle : WindowBase {
 
     public Window_BallBattle Instance { get; private set; }
@@ -28,7 +29,7 @@ public class Window_BallBattle : WindowBase {
 
     internal List<BallBaseCtrl> BallList = new List<BallBaseCtrl>();
     internal List<BallBaseCtrl> BallDisableList = new List<BallBaseCtrl>();
-
+    private float mCurRotateForce = 0f; //当前的旋转力度
     void Start()    //TODO:正式删除
     {
         OpenWindow();
@@ -77,6 +78,35 @@ public class Window_BallBattle : WindowBase {
         for (int i = 0; i < BallList.Count; i++)
         {
             BallList[i].transform.rotation = Quaternion.identity;
+        }
+    }
+    void Update()
+    {
+        if (mCurRotateForce != 0)   //旋转
+        {
+            int flag = (int)Mathf.Sign(mCurRotateForce);
+            float adsRotate = Mathf.Abs(mCurRotateForce);   //取绝对值，进行缩小计算
+            if (adsRotate > 150) adsRotate = 150;
+            adsRotate -= Time.deltaTime * 80f ;
+            if (adsRotate < 0)
+                adsRotate = 0;
+            mCurRotateForce = flag * adsRotate;
+
+            mViewObj.CenterAnchor.transform.localRotation *= Quaternion.Euler(new Vector3(0, 0, mCurRotateForce * Time.deltaTime));
+        }
+        if (Time.frameCount%3 == 0)
+        {
+            for (int i = 0; i < MapData.Balls.Length; i++)
+            {
+                for (int j = 0; j < MapData.Balls[i].Length; j++)   //检测小球超出范围的，进行销毁
+                {
+                    BallNodeData tempNode = MapData.Balls[i][j];
+                    if (tempNode != null && tempNode.BallCtrl != null && !tempNode.BallCtrl.IsInLegalPos())
+                    {
+                        DisableBall(tempNode.BallCtrl);
+                    }
+                }
+            }
         }
     }
 
@@ -136,68 +166,49 @@ public class Window_BallBattle : WindowBase {
             BallList.Remove(ballCtrl);
             BallDisableList.Add(ballCtrl);
         }
-        ballCtrl.gameObject.SetActive(false);
     }
 
     private IEnumerator mJumpAni;
-    public void DestroyEqualNum(BallNodeData nodeData, bool needJumpAni)
+    public void DestroyEqualNum(BallNodeData nodeData, Vector2 gunBallJumpDir)
     {
         ResetNodeSearch();
         List<BallNodeData> bList = GetEqualNumNearList(nodeData);
         bList.Add(nodeData);
         if (bList.Count < 3) return;
-        //if (mJumpAni != null)             //不停止上一个跳跃动画
-        //    StopCoroutine(mJumpAni);
-        for (int i = 0; i < bList.Count; i++)
+
+        for (int i = 0; i < bList.Count; i++) //设置false，便于后面寻找无附着球
         {
             bList[i].IsDisable = true;
         }
         List<BallNodeData> linklessList = GetLinklessBall();
-        for (int i = 0; i < linklessList.Count; i++)
+        bList.AddRange(linklessList);
+
+        for (int i = 0; i < bList.Count; i++)//设置刚体跳跃速度
         {
-            linklessList[i].IsDisable = true;
+            bList[i].IsDisable = true;
+            bList[i].BallCtrl.MyTrans.SetParent(mViewObj.FreeRoot);
+            RemoveBallInMap(bList[i].BallCtrl);
+            if (bList[i].BallCtrl != null)
+            {
+                Vector2 hitDir = bList[i].BallCtrl.MyTrans.localPosition - nodeData.BallCtrl.MyTrans.localPosition;
+                if (bList[i].BallCtrl == nodeData.BallCtrl) hitDir = gunBallJumpDir;
+                hitDir.y = Mathf.Abs(hitDir.y);
+                hitDir = hitDir.normalized * Random.Range(50f, 70f);
+                bList[i].BallCtrl.SetRigibodyAndVelocity(false, true, hitDir);
+            }
+            else
+            {
+                TDebug.LogErrorFormat("此节点ballCtrl为空:{0}", bList[i].Pos.ToString());
+            }
         }
-        mJumpAni = DisableJumpAni(bList, linklessList, nodeData.BallCtrl.MyTrans.localPosition);
-        StartCoroutine(mJumpAni);
+
+        //StartCoroutine(mJumpAni);
     }
 
-    IEnumerator DisableJumpAni(List<BallNodeData> nodeList, List<BallNodeData> linklessList, Vector3 boomCenter)
+    IEnumerator DisableJumpAni(List<BallNodeData> nodeList)
     {
-        float curTime = 0f;
-        for (int i = 0; i < nodeList.Count; i++)
-        {
-            nodeList[i].BallCtrl.MyTrans.SetParent(mViewObj.FreeRoot);
-        }
-        for (int i = 0; i < nodeList.Count; i++)
-        {
-            RemoveBallInMap(nodeList[i].BallCtrl);
-        }
-        for (int i = 0; i < linklessList.Count; i++)
-        {
-            RemoveBallInMap(linklessList[i].BallCtrl);
-        }
+        yield return new WaitForSeconds(1f);
         UIRootMgr.Instance.TopMasking = false;
-        while (curTime < 1.5f)
-        {
-            for (int i = 0; i < nodeList.Count; i++)
-            {
-                nodeList[i].BallCtrl.MyTrans.localPosition = nodeList[i].BallCtrl.MyTrans.localPosition + Vector3.down * 600 * Time.deltaTime;
-            }
-            for (int i = 0; i < linklessList.Count; i++)
-            {
-                linklessList[i].BallCtrl.MyTrans.localPosition = linklessList[i].BallCtrl.MyTrans.localPosition + Vector3.left * 300 * Time.deltaTime;
-            }
-            yield return null;
-            curTime += Time.deltaTime;
-        }
-        for (int i = 0; i < nodeList.Count; i++)
-        {
-            DisableBall(nodeList[i].BallCtrl);
-        }
-        for (int i = 0; i < linklessList.Count; i++)
-        {
-            DisableBall(linklessList[i].BallCtrl);
-        }
     }
 
     public BallBaseCtrl GetBallCtrlByData(XyCoordRef pos)
@@ -213,35 +224,15 @@ public class Window_BallBattle : WindowBase {
     }
 
 
-    private IEnumerator mRotCor;
     public void StartRot(Vector3 ballPos, Vector3 ballDir)//中心球旋转
     {
         Vector3 fixedDir = ballPos - mViewObj.CenterAnchor.position;
         Vector2 forceDir = MathfUtility.GetForceDir(new Vector2(fixedDir.x, fixedDir.y), new Vector2(ballDir.x, ballDir.y));
         float rotAngle = Mathf.Sign(fixedDir.x * forceDir.y - fixedDir.y * forceDir.x) * forceDir.magnitude;
-        if (mRotCor != null)
-            StopCoroutine(mRotCor);
-        mRotCor = RotCoroutine(rotAngle);
-        StartCoroutine(mRotCor);
-    }
-    IEnumerator RotCoroutine(float rot)
-    {
-        rot *= 0.03f;    //缩小旋转幅度
-        float startSpdPct = 1f;
-        float spd = rot * startSpdPct;
-        float curRot = 0f;
-        int signFlag = rot > 0 ? 1 : -1;
-        while (Mathf.Abs(curRot) < Mathf.Abs(rot))
-        {
-            float rotNum = spd * Time.deltaTime;
-            curRot += rotNum;
-
-            spd = rot * (0.1f + 1 - curRot / rot) * startSpdPct;
-            mViewObj.CenterAnchor.transform.localRotation *= Quaternion.Euler(new Vector3(0, 0, rotNum));
-            yield return null;
-        }
+        mCurRotateForce += rotAngle*0.2f;
     }
 
+   
 
     //得到周围数字相同的
     public List<BallNodeData> GetEqualNumNearList(BallNodeData node)
@@ -312,6 +303,45 @@ public class Window_BallBattle : WindowBase {
     //每隔一定时间，随机添加球
     void AddRandomBall(int ballNum)
     {
+        StartCoroutine(AddMultiBallCor(mViewObj.CenterAnchor, ballNum));
+        UIRootMgr.Instance.TopMasking = true;
+    }
 
+    void OnGUI()
+    {
+        if (GUILayout.Button("                 "))
+        {
+            AddRandomBall(10);
+        } 
+        if (GUILayout.Button("                 "))
+        {
+            mCurRotateForce = 100;
+        }
+    }
+
+    //在地图周围产生多球个球，进行加入
+    public IEnumerator AddMultiBallCor(Transform centerAnchor, int ballNum)
+    {
+        int mapRadiusLength = 1000;
+        for (int i = 0; i < ballNum; i++)
+        {
+            //创建一个球
+            BallBaseCtrl ball = GetNewBall();
+            ball.transform.SetParent(mViewObj.FreeRoot);
+            ball.transform.localScale = Vector3.one;
+            ball.transform.rotation = Quaternion.identity;
+
+            //随机出其位置，其速度朝向中心点
+            float randAngle = Random.Range(-45f, 225f);
+            Vector3 randPos = new Vector3(Mathf.Cos(randAngle) , Mathf.Sin(randAngle) , 0);
+            Vector3 dir = -randPos;
+
+            ball.transform.localPosition = randPos * mapRadiusLength;
+
+            //进行发射
+            ball.StartRun(dir , BallType.ForceAddBall);
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
+        }
+        UIRootMgr.Instance.TopMasking = false;
     }
 }

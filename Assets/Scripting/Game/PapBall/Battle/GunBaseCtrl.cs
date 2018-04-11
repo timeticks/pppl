@@ -26,8 +26,8 @@ public class GunBaseCtrl : MonoBehaviour {
             }
             else
             {
-                Ray ray = UIRootMgr.Instance.MyUICam.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
+                //Ray ray = UIRootMgr.Instance.MyUICam.ScreenPointToRay(Input.mousePosition);
+                //RaycastHit hit;
                 //if (Physics.Raycast(ray, out hit, 100f, 1 << LayerMask.NameToLayer("UI")))
                 {
                     Vector3 gunScreenPos = UIRootMgr.Instance.MyUICam.WorldToScreenPoint(mTrans.position);
@@ -48,7 +48,7 @@ public class GunBaseCtrl : MonoBehaviour {
     {
         UIRootMgr.Instance.TopMasking = true;
         IsMovingGun = false;
-        mCurWaitBall.StartRun(mLastDir);
+        mCurWaitBall.StartRun(mLastDir , BallType.RunByGunBall);
         InitWaitBall();
     }
     void InitWaitBall()
