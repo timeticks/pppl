@@ -143,14 +143,6 @@ public class AppEvtMgr //游戏的事件管理器
                 }
                 break;
             }
-            case EvtType.TravelNewEvent:
-            {
-                if (PlayerPrefsBridge.Instance.GetTravelEventsCopy()!=null&&PlayerPrefsBridge.Instance.GetTravelEventsCopy().Count>0)
-                {
-                    AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.TravelNewEvent));
-                }
-                break;
-            }
         }
     }
 

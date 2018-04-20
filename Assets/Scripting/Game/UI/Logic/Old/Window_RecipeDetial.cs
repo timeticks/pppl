@@ -297,18 +297,7 @@ public class Window_RecipeDetial : WindowBase {
             ///初始化
             for (int i = 0,length= showList.Count; i <length; i++)
             {
-                Recipe recipe = showList[i];
-                obj.ListRecipeItem[i].gameobject.SetActive(true);
-                obj.ListRecipeItem[i].TextTitle.text = recipe.name;
-                obj.ListRecipeItem[i].RecipeId = recipe.idx;
-                int inventoryPos = PlayerPrefsBridge.Instance.GetRecipeIndexOf(recipe.idx);
-                obj.ListRecipeItem[i].InventoryPos = inventoryPos;
-                //选中未拥有配方时，右边置灰
-                obj.ListRecipeItem[i].LimitMask.SetActive(inventoryPos == -1); 
-                                              
-                int recipeId = recipe.idx;
-                obj.ListRecipeItem[i].BtnRecipe.SetOnClick(delegate() { BtnEvt_RecipeBtnClick(recipeId); });
-                mRecipeItemList[i].SelectItem(mSelectRecipeId == mRecipeItemList[i].RecipeId);
+                
             }
             for (int i = showList.Count; i < obj.ListRecipeItem.Count; i++)
             {
@@ -320,16 +309,6 @@ public class Window_RecipeDetial : WindowBase {
     //点击具体配方
     public void BtnEvt_RecipeBtnClick(int recipeId)
     {
-         mSelectRecipeId = recipeId;
-         FreshRecipeInfo(recipeId);
-         int pos = PlayerPrefsBridge.Instance.GetRecipeIndexOf(recipeId);
-         mViewObj.LimitMask.SetActive(pos == -1);
-         mViewObj.BtnDecreaseNum.SetOnClick(delegate() { BtnEvt_InputBatchNum(-1); });
-         mViewObj.BtnIncreaseNum.SetOnClick(delegate() { BtnEvt_InputBatchNum(1); });
-         for (int i = 0; i < mRecipeItemList.Count; i++)
-         {
-             mRecipeItemList[i].SelectItem(recipeId == mRecipeItemList[i].RecipeId);
-         }
     }
 
 
@@ -589,14 +568,6 @@ public class Window_RecipeDetial : WindowBase {
     }
     public void BtnEvt_Produce(int recipeID)
     {
-        if (PlayerPrefsBridge.Instance.GetRecipeCurTypeProduce(recipeID) != null && UIRootMgr.Instance.MessageBox.ShowStatus("当前有制作正在进行中"))
-            return;
-        string lackItemName="";
-        if (!GetCostCheck(recipeID, out lackItemName)&&UIRootMgr.Instance.MessageBox.ShowStatus(string.Format("{0}不足，无法进行制作",lackItemName)))
-            return;
-        int inventotryPos = PlayerPrefsBridge.Instance.GetRecipeIndexOf(recipeID);
-        UIRootMgr.Instance.IsLoading = true;
-        GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_Produce((byte)inventotryPos, batchNum)); 
     }
     public void BtnEvt_Accelerate(int recipeID)
     {
@@ -651,28 +622,7 @@ public class Window_RecipeDetial : WindowBase {
     public void S2C_AuxSkillLevelUp(BinaryReader ios)
     {
         UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_AuxSkillLevelUp msg = MessageBridge.Instance.S2C_AuxSkillLevelUp(ios);
-        FreshProficiency();
-        FreshStateButtons();
-        bool isFlag = false;
-        int curLevel = PlayerPrefsBridge.Instance.PlayerData.AuxSkillList[(int)mSkillType].Level;
-        List<Recipe> recipeList = PlayerPrefsBridge.Instance.GetRecipeAllListCopy();
-        for (int i = 0; i < recipeList.Count; i++)
-        {            
-            if ((int)recipeList[i].Type == (int)mSkillType && recipeList[i].SkillLevel==curLevel)
-            {
-                isFlag = true;
-                break;
-            }
-        }
-        if(isFlag) //新境界有配方
-        {
-            AutoChooseRecipe(mSkillType);
-        }
-        else
-        {
-            ChooseRecipe(mSelectRecipeId);
-        }
+        
     }
 
    

@@ -151,7 +151,7 @@ public class Panel_PrestigeTaskList : MonoBehaviour {
     void Update()
     {
         mCurDownTime -= Time.deltaTime;
-        if (Time.frameCount%GameLaucher.MAX_FRAME_RATE == 0)
+        if (Time.frameCount%GameLauncher.MAX_FRAME_RATE == 0)
         {
             FreshTime();
         }

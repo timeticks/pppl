@@ -42,7 +42,7 @@ public class AppBridge : MonoBehaviour
 
     public static void InitSetting()
     {
-        mBackgroundRate = GameLaucher.MAX_FRAME_RATE;
+        mBackgroundRate = GameLauncher.MAX_FRAME_RATE;
 #if UNITY_IPHONE  || UNITY_ANDROID
         mBackgroundRate = 1;
 #endif

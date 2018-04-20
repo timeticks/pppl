@@ -218,15 +218,8 @@ public class Recipe : DescObject
 
 
     public static List<int> GetOwnLevelRecipe(AuxSkillLevel.SkillType type, int level)
-    {   
-        List<Recipe> recipeList = PlayerPrefsBridge.Instance.GetRecipeAllListCopy();
-        List<int> tempList = new List<int>(); //当前生活技能等级下的已拥有的配方
-        for (int i = 0; i < recipeList.Count; i++)
-        {
-            if ((int)recipeList[i].Type == (int)type && recipeList[i].SkillLevel == level)
-                tempList.Add(recipeList[i].idx);
-        }
-        return tempList;
+    {
+        return null;
     }
 
     public static List<AuxSkillLevel.SkillType> GetSkillListByRecipe(List<int> recipeList)

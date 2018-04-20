@@ -32,45 +32,61 @@ public class Window_BallBattle : WindowBase {
     private float mCurRotateForce = 0f; //当前的旋转力度
     void Start()    //TODO:正式删除
     {
-        OpenWindow();
+        OpenWindow(0);
     }
 
-    public void OpenWindow()
+    public void OpenWindow(int mapIdx)
     {
         if (mViewBase == null) mViewBase = gameObject.GetComponent<WindowView>();
         if (mViewObj == null) mViewObj = new ViewObj(mViewBase);
-        Init();
+        Init(mapIdx);
 
         Instance = this;
         //base.OpenWin();
     }
 
-    void Init()
+    void Init(int mapIdx)
     {
-        mViewObj.Gun.Init(this);
+        InitMap(mapIdx);
 
+        mViewObj.Gun.Init(this);
         //添加枪按下按起响应
         EventTrigger.Entry myTrigger = new EventTrigger.Entry();
         myTrigger.eventID = EventTriggerType.PointerDown;
         myTrigger.callback.RemoveAllListeners();
         myTrigger.callback.AddListener(mViewObj.Gun.BtnEvt_BgPointerDown);
         mViewObj.BgBtn.triggers.Add(myTrigger);
-        InitMap();
     }
 
     
 
     public HexaMapData MapData;
     //初始化地图
-    public void InitMap()
+    public void InitMap(int mapIdx)
     {
-        MapData = new HexaMapData(21, 21);
-
-        //初始化中心点周围
-        List<XyCoordRef> rangeList = HexaMathf.GetInRange(2, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
-        for (int i = 0; i < rangeList.Count; i++)
+        if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx == null || 
+            PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx <= 0) //无地图信息
         {
-            AddBall(GetNewBall(), rangeList[i]);
+            PlayerPrefsBridge.Instance.InitNewMap(mapIdx);
+
+            MapData = new HexaMapData(21, 21);
+
+            //初始化中心点周围
+            List<XyCoordRef> rangeList = HexaMathf.GetInRange(2, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
+            for (int i = 0; i < rangeList.Count; i++)
+            {
+                AddBall(GetNewBall(), rangeList[i]);
+            }
+        }
+        else
+        {
+            //有地图信息
+            MapData = new HexaMapData(PlayerPrefsBridge.Instance.BallMapAcce.MapMaxSize, PlayerPrefsBridge.Instance.BallMapAcce.MapMaxSize);
+            foreach (var temp in PlayerPrefsBridge.Instance.BallMapAcce.BallDict)
+            {
+                XyCoordRef xy = new XyCoordRef(temp.Key/MapData.Height, temp.Value/MapData.Width);
+                AddBall(GetNewBall(), xy);
+            }
         }
     }
     void LateUpdate()
@@ -82,19 +98,18 @@ public class Window_BallBattle : WindowBase {
     }
     void Update()
     {
-        if (mCurRotateForce != 0)   //旋转
-        {
-            int flag = (int)Mathf.Sign(mCurRotateForce);
-            float adsRotate = Mathf.Abs(mCurRotateForce);   //取绝对值，进行缩小计算
-            if (adsRotate > 150) adsRotate = 150;
-            adsRotate -= Time.deltaTime * 80f ;
-            if (adsRotate < 0)
-                adsRotate = 0;
-            mCurRotateForce = flag * adsRotate;
-
-            mViewObj.CenterAnchor.transform.localRotation *= Quaternion.Euler(new Vector3(0, 0, mCurRotateForce * Time.deltaTime));
-        }
-        if (Time.frameCount%3 == 0)
+        //if (mCurRotateForce != 0)   //旋转
+        //{
+        //    int flag = (int)Mathf.Sign(mCurRotateForce);
+        //    float adsRotate = Mathf.Abs(mCurRotateForce);   //取绝对值，进行缩小计算
+        //    if (adsRotate > 150) adsRotate = 150;
+        //    adsRotate -= Time.deltaTime * 80f ;
+        //    if (adsRotate < 0)
+        //        adsRotate = 0;
+        //    mCurRotateForce = flag * adsRotate;
+        //    mViewObj.CenterAnchor.transform.localRotation *= Quaternion.Euler(new Vector3(0, 0, mCurRotateForce * Time.deltaTime));
+        //}
+        if (Time.frameCount % 3 == 0 && MapData!=null)
         {
             for (int i = 0; i < MapData.Balls.Length; i++)
             {
@@ -147,6 +162,8 @@ public class Window_BallBattle : WindowBase {
         ballCtrl.MyData.BallCtrl = ballCtrl;
         MapData.SetNode(pos.m_X, pos.m_Y, ballCtrl.MyData);
         BallList.Add(ballCtrl);
+
+        PlayerPrefsBridge.Instance.AddBall(MapData.GetNodeIndex(pos.m_X, pos.m_Y), ballCtrl.MyData.Num);
     }
 
     public void RemoveBallInMap(BallBaseCtrl ballCtrl)
@@ -154,6 +171,7 @@ public class Window_BallBattle : WindowBase {
         if (ballCtrl.MyData != null && ballCtrl.MyData.Pos != null)
         {
             MapData.SetNode(ballCtrl.MyData.Pos.m_X, ballCtrl.MyData.Pos.m_Y, null);
+            PlayerPrefsBridge.Instance.BallMapAcce.DestoryBallAmount++;
         }
     }
 
@@ -230,6 +248,10 @@ public class Window_BallBattle : WindowBase {
         Vector2 forceDir = MathfUtility.GetForceDir(new Vector2(fixedDir.x, fixedDir.y), new Vector2(ballDir.x, ballDir.y));
         float rotAngle = Mathf.Sign(fixedDir.x * forceDir.y - fixedDir.y * forceDir.x) * forceDir.magnitude;
         mCurRotateForce += rotAngle*0.2f;
+        float rotTime = Mathf.Sqrt(mCurRotateForce);
+        mViewObj.CenterAnchor.transform.DOLocalRotate(
+                mViewObj.CenterAnchor.transform.localRotation.eulerAngles + new Vector3(0, 0, mCurRotateForce), rotTime)
+                .SetEase(Ease.OutQuad);
     }
 
    
@@ -313,10 +335,6 @@ public class Window_BallBattle : WindowBase {
         {
             AddRandomBall(10);
         } 
-        if (GUILayout.Button("                 "))
-        {
-            mCurRotateForce = 100;
-        }
     }
 
     //在地图周围产生多球个球，进行加入

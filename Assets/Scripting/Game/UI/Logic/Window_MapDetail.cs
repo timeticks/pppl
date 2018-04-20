@@ -51,7 +51,7 @@ public class Window_MapDetail : WindowBase
         //mViewObj.UseBtn.SetOnClick(BtnEvt_Use);
     }
 
-    void Fresh(Map map)
+    void Fresh(BallMap map)
     {
         mViewObj.TextMapName.text = map.name;
 

@@ -57,19 +57,6 @@ public class PVEMgr:MonoBehaviour
 
     public static PVEHero MonsterCreator(int mapId) //怪物生成器，得到怪物品质
     {
-        Map map = Map.Fetcher.GetMapCopy(mapId);
-        if (map == null) return null;
-        int monsterId = map.monster[GameUtils.GetRandom(0, map.monster.Length)];
-
-        int mapQuality = map.mapQuality;
-        Hero hero = Hero.Fetcher.GetHeroCopy(monsterId);
-        if (hero == null) return null;
-
-        int prefix = map.monsterPrefix[GameUtils.GetRandomIndex(map.prefixProp)];
-
-        int monsterLevel = hero.level;
-        PVEHero monster = PVEBot.GetPVEHero(monsterId, monsterLevel, hero.commonAtk, hero.skill.ToIntArray(), null, prefix);
-        monster.monsterPrefix = prefix;
-        return monster;
+        return null;
     }
 }

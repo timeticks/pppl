@@ -395,7 +395,6 @@ public class Window_DungeonMap : WindowBase
 
     public void AppendNewLineDecs(string str, bool needClear = false)
     {
-        LobbySceneMainUIMgr.Instance.AppendTextNewLine(str, needClear);
     }
 
     public void BtnEvt_ClickNpc(int npcId)

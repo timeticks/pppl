@@ -53,7 +53,6 @@ public class AudioMgr : MonoBehaviour
             Audio_BattleLose = view.GetCommon<AudioClip>("Audio_BattleLose");
             Audio_Click = view.GetCommon<AudioClip>("Audio_Click");
             AudioBg_Sect = view.GetCommon<AudioClip>("AudioBg_Sect");
-            AudioBg_Battle2 = view.GetCommon<AudioClip>("AudioBg_Battle2");
 
             m_BgSource = new List<AudioSource>();
             m_BgSource.Add(AudioBg0);
@@ -63,7 +62,6 @@ public class AudioMgr : MonoBehaviour
             m_BgClips.Add(BgName.AudioBg_Battle, AudioBg_Battle);
             m_BgClips.Add(BgName.AudioBg_Main, AudioBg_Main);
             m_BgClips.Add(BgName.AudioBg_Map, AudioBg_Map);
-            m_BgClips.Add(BgName.AudioBg_Battle2, AudioBg_Battle2);
             m_BgClips.Add(BgName.AudioBg_Sect,AudioBg_Sect);
 
             m_AudioClips = new Dictionary<AudioName, AudioClip>();

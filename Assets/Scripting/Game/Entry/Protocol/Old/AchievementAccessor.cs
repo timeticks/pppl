@@ -148,11 +148,6 @@ public class AchievementAccessor : DescObject {
          //成就解锁提示
          for (int i = 0,length = msg.FinishPosList.Count ; i < length; i++)
          {
-             if(UIRootMgr.LobbyUI!=null)
-             {
-                 UIRootMgr.LobbyUI.AppendAchieveTips(new Achieve(achievement, msg.FinishPosList[i], true));
-             }
-          //   UIRootMgr.Instance.Window_UpTips.AddAchieveTips(new Achieve(achievement, msg.FinishPosList[i], true));
          }
     }
 

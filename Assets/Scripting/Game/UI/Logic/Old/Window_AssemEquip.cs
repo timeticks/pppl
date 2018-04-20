@@ -558,7 +558,6 @@ public class Window_AssemEquip : WindowBase,IScrollWindow
     public void S2C_SellEquip(int sellNum)
     {
         UIRootMgr.Instance.IsLoading = false;
-        UIRootMgr.LobbyUI.AppendTextNewLine(string.Format("出售了 {0}件法宝", sellNum));
         //UIRootMgr.LobbyUI.AppendTextNewLine(string.Format("获得 {0}灵石", msg.Gold),LobbyUIMsgType.Loot);
         FreshEquipItem(false);
     }

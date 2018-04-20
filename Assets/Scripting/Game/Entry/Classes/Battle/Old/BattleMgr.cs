@@ -59,8 +59,8 @@ public class BattleMgr
     public void S2C_EnterPVE(BinaryReader ios)
     {
         UIRootMgr.Instance.IsLoading = false;
-        BattleWindow = UIRootMgr.Instance.GetOpenListWindow(WinName.Window_Battle)as Window_BattleTowSide;
-        if (BattleWindow==null) BattleWindow = UIRootMgr.Instance.OpenWindow<Window_BattleTowSide>(WinName.Window_Battle, CloseUIEvent.None);
+        BattleWindow = UIRootMgr.Instance.GetOpenListWindow(WinName.Window_BallBattle)as Window_BattleTowSide;
+        if (BattleWindow==null) BattleWindow = UIRootMgr.Instance.OpenWindow<Window_BattleTowSide>(WinName.Window_BallBattle, CloseUIEvent.None);
         NetPacket.S2C_EnterPVE msg = MessageBridge.Instance.S2C_EnterPVE(ios);
         if (RecordList.Count > 0)
         {
@@ -109,7 +109,7 @@ public class BattleMgr
         PLAY_TIME_SCALE = 1;
         if (RecordList.Count > 0)
         {
-            BattleWindow = UIRootMgr.Instance.OpenWindow<Window_BattleTowSide>(WinName.Window_Battle, CloseUIEvent.None);
+            BattleWindow = UIRootMgr.Instance.OpenWindow<Window_BattleTowSide>(WinName.Window_BallBattle, CloseUIEvent.None);
             if (!BattleWindow.IsPlaying)
             {
                 BattleWindow.OpenWindow(null);

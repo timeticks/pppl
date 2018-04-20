@@ -551,7 +551,7 @@ public class UIRootMgr : MainUIMgrContainer, IAssetUser
         {
             //TDebug.Log("缓存窗口数量太多，移除最早的");
             WindowBase destroyWin = mDisableWinList[0];
-            if (destroyWin.WindowName == WinName.Window_Battle) //战斗窗口尽量不回收
+            if (destroyWin.WindowName == WinName.Window_BallBattle) //战斗窗口尽量不回收
             {
                 mDisableWinList.RemoveAt(0);
                 mDisableWinList.Add(destroyWin);

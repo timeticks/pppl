@@ -112,7 +112,21 @@
     <Compile Include="Assets\Plugins\BuglyPlugins\BuglyInit.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Build\GameData\BallMap.txt" />
+    <None Include="Assets\Build\GameData\DropGrade.txt" />
+    <None Include="Assets\Build\GameData\DropQualityRate.txt" />
+    <None Include="Assets\Build\GameData\Equip.txt" />
+    <None Include="Assets\Build\GameData\GameConst.txt" />
+    <None Include="Assets\Build\GameData\Hero.txt" />
+    <None Include="Assets\Build\GameData\HeroLevelUp.txt" />
     <None Include="Assets\Build\GameData\IllegalText.txt" />
+    <None Include="Assets\Build\GameData\Item.txt" />
+    <None Include="Assets\Build\GameData\LobbyDialogue.txt" />
+    <None Include="Assets\Build\GameData\Loot.txt" />
+    <None Include="Assets\Build\GameData\Produce.txt" />
+    <None Include="Assets\Build\GameData\QualityTable.txt" />
+    <None Include="Assets\Build\GameData\ServerTipsText.txt" />
+    <None Include="Assets\Build\GameData\Spell.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\OneWaySDK-jar\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\res\layout\tj_native.xml" />

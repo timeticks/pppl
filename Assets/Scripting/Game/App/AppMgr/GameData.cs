@@ -7,26 +7,14 @@ using System.Collections.Generic;
 
 public enum DataName : short
 {
-
-    //Dialogue,
-
-    Equip,
     Item,   //道具
 
     Hero,
-
-    Skill ,
-    Buff ,
-    AttrTable,
-    EquipAttrAdd,
+    Spell ,
     DropQualityRate,
     GameConst,
-    Map,
-    AttrProb,
+    BallMap,
     DropGrade,
-    MonsterPrefix,
-    MonsterRate,
-    MonsterLevelUp,
     LobbyDialogue,
     HeroLevelUp,
     QualityTable,

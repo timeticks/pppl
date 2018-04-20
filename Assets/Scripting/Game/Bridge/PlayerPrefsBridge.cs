@@ -47,12 +47,13 @@ public partial class PlayerPrefsBridge
     private InventoryList mRecipesInventory = new InventoryList(InventoryList.InventoryType.Recipes);
     private DungeonMapAccessor mDungeonMap = new DungeonMapAccessor();
     private MapEventAccessor mMapEventAccessor = new MapEventAccessor();
-    private TravelAccessor mTravelAccessor = new TravelAccessor();//挂机信息
     private OldProduceAccessor mProduceAccessor = new OldProduceAccessor();//生产信息
-    private ExerciseAccessor mExerciseAccessor = new ExerciseAccessor(); //打坐闭关信息
     private ShopAccessor mShopAccessor = new ShopAccessor(); //商店限制购买问题
     private AchievementAccessor mAchievementAccessor = new AchievementAccessor();
-    
+
+    public BallMapAccessor BallMapAcce { get { return mBallMapAccessor; } }
+    private BallMapAccessor mBallMapAccessor = new BallMapAccessor();
+
 
     #region 初始化，消息注册
     private PlayerPrefsBridge() { }
@@ -126,7 +127,6 @@ public partial class PlayerPrefsBridge
         mItemsInventory = new InventoryList(InventoryList.InventoryType.Items);
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
-        mRecipesInventory = new InventoryList(InventoryList.InventoryType.Recipes);
         saveGame();
     }
 
@@ -193,8 +193,6 @@ public partial class PlayerPrefsBridge
                 {
                     mPlayerData.Level = msg.Attributes[0];
                     variation = mPlayerData.Level;
-                    if (UIRootMgr.LobbyUI != null)
-                        UIRootMgr.LobbyUI.AppendTextNewLine(string.Format("你的等级提升至{0}级", msg.Attributes[0]), 0);
                     AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.LevelUp, msg.Attributes[0].ToString()));
 
                     List<Travel> travelList = Travel.TravelFetcher.GetTravelList();
@@ -220,13 +218,7 @@ public partial class PlayerPrefsBridge
                 mPlayerData.CaveLevel = msg.Attributes[0];
                 variation = mPlayerData.CaveLevel;
                 break;
-            }        
-            case PlayerAttribute.Retreat:
-            {
-                mExerciseAccessor.RetreatStartTime = msg.Attributes[0];
-                mExerciseAccessor.RetreatUseItemIdx = msg.Attributes[1];
-                break;
-            }
+            }    
             case PlayerAttribute.IsInRank:
             {
                 mPlayerData.IsInRank = msg.Attributes[0]==1;
@@ -631,67 +623,6 @@ public partial class PlayerPrefsBridge
     }
     #endregion
 
-    #region 配方
-    private int AddRecipe(Recipe recipe)
-    {
-        return 0;
-        //if (recipe == null)
-        //{
-        //    TDebug.LogWarning("添加配方失败,配方为空");
-        //    return -1;
-        //}
-        //return mRecipesInventory.AddGoods(recipe);
-    }
-    private List<Recipe> GetRecipeAllList(bool isCopy)//得到所有的法宝列表
-    {
-        List<Recipe> recipeList = new List<Recipe>();
-        //int count = mRecipesInventory.GetListLength();
-        //for (int i = 0; i < count; i++)
-        //{
-        //    Recipe item = (Recipe)mRecipesInventory.GetGoodsByPos(i); 
-        //    if (item != null)
-        //    {
-        //        if (isCopy) recipeList.Add(new Recipe(item));
-        //        else recipeList.Add(item);
-        //    }
-        //}
-        return recipeList;
-    }
-    public List<Recipe> GetRecipeAllListCopy()
-    {
-        return GetRecipeAllList(true);
-    }
-    public int GetRecipeIndexOf(int id)
-    {
-        return mRecipesInventory.IndexOf(id);
-    }
-    public Recipe GetRecipeByPosInInventory(int pos)
-    {
-        //Recipe recipe = (Recipe)mRecipesInventory.GetGoodsByPos(pos);
-        //if (recipe != null)
-        //{
-        //    return new Recipe(recipe);
-        //}
-        return null;
-    }
-
-    public int GetRecipeNumByType(Recipe.RecipeType recipeType) //得到某类型的配方数
-    {
-        List<Recipe> recipeList = GetRecipeAllListCopy();
-        int recipeNum = 0;
-        Recipe recipe = null;
-        for (int i = 0, length = recipeList.Count; i < length; i++)
-        {
-            recipe = recipeList[i];
-            if (recipe == null) continue;
-            if (recipe.Type == recipeType)
-                recipeNum++;
-        }
-        return recipeNum;
-    }
-
-    #endregion
-
     #region 道具
 
     /// <summary>
@@ -999,200 +930,6 @@ public partial class PlayerPrefsBridge
 
     #endregion
 
-    #region 游历挂机
-    public void S2C_SnapshotTravelBotting(BinaryReader ios)
-    {
-        NetPacket.S2C_SnapshotTravelBotting msg = MessageBridge.Instance.S2C_SnapshotTravelBotting(ios);
-        mTravelAccessor.InitTravelAccessor(msg);
-        OnSnapShotHappend(PrefsSnapShotEventType.SnapShotTravelBotting);
-    }
-
-    public void S2C_SnapshotTravelEvent(BinaryReader ios)
-    {
-        NetPacket.S2C_SnapshotTravelEvent msg = MessageBridge.Instance.S2C_SnapshotTravelEvent(ios);
-        TravelEvent travelevent = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(msg.TravelIdx);
-        TDebug.Log(string.Format("服务器同步触发事件：大事件：{0},小事件进度：{1}", travelevent.name, msg.SmallEventIndex));
-        TravelEvent travelEvent = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(msg.TravelIdx);
-        if (travelEvent == null)
-        {
-            TDebug.LogError(string.Format("服务器同步事件，Idx:{0}不存在", msg.TravelIdx));
-            return;
-        }
-        if (mTravelAccessor.TravelEventDic.ContainsKey(msg.TravelIdx))
-        {
-            if (msg.SmallEventIndex > travelEvent.EventList.Length - 1)//越界，该大事件已做完
-            {
-                mTravelAccessor.TravelEventDic.Remove(msg.TravelIdx);
-                TDebug.Log(string.Format("{0}==小事件进度为{1},超过最大长度{2}，移除", travelEvent.name, msg.SmallEventIndex, travelEvent.EventList.Length));
-            }
-
-            else
-            {
-                mTravelAccessor.TravelEventDic[msg.TravelIdx] = msg.SmallEventIndex;
-                AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.TravelNewEvent));
-            }
-
-        }
-        else
-        {
-            if (msg.SmallEventIndex <= travelEvent.EventList.Length - 1)
-            {
-                travelEvent.CurSmallEventIndex = msg.SmallEventIndex;
-                mTravelAccessor.TravelEventDic.Add(msg.TravelIdx, msg.SmallEventIndex);
-                AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.TravelNewEvent));
-            }
-        }
-
-        OnSnapShotHappend(PrefsSnapShotEventType.SnapShotTravelEvent);
-    }
-
-    public void S2C_SnapshotTravelHistory(BinaryReader ios)
-    {
-        NetPacket.S2C_SnapshotTravelHistory msg = MessageBridge.Instance.S2C_SnapshotTravelHistory(ios);
-        if (mTravelAccessor.TravelEventProgressList.ContainsKey(msg.TravelId))
-        {
-            mTravelAccessor.TravelEventProgressList[msg.TravelId] = msg.TravelEventProgressList;
-        }
-        else
-        {
-            mTravelAccessor.TravelEventProgressList.Add(msg.TravelId, msg.TravelEventProgressList);
-        }
-    }
-    public TravelAccessor GetTravel()
-    {
-        return new TravelAccessor(mTravelAccessor);
-    }
-    public void ClearTravelOffLineInfo()
-    {
-        mTravelAccessor.ExpOffLine = 0;
-        mTravelAccessor.GoldOffLine = 0;
-        mTravelAccessor.PotentialOffLine = 0;
-    }
-    public long GetTravelTime()
-    {
-        if (mTravelAccessor.TravelIdx != 0)
-            return mTravelAccessor.StartTime;
-        else
-            return 0;
-    }
-    public long NextEventTime
-    {
-        get
-        {
-            if (mTravelAccessor.TravelIdx != 0)
-                return mTravelAccessor.NextEventTime;
-            else
-                return long.MaxValue;
-        }
-    }
-    public int GetCurTravelSite()
-    {
-        if (mTravelAccessor.TravelIdx != 0)
-            return mTravelAccessor.TravelIdx;
-        else
-            return 0;
-    }
-    /// <summary>
-    /// 获取正在挂机中的大事件
-    /// </summary>
-    /// <returns></returns>
-    public List<TravelEvent> GetTravelEventsCopy()
-    {
-        List<TravelEvent> eventList = new List<TravelEvent>();
-        if (mTravelAccessor.TravelIdx != 0)
-        {
-            foreach (var item in mTravelAccessor.TravelEventDic)
-            {
-                TravelEvent travelEvent = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(item.Key);
-                if (travelEvent != null)
-                    eventList.Add(new TravelEvent(travelEvent));
-            }
-            if (eventList.Count > 0)
-                return eventList;
-            else
-                return null;
-        }
-        else
-            return null;
-    }
-
-    public int GetNewEventTravelId()
-    {
-        List<TravelEvent> eventList = new List<TravelEvent>();
-        if (mTravelAccessor.TravelIdx != 0)
-        {
-            foreach (var item in mTravelAccessor.TravelEventDic)
-            {
-                TravelEvent travelEvent = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(item.Key);
-                if (travelEvent != null)
-                {
-                    eventList.Add(new TravelEvent(travelEvent));
-                    break;
-                }
-
-            }
-            if (eventList.Count > 0)
-                return mTravelAccessor.TravelIdx;
-            else
-                return 0;
-        }
-        else
-            return 0;
-    }
-
-
-    public int GetTravelEventProgress(int travelEventId)
-    {
-        if (mTravelAccessor.TravelEventDic.ContainsKey(travelEventId))
-            return mTravelAccessor.TravelEventDic[travelEventId];
-        else
-        {
-            TDebug.LogError(string.Format("获取事件进度失败，ID：{0}", travelEventId));
-            return -1;
-        }
-    }
-
-    public TravelSmallEvent GetTravelSmallEvent(int travelEventId)
-    {
-        if (mTravelAccessor.TravelEventDic.ContainsKey(travelEventId))
-        {
-            int travelSmallIndex = mTravelAccessor.TravelEventDic[travelEventId];
-            TravelEvent travel = TravelEvent.TravelEventFetcher.GetTravelEventByCopy(travelEventId);
-            int travelSmallEventId = 0;
-            if (travelSmallIndex <= travel.EventList.Length - 1)
-            {
-                travelSmallEventId = travel.EventList[travelSmallIndex];
-                TravelSmallEvent smallEvent = TravelSmallEvent.TravelSmallEventFetcher.GetTravelSmallEventByCopy(travelSmallEventId);
-
-                if (smallEvent != null)
-                    return smallEvent;
-                else
-                    return null;
-            }
-            else
-                return null;
-        }
-
-        return null;
-    }
-    public List<TravelEventProgress> GetTravelEventProgressCopy(int travelID)
-    {
-        if (!mTravelAccessor.TravelEventProgressList.ContainsKey(travelID))
-            return null;
-        List<TravelEventProgress> progressList = mTravelAccessor.TravelEventProgressList[travelID];
-        List<TravelEventProgress> tempList = new List<TravelEventProgress>();
-        if (progressList == null)
-            return null;
-        for (int i = 0; i < progressList.Count; i++)
-        {
-            if (progressList[i] != null)
-                tempList.Add(new TravelEventProgress(progressList[i]));
-        }
-        return tempList;
-    }
-
-    #endregion
-
     #region 生产制作
 
     public void S2C_SnapShotProduceBotting(BinaryReader ios)
@@ -1278,33 +1015,6 @@ public partial class PlayerPrefsBridge
         return mProduceAccessor;
     }
 
-
-    #endregion
-
-    #region 活动
-
-    public void S2C_SnapshotPrestigeTask(BinaryReader ios)
-    {
-        NetPacket.S2C_SnapshotPrestigeTask msg = MessageBridge.Instance.S2C_SnapshotPrestigeTask(ios);
-        mActivityAccessor.TaskFreeFreshNum = msg.FreeFreshNum;
-        if (!mActivityAccessor.TaskMap.ContainsKey(msg.Type))
-        {
-            mActivityAccessor.TaskMap.Add(msg.Type, msg.TaskList);
-        }
-        else
-        {
-            mActivityAccessor.TaskMap[msg.Type] = msg.TaskList;
-        }
-    }
-    public void S2C_SnapshotPrestigeTaskDetail(BinaryReader ios)
-    {
-        NetPacket.S2C_SnapshotPrestigeTaskDetail msg = MessageBridge.Instance.S2C_SnapshotPrestigeTaskDetail(ios);
-        mActivityAccessor.TaskFinishNum = msg.FinishNum;
-        mActivityAccessor.TaskFreeFreshNum = msg.FreeFreshNum;
-        mActivityAccessor.CurTaskIdx = msg.CurTask;
-        mActivityAccessor.CurTaskPos = msg.CurTaskPos;
-        mActivityAccessor.TaskStartTime = msg.StartTime;
-    }
 
     #endregion
 
@@ -1403,31 +1113,6 @@ public partial class PlayerPrefsBridge
             mSnapShotHandlers[ty]();
         }
     }
-    #endregion
-
-    #region 打坐闭关
-
-    public long GetCurSitStartTime()
-    {
-        return mExerciseAccessor.ZazenStartTime;
-    }
-
-    public ExerciseAccessor GetExercise()
-    {
-        return new ExerciseAccessor(mExerciseAccessor);
-    }
-    public void ClearExrciseOffLineInfo()
-    {
-        mExerciseAccessor.ExpOffLine = 0;
-        mExerciseAccessor.PotentialOffLine = 0;
-    }
-
-    public long GetCurRetreatStartTime()
-    {
-        if (mExerciseAccessor == null) return 0;
-        return mExerciseAccessor.RetreatStartTime;
-    }
-
     #endregion
 
     #region 商店

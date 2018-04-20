@@ -113,7 +113,7 @@ public enum WinName
     Window_AchieveReward         = 100905,
     
                             
-    Window_Battle              = 110000,    //战斗界面  
+    Window_BallBattle              = 110000,    //战斗界面  
     Window_PrepareSpell        = 110010,    //预设技能
                                             
     Window_DungeonMap          = 111000,    //秘境地图

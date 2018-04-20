@@ -38,7 +38,7 @@ public class BallBaseCtrl : MonoBehaviour {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         MyTrans = transform;
         ParentWin = parentWin;
-        MyData = new BallNodeData(Random.Range(0, 3));
+        MyData = new BallNodeData(PlayerPrefsBridge.Instance.GetNextRandBall());
         mViewObj.TextNum.text = MyData.Num.ToString();
         SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = false;
@@ -95,8 +95,12 @@ public class BallBaseCtrl : MonoBehaviour {
         //HexagonPosType posType = HexagonGridMgr.CurHexagon.GetHexagonPosType(Vector2.zero, offsetPos);
         TDebug.LogFormat("xy:{0}" , xyPos.ToString());
         ParentWin.AddBall(this, xyPos);
-        if (MyBallType== BallType.RunByGunBall)
+        PlayerPrefsBridge.Instance.BallMapAcce.CurBall++;
+
+        if (MyBallType == BallType.RunByGunBall)
+        {
             ParentWin.DestroyEqualNum(MyData, hitDir);
+        }
         ParentWin.StartRot(MyTrans.position, MoveDir);
 
         MyBallType = BallType.IdleBall;

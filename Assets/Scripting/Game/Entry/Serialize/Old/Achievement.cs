@@ -313,9 +313,6 @@ public class Achieve
             case Achievement.ConType.AuxSkillToolLevel:
                 str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.PlayerData.PropLevelList[achievement.ConProm].Level, achievement.ConValue[index]);           
                 break;
-            case Achievement.ConType.RecipeNum:
-                str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.GetRecipeNumByType((Recipe.RecipeType)achievement.ConProm), achievement.ConValue[index]);              
-                break; 		
             case Achievement.ConType.ProduceEquipNum:
                 str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.GetAchieveAccessor().ProduceEquip[achievement.ConProm], achievement.ConValue[index]);
                 break;  

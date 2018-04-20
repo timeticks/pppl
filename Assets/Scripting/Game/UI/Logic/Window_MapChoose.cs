@@ -49,43 +49,10 @@ public class Window_MapChoose : WindowBase
     private List<Vector3[]> mLineList = new List<Vector3[]>();
     public void Init()
     {
-        BtnEvt_SelectMap(PVEMgr.Instance.CurMapId);
-        List<Map> allMapList = Map.Fetcher.GetAllMapCopy(false);
-        List<Map> openMapList = new List<Map>();
-        for (int i = 0; i < allMapList.Count; i++) //得到已解锁的地图
-        {
-            if (allMapList[i].openLevel <= PlayerPrefsBridge.Instance.PlayerData.Level)
-            {
-                openMapList.Add(allMapList[i]);
-            }
-        }
-
-        TAppUtility.Instance.AddMonoInstantiate<TextButton>(mPointObjList, mViewObj.Part_MapChoosePoint,
-            mViewObj.ItemRoot, openMapList.Count, false);
-        mLineList.Clear();
-        for (int i = 0; i < openMapList.Count; i++)
-        {
-            int mapIdx = openMapList[i].idx;
-            mPointObjList[i].TextBtn.text = openMapList[i].name;
-            ((RectTransform)mPointObjList[i].transform).anchoredPosition = openMapList[i].getPos();
-            mPointObjList[i].SetOnClick(delegate() { BtnEvt_SelectMap(mapIdx); });
-
-            if (openMapList[i].headMap > 0)//得到与前置地图的连线
-            {
-                Map headMap = Map.Fetcher.GetMapCopy(openMapList[i].headMap);
-                mLineList.Add(new Vector3[2] { headMap.getPos(), openMapList[i].getPos() });
-            }
-        }
     }
 
     void BtnEvt_SelectMap(int mapIdx)
     {
-        TDebug.Log("选择地图：" + mapIdx);
-        mCurSelectMap = mapIdx;
-        Map map = Map.Fetcher.GetMapCopy(mCurSelectMap, false);
-        mViewObj.TextMapName.text = string.Format("{0} (最低等级:{1})", map.name , map.openLevel);
-        mViewObj.TextMapDesc.text = map.desc;
-        mViewObj.TBtnEnter.SetOnClick(BtnEvt_EnterMap);
     }
 
 

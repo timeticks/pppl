@@ -701,6 +701,48 @@ public partial class PlayerPrefsBridge
     #endregion
 
 
+    #region 地图
+
+    public void InitNewMap(int mapIdx)
+    {
+        BallMapAcce.CurMapIdx = mapIdx;
+        BallMapAcce.DestoryBallAmount = 0;
+        BallMapAcce.FireBallAmount = 0;
+        BallMapAcce.MutilBallAmount = 0;
+        BallMapAcce.Score = 0;
+        BallMapAcce.NextBallList = new List<int>();;
+        BallMapAcce.CenterAnchorRotate = 0;
+        BallMapAcce.BallDict = new Dictionary<int, int>();
+        BallMapAcce.MutilBallTimeDown = 10;
+    }
+
+    public void SaveMapAccessor(double anchorRotate)
+    {
+        
+    }
+
+    //球已发射，进行数据刷新。在球碰到其他球，或此球反弹过多销毁时调用
+    public void FireBall()
+    {
+        
+    }
+
+    public int GetNextRandBall()
+    {
+        BallMap map = BallMap.Fetcher.GetBallMapCopy(BallMapAcce.CurMapIdx, false);
+        return map.ballList[Random.Range(0, map.ballList.Length)];
+    }
+
+    public void AddBall(int posIndex, int num)
+    {
+        BallMapAcce.BallDict.Add(posIndex, num);
+    }
+
+
+    #endregion
+
+
+
     public void saveGame()
     {
         saveEquipModule();

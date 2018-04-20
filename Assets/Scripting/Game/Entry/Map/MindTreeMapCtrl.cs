@@ -109,14 +109,6 @@ public class MindTreeMapCtrl
         //TDebug.Log(string.Format("执行 [{0}]", node.CacheString));
         //if (MyMapType == MapData.MapType.SingleMap)
         {
-            if (LobbySceneMainUIMgr.Instance != null)
-            {
-                //TDebug.Log("执行{0}");
-#if UNITY_EDITOR ||UNITY_STANDALONE_WIN
-                if (GameClient.AppMode == AppModeType.KeepOrigin || GameClient.AppMode == AppModeType.FullDebug)
-                    LobbySceneMainUIMgr.Instance.AppendTextNewLine(string.Format("<color=#33aaaa><size=35>执行{0}</size></color>", node.CacheString));
-#endif
-            }
         }
         if (node == null) return;
         if (DoGetNode(node, DoNode))//如果是get节点，进行执行查询回调,  有处理，则不向下执行

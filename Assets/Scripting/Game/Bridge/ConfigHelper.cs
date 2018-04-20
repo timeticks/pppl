@@ -10,7 +10,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                          IPrestigeTaskFetcher,ITowerFetcher,IAchievementFetcher,IAchieveRewardFetcher,IBookSpellFetcher,IHeadIconFetcher,
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
-    IDropGradeFetcher,IMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
+    IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
     IQualityTableFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
@@ -56,7 +56,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, AttrProb>        mAttrProbCached                 = new Dictionary<int, AttrProb>();
     public Dictionary<string, GameConst>     mGameConstCached               = new Dictionary<string, GameConst>(12);
     public Dictionary<int, DropGrade>       mDropGradeCached                = new Dictionary<int, DropGrade>(12);
-    public Dictionary<int, Map>             mMapCached                      = new Dictionary<int, Map>(12);
+    public Dictionary<int, BallMap>             mMapCached                      = new Dictionary<int, BallMap>(12);
     public Dictionary<int, MonsterPrefix>   mMonsterPrefixCached            = new Dictionary<int, MonsterPrefix>(12);
     public Dictionary<int, MonsterLevelUp> mMonsterLevelUpCached            = new Dictionary<int, MonsterLevelUp>(12);
     public Dictionary<int, MonsterRate>   mMonsterRateCached                = new Dictionary<int, MonsterRate>(12);
@@ -84,16 +84,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始EquipDropQualityRate成功:{0}项", mDropQualityRateCached.Count));
         }
-        else if (dataName == DataName.Equip)
-        {
-            Dictionary<string, Equip> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Equip>>(text);
-            foreach (var temp in pool)
-            {
-                mEquipCached.Add(temp.Value.idx, temp.Value);
-                temp.Value.CheckLegal();
-            }
-            TDebug.Log(string.Format("初始Equip成功:{0}项", mEquipCached.Count));
-        }
         else if (dataName == DataName.Item)
         {
             Dictionary<string, Item> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Item>>(text);
@@ -104,7 +94,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始Item成功:{0}项", mItemCached.Count));
         }
-        else if (dataName == DataName.Skill)
+        else if (dataName == DataName.Spell)
         {
             Dictionary<string, Spell> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Spell>>(text);
             foreach (var temp in pool)
@@ -124,16 +114,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始Hero成功:{0}项", mHeroCached.Count));
         }
-        else if (dataName == DataName.Buff)
-        {
-            Dictionary<string, Buff> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Buff>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mBuffCached.Add(temp.Value.idx, temp.Value);
-            }
-            TDebug.Log(string.Format("初始Hero成功:{0}项", mBuffCached.Count));
-        }
         else if (dataName == DataName.GameConst)
         {
             Dictionary<string, GameConst> pool = LitJson.JsonMapper.ToObject<Dictionary<string, GameConst>>(text);
@@ -143,26 +123,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 mGameConstCached.Add(temp.Value.name, temp.Value);
             }
             TDebug.Log(string.Format("初始mGameConstCached成功:{0}项", mGameConstCached.Count));
-        }
-        else if (dataName == DataName.AttrProb)
-        {
-            Dictionary<string, AttrProb> pool = LitJson.JsonMapper.ToObject<Dictionary<string, AttrProb>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mAttrProbCached.Add(AttrProb.GetKey(temp.Value.objType, temp.Value.objParam), temp.Value);
-            }
-            TDebug.Log(string.Format("初始mAttrProbCached成功:{0}项", mAttrProbCached.Count));
-        }
-        else if (dataName == DataName.AttrTable)
-        {
-            Dictionary<string, AttrTable> pool = LitJson.JsonMapper.ToObject<Dictionary<string, AttrTable>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mAttrTableCached.Add((AttrType)(int)temp.Value.idx, temp.Value);
-            }
-            TDebug.Log(string.Format("初始mAttrTableCached成功:{0}项", mAttrTableCached.Count));
         }
         else if (dataName == DataName.DropGrade)
         {
@@ -174,45 +134,15 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始mDropGradeCached成功:{0}项", mDropGradeCached.Count));
         }
-        else if (dataName == DataName.Map)
+        else if (dataName == DataName.BallMap)
         {
-            Dictionary<string, Map> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Map>>(text);
+            Dictionary<string, BallMap> pool = LitJson.JsonMapper.ToObject<Dictionary<string, BallMap>>(text);
             foreach (var temp in pool)
             {
                 temp.Value.CheckLegal();
                 mMapCached.Add(temp.Value.idx, temp.Value);
             }
             TDebug.Log(string.Format("初始mMapCached成功:{0}项", mMapCached.Count));
-        }
-        else if (dataName == DataName.MonsterPrefix)
-        {
-            Dictionary<string, MonsterPrefix> pool = LitJson.JsonMapper.ToObject<Dictionary<string, MonsterPrefix>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mMonsterPrefixCached.Add(temp.Value.idx, temp.Value);
-            }
-            TDebug.Log(string.Format("初始mMonsterPrefixCached成功:{0}项", mMonsterPrefixCached.Count));
-        }
-        else if (dataName == DataName.MonsterRate)
-        {
-            Dictionary<string, MonsterRate> pool = LitJson.JsonMapper.ToObject<Dictionary<string, MonsterRate>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mMonsterRateCached.Add(temp.Value.idx, temp.Value);
-            }
-            TDebug.Log(string.Format("初始mMonsterRateCached成功:{0}项", mMonsterRateCached.Count));
-        }
-        else if (dataName == DataName.MonsterLevelUp)
-        {
-            Dictionary<string, MonsterLevelUp> pool = LitJson.JsonMapper.ToObject<Dictionary<string, MonsterLevelUp>>(text);
-            foreach (var temp in pool)
-            {
-                temp.Value.CheckLegal();
-                mMonsterLevelUpCached.Add(temp.Value.level, temp.Value);
-            }
-            TDebug.Log(string.Format("初始mMonsterLevelUpCached成功:{0}项", mMonsterLevelUpCached.Count));
         }
         else if (dataName == DataName.LobbyDialogue)
         {
@@ -270,7 +200,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         AttrProb.Fetcher                        = this;
         DropQualityRate.Fetcher                 = this;
         DropGrade.Fetcher                       = this;
-        Map.Fetcher                             = this;
+        BallMap.Fetcher                             = this;
         MonsterPrefix.Fetcher                   = this;
         MonsterLevelUp.Fetcher                  = this;
         MonsterRate.Fetcher                     = this;
@@ -425,9 +355,9 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    Map IMapFetcher.GetMapCopy(int idx,bool isCopy=true)
+    BallMap IBallMapFetcher.GetBallMapCopy(int idx,bool isCopy=true)
     {
-        Map origin = null;
+        BallMap origin = null;
         if (mMapCached.TryGetValue(idx, out origin))
         {
             if (isCopy) return origin.Clone();
@@ -437,9 +367,9 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    List<Map> IMapFetcher.GetAllMapCopy(bool isCopy=true)
+    List<BallMap> IBallMapFetcher.GetAllBallMapCopy(bool isCopy=true)
     {
-        List<Map> mapList = new List<Map>();
+        List<BallMap> mapList = new List<BallMap>();
         foreach (var temp in mMapCached)
         {
             if (isCopy) mapList.Add(temp.Value.Clone());

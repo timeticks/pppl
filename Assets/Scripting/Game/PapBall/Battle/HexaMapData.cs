@@ -132,8 +132,8 @@ public class HexaMapData
     //    else
     //        return null;
     //}
-    //public int GetNodeIndex(int x, int y)
-    //{
-    //    return x + m_Width * y;
-    //}
+    public int GetNodeIndex(int x, int y)
+    {
+        return x + Width * y;
+    }
 }

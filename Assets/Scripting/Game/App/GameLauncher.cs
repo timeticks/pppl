@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class GameLaucher : MonoBehaviour
+public class GameLauncher : MonoBehaviour
 {
     public const int MAX_FRAME_RATE = 30;
     protected static GameObject mAppRoot;
@@ -37,7 +37,10 @@ public class GameLaucher : MonoBehaviour
         mAppRootInited = false;
         mLaucherState = LaucherState.Logo;
     }
-
+    public static void AddGameLauncher(GameObject obj)
+    {
+        obj.CheckAddComponent<GameLauncher>();
+    }
     void InitAudio()
     {
         mInitAudio = true;
@@ -169,7 +172,7 @@ public class GameLaucher : MonoBehaviour
                     }
                     if (UIRootMgr.Instance != null) UIRootMgr.Instance.TopBlackMask = false;
                     TDebug.Log("==生成StartSceneMainUIMgr界面完毕，开始创建Window_Login");
-                    //UIRootMgr.Instance.OpenWindow<Window_Login>(WinName.Window_Login).OpenWindow();
+                    UIRootMgr.Instance.OpenWindow<Window_BallBattle>(WinName.Window_BallBattle).OpenWindow(0);
                     OnStateChange(LaucherState.Playing);
                     break;
                 }

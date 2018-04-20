@@ -135,7 +135,7 @@
     <Compile Include="Assets\Scripting\Game\App\AppMgr\SceneMgr\SceneMgrBase.cs" />
     <Compile Include="Assets\Scripting\Game\App\AppMgr\SceneMgr\StartSceneMgr.cs" />
     <Compile Include="Assets\Scripting\Game\App\AppMgr\TAppUtility.cs" />
-    <Compile Include="Assets\Scripting\Game\App\GameLaucher.cs" />
+    <Compile Include="Assets\Scripting\Game\App\GameLauncher.cs" />
     <Compile Include="Assets\Scripting\Game\Bridge\ConfigHelper.cs" />
     <Compile Include="Assets\Scripting\Game\Bridge\LogAction.cs" />
     <Compile Include="Assets\Scripting\Game\Bridge\MessageBridge.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Map\MindTreeNode.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Map\NodeMapData.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Map\YamlParse.cs" />
-    <Compile Include="Assets\Scripting\Game\Entry\Player\BallMapData.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Player\BallMapAccessor.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\GamePlayer.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PVEHero.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PlayerAttribute.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Protocol\ProduceAccessor.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\AttrProb.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\AttrTable.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\BallMap.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\BaseObject.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Buff.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\DropGrade.cs" />
@@ -209,7 +210,6 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Equip.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Hero.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Item.cs" />
-    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Map.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterLevelUp.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterPrefix.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterRate.cs" />
@@ -459,7 +459,21 @@
     <Compile Include="Assets\Scripting\Utils\View\WindowView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Build\GameData\BallMap.txt" />
+    <None Include="Assets\Build\GameData\DropGrade.txt" />
+    <None Include="Assets\Build\GameData\DropQualityRate.txt" />
+    <None Include="Assets\Build\GameData\Equip.txt" />
+    <None Include="Assets\Build\GameData\GameConst.txt" />
+    <None Include="Assets\Build\GameData\Hero.txt" />
+    <None Include="Assets\Build\GameData\HeroLevelUp.txt" />
     <None Include="Assets\Build\GameData\IllegalText.txt" />
+    <None Include="Assets\Build\GameData\Item.txt" />
+    <None Include="Assets\Build\GameData\LobbyDialogue.txt" />
+    <None Include="Assets\Build\GameData\Loot.txt" />
+    <None Include="Assets\Build\GameData\Produce.txt" />
+    <None Include="Assets\Build\GameData\QualityTable.txt" />
+    <None Include="Assets\Build\GameData\ServerTipsText.txt" />
+    <None Include="Assets\Build\GameData\Spell.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\OneWaySDK-jar\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\res\layout\tj_native.xml" />
