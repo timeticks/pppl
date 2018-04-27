@@ -172,7 +172,7 @@ public class GameLauncher : MonoBehaviour
                     }
                     if (UIRootMgr.Instance != null) UIRootMgr.Instance.TopBlackMask = false;
                     TDebug.Log("==生成StartSceneMainUIMgr界面完毕，开始创建Window_Login");
-                    UIRootMgr.Instance.OpenWindow<Window_BallBattle>(WinName.Window_BallBattle).OpenWindow(0);
+                    UIRootMgr.Instance.OpenWindow<Window_BallBattle>(WinName.Window_BallBattle).OpenWindow(100001);
                     OnStateChange(LaucherState.Playing);
                     break;
                 }

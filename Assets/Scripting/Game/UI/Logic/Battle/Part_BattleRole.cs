@@ -189,11 +189,6 @@ public class Part_BattleRole :MonoBehaviour{
         curText.gameObject.SetActive(true);
         curText.text = content;
     }
-    void Update()
-    {
-        ActionUpdate();
-    }
-
 
     #region 动画动作
     public void DoAnimation(string actionStr, Vector3? targetPos = null, System.Action doOver = null)
@@ -203,37 +198,6 @@ public class Part_BattleRole :MonoBehaviour{
         {
             if (mCurAnimationAction == null) { mCurAnimationAction = actData; }
             else { TDebug.LogError("动作重叠了" + actionStr); }
-        }
-    }
-    void ActionUpdate()   //动作更新
-    {
-        if (Window_BattleTowSide.Instance == null) return;
-        if (mCurAnimationAction != null)
-        {
-            mCurAnimationAction.CurKeep += (Time.deltaTime / BattleMgr.PLAY_TIME_RATIO);
-            float pct = mCurAnimationAction.CurKeep / mCurAnimationAction.KeepAmount;
-            float posY = mView.RoleIcon.transform.localPosition.y;
-            switch (mCurAnimationAction.ActType)
-            {
-                case RoleAnimationType.atk:
-                    float pos = ((float)mCurAnimationAction.ValueObj);
-                    if (!Window_BattleTowSide.Instance.IsMyRole(RoleUid)) { pos = -pos; }
-                    mView.RoleIcon.transform.localPosition = Vector3.Lerp(new Vector3(0,posY,0), new Vector3(pos, posY, 0), Mathf.PingPong(pct, 0.5f));//Mathf.PingPong大于一半时回弹
-                    break;
-                case RoleAnimationType.color:
-                    Color col = (Color)(mCurAnimationAction.ValueObj);
-                    mView.RoleIcon.color = Color.Lerp(Color.white, col, Mathf.PingPong(pct, 0.5f));
-                    break;
-                case RoleAnimationType.scale:
-                    float scale = ((float)mCurAnimationAction.ValueObj);
-                    mView.RoleIcon.transform.localScale = Vector3.Lerp(Vector3.one, new Vector3(scale, scale, scale), Mathf.PingPong(pct, 0.5f));
-                    break;
-            }
-            if (mCurAnimationAction.CurKeep > mCurAnimationAction.KeepAmount)//完成，则置空
-            {
-                mCurAnimationAction.CurKeep = 0;
-                mCurAnimationAction = null;
-            }
         }
     }
     #endregion

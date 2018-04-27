@@ -46,11 +46,6 @@ public class AppBridge : MonoBehaviour
 #if UNITY_IPHONE  || UNITY_ANDROID
         mBackgroundRate = 1;
 #endif
-#if UNITY_EDITOR
-        TDebug.InEditor = true;
-#else
-        TDebug.InEditor = false;
-#endif
 
 #if UNITY_ANDROID   //设置处理分辨率
         SetResolution(mAndroidMaxSolution);

@@ -10,29 +10,36 @@ public class Window_BallBattle : WindowBase {
 
     public class ViewObj
     {
-        public Transform CenterAnchor;
+        public RectTransform CenterAnchor;
         public Transform FreeRoot;
-        public GunBaseCtrl Gun;
+        public GunBaseCtrl GunPanel;
         public GameObject Part_Ball;
         public EventTrigger BgBtn;
-        public ViewObj(UIViewBase view)
+        public Transform TopBorder;
+        public Transform DownBorder;
+        public Transform LeftBorder;
+        public Transform RightBorder;        public ViewObj(UIViewBase view)
         {
             if (CenterAnchor != null) return;
-            CenterAnchor = view.GetCommon<Transform>("CenterAnchor");
+            CenterAnchor = view.GetCommon<RectTransform>("CenterAnchor");
             FreeRoot = view.GetCommon<Transform>("FreeRoot");
-            Gun = view.GetCommon<GameObject>("Gun").CheckAddComponent<GunBaseCtrl>();
+            GunPanel = view.GetCommon<GameObject>("GunPanel").CheckAddComponent<GunBaseCtrl>();
             Part_Ball = view.GetCommon<GameObject>("Part_BattleBall");
             BgBtn = view.GetCommon<EventTrigger>("BgBtn");
+            TopBorder = view.GetCommon<Transform>("TopBorder");
+            DownBorder = view.GetCommon<Transform>("DownBorder");
+            LeftBorder = view.GetCommon<Transform>("LeftBorder");
+            RightBorder = view.GetCommon<Transform>("RightBorder");
         }
     }
     private ViewObj mViewObj;
+    public GunBaseCtrl GunCtrl { get { return mViewObj.GunPanel; } }
 
     internal List<BallBaseCtrl> BallList = new List<BallBaseCtrl>();
     internal List<BallBaseCtrl> BallDisableList = new List<BallBaseCtrl>();
     private float mCurRotateForce = 0f; //当前的旋转力度
     void Start()    //TODO:正式删除
     {
-        OpenWindow(0);
     }
 
     public void OpenWindow(int mapIdx)
@@ -48,13 +55,13 @@ public class Window_BallBattle : WindowBase {
     void Init(int mapIdx)
     {
         InitMap(mapIdx);
-
-        mViewObj.Gun.Init(this);
+        mViewObj.CenterAnchor.sizeDelta = Vector2.one*(2*HexaMapData.DefaultRadius*MapData.BallScaleRatio());
+        mViewObj.GunPanel.Init(this);
         //添加枪按下按起响应
         EventTrigger.Entry myTrigger = new EventTrigger.Entry();
         myTrigger.eventID = EventTriggerType.PointerDown;
         myTrigger.callback.RemoveAllListeners();
-        myTrigger.callback.AddListener(mViewObj.Gun.BtnEvt_BgPointerDown);
+        myTrigger.callback.AddListener(mViewObj.GunPanel.BtnEvt_BgPointerDown);
         mViewObj.BgBtn.triggers.Add(myTrigger);
     }
 
@@ -64,8 +71,8 @@ public class Window_BallBattle : WindowBase {
     //初始化地图
     public void InitMap(int mapIdx)
     {
-        if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx == null || 
-            PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx <= 0) //无地图信息
+        
+        if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx <= 0) //无地图信息
         {
             PlayerPrefsBridge.Instance.InitNewMap(mapIdx);
 
@@ -75,7 +82,7 @@ public class Window_BallBattle : WindowBase {
             List<XyCoordRef> rangeList = HexaMathf.GetInRange(2, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
             for (int i = 0; i < rangeList.Count; i++)
             {
-                AddBall(GetNewBall(), rangeList[i]);
+                AddBall(GetNewBall(-1), rangeList[i]);
             }
         }
         else
@@ -85,7 +92,7 @@ public class Window_BallBattle : WindowBase {
             foreach (var temp in PlayerPrefsBridge.Instance.BallMapAcce.BallDict)
             {
                 XyCoordRef xy = new XyCoordRef(temp.Key/MapData.Height, temp.Value/MapData.Width);
-                AddBall(GetNewBall(), xy);
+                AddBall(GetNewBall(temp.Value), xy);
             }
         }
     }
@@ -111,14 +118,28 @@ public class Window_BallBattle : WindowBase {
         //}
         if (Time.frameCount % 3 == 0 && MapData!=null)
         {
-            for (int i = 0; i < MapData.Balls.Length; i++)
+            for (int i = 0; i < MapData.Width; i++)
             {
-                for (int j = 0; j < MapData.Balls[i].Length; j++)   //检测小球超出范围的，进行销毁
+                for (int j = 0; j < MapData.Height; j++)   //检测小球超出范围的，进行销毁
                 {
-                    BallNodeData tempNode = MapData.Balls[i][j];
-                    if (tempNode != null && tempNode.BallCtrl != null && !tempNode.BallCtrl.IsInLegalPos())
+                    BallNodeData tempNode = MapData.GetNode(i,j);
+                    if (tempNode != null && tempNode.BallCtrl != null)
                     {
-                        DisableBall(tempNode.BallCtrl);
+                        if (!tempNode.BallCtrl.IsInLegalPos())
+                            DisableBall(tempNode.BallCtrl);
+                        else
+                        {
+                            //判断是否靠近边界
+                            float warnDistance = HexaMapData.DefaultRadius*MapData.BallScaleRatio()*1.9f;
+                            if(tempNode.BallCtrl.MyTrans.localPosition.x +warnDistance >= mViewObj.RightBorder.localPosition.x
+                                || tempNode.BallCtrl.MyTrans.localPosition.x - warnDistance <= mViewObj.LeftBorder.localPosition.x
+                                || tempNode.BallCtrl.MyTrans.localPosition.y +warnDistance >= mViewObj.TopBorder.localPosition.y
+                                || tempNode.BallCtrl.MyTrans.localPosition.y -warnDistance <= mViewObj.DownBorder.localPosition.y)
+                            {
+                                tempNode.BallCtrl.SetWarnActive(true);
+                            }
+                            else { tempNode.BallCtrl.SetWarnActive(false); }
+                        }
                     }
                 }
             }
@@ -126,7 +147,8 @@ public class Window_BallBattle : WindowBase {
     }
 
 
-    public BallBaseCtrl GetNewBall()
+    //如果ballIdx传0，则随机出一个数
+    public BallBaseCtrl GetNewBall(int ballIdx)
     {
         BallBaseCtrl ball = null;
         if (BallDisableList.Count > 0)
@@ -140,7 +162,9 @@ public class Window_BallBattle : WindowBase {
             GameObject g = Instantiate(mViewObj.Part_Ball) as GameObject;
             ball = g.GetComponent<BallBaseCtrl>();
         }
-        ball.Init(this);
+        if (ballIdx < 0)
+            ballIdx = PlayerPrefsBridge.Instance.GetNextRandBall();
+        ball.Init(this ,MapData.BallScaleRatio(),ballIdx);
         return ball;
     }
 
@@ -156,8 +180,7 @@ public class Window_BallBattle : WindowBase {
         ballCtrl.MyTrans.tag = "Ball";
         ballCtrl.MyTrans.SetParent(mViewObj.CenterAnchor);
         ballCtrl.MyTrans.localPosition = MapData.GetNodeLocalPos(pos.m_X, pos.m_Y);
-        ballCtrl.MyTrans.localScale = Vector3.one;
-
+        ballCtrl.MyTrans.localScale = Vector3.one*MapData.BallScaleRatio();
         ballCtrl.MyData = new BallNodeData(pos, ballCtrl.MyData.Num ,MapData);
         ballCtrl.MyData.BallCtrl = ballCtrl;
         MapData.SetNode(pos.m_X, pos.m_Y, ballCtrl.MyData);
@@ -208,6 +231,8 @@ public class Window_BallBattle : WindowBase {
             RemoveBallInMap(bList[i].BallCtrl);
             if (bList[i].BallCtrl != null)
             {
+                bList[i].BallCtrl.MyBallType = BallType.DeadBall;
+
                 Vector2 hitDir = bList[i].BallCtrl.MyTrans.localPosition - nodeData.BallCtrl.MyTrans.localPosition;
                 if (bList[i].BallCtrl == nodeData.BallCtrl) hitDir = gunBallJumpDir;
                 hitDir.y = Mathf.Abs(hitDir.y);
@@ -246,12 +271,12 @@ public class Window_BallBattle : WindowBase {
     {
         Vector3 fixedDir = ballPos - mViewObj.CenterAnchor.position;
         Vector2 forceDir = MathfUtility.GetForceDir(new Vector2(fixedDir.x, fixedDir.y), new Vector2(ballDir.x, ballDir.y));
-        float rotAngle = Mathf.Sign(fixedDir.x * forceDir.y - fixedDir.y * forceDir.x) * forceDir.magnitude;
-        mCurRotateForce += rotAngle*0.2f;
+        float rotAngle = Mathf.Sign(fixedDir.x*forceDir.y - fixedDir.y*forceDir.x)*forceDir.magnitude*50;
+        mCurRotateForce = rotAngle;
         float rotTime = Mathf.Sqrt(mCurRotateForce);
-        mViewObj.CenterAnchor.transform.DOLocalRotate(
-                mViewObj.CenterAnchor.transform.localRotation.eulerAngles + new Vector3(0, 0, mCurRotateForce), rotTime)
-                .SetEase(Ease.OutQuad);
+        Vector3 endRot = mViewObj.CenterAnchor.transform.localRotation.eulerAngles + new Vector3(0, 0, mCurRotateForce);
+        TDebug.LogInEditor(endRot + "    " + ballDir);
+        mViewObj.CenterAnchor.transform.DOLocalRotate(endRot, 1f).SetEase(Ease.OutQuad);
     }
 
    
@@ -292,12 +317,13 @@ public class Window_BallBattle : WindowBase {
         List<XyCoordRef> nearList = HexaMathf.GetInRange(1, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
         SignLinklessBall(nearList);
 
-        for (int i = 0; i < MapData.Balls.Length; i++)
+        for (int i = 0; i < MapData.Width; i++)
         {
-            for (int j = 0; j < MapData.Balls[i].Length; j++)
+            for (int j = 0; j < MapData.Height; j++)
             {
-                if (MapData.Balls[i][j] != null && MapData.Balls[i][j].BallCtrl != null && !MapData.Balls[i][j].IsLinkCenter && !MapData.Balls[i][j].IsDisable)
-                    linklessList.Add(MapData.Balls[i][j]);
+                BallNodeData nodeData = MapData.GetNode(i, j);
+                if (nodeData != null && nodeData.BallCtrl != null && !nodeData.IsLinkCenter && !nodeData.IsDisable)
+                    linklessList.Add(nodeData);
             }
         }
         return linklessList;
@@ -344,10 +370,10 @@ public class Window_BallBattle : WindowBase {
         for (int i = 0; i < ballNum; i++)
         {
             //创建一个球
-            BallBaseCtrl ball = GetNewBall();
+            BallBaseCtrl ball = GetNewBall(-1);
             ball.transform.SetParent(mViewObj.FreeRoot);
-            ball.transform.localScale = Vector3.one;
             ball.transform.rotation = Quaternion.identity;
+            ball.transform.localScale = Vector3.one*MapData.BallScaleRatio();
 
             //随机出其位置，其速度朝向中心点
             float randAngle = Random.Range(-45f, 225f);

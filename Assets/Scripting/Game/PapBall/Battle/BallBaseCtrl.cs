@@ -18,33 +18,39 @@ public class BallBaseCtrl : MonoBehaviour {
     public class ViewObj
     {
         public Image MyImage;
+        public RectTransform MyRectTrans;
         public Rigidbody2D MyRigibody;
         public CircleCollider2D MyCollider;
         public Text TextNum;
+        public GameObject WarnRoot;
         public ViewObj(UIViewBase view)
         {
             if (MyImage != null) return;
-            MyImage = view.GetCommon<Image>("Part_BattleBall");
+            MyImage = view.GetCommon<Image>("MyImage");
+            MyRectTrans = view.GetCommon<RectTransform>("Part_BattleBall");
             MyRigibody = view.GetCommon<Rigidbody2D>("Part_BattleBall");
             MyCollider = view.GetCommon<CircleCollider2D>("Part_BattleBall");
             TextNum = view.GetCommon<Text>("TextNum");
+            WarnRoot = view.GetCommon<GameObject>("WarnRoot");
         }
     }
 
     private ViewObj mViewObj;
 
-    public void Init(Window_BallBattle parentWin)
+    public void Init(Window_BallBattle parentWin , float scaleRatio , int ballIdx)
     {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         MyTrans = transform;
         ParentWin = parentWin;
-        MyData = new BallNodeData(PlayerPrefsBridge.Instance.GetNextRandBall());
+        MyData = new BallNodeData(ballIdx);
         mViewObj.TextNum.text = MyData.Num.ToString();
         SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = false;
         mViewObj.MyCollider.isTrigger = true;
         MyBallType = BallType.IdleBall;
-        MyTrans.tag = "Untagged";
+        MyTrans.tag = GameConstUtils.TAG_UNTAGGED;
+        mViewObj.MyRectTrans.localScale = Vector3.one * scaleRatio;
+        mViewObj.WarnRoot.gameObject.SetActive(false);
     }
 
     public void StartRun(Vector3 dir , BallType ballType)
@@ -68,6 +74,13 @@ public class BallBaseCtrl : MonoBehaviour {
         return true;
     }
 
+    //是否显示即将到达边界的警告
+    public void SetWarnActive(bool isWarn)
+    {
+        if (mViewObj.WarnRoot.activeSelf!=isWarn)
+            mViewObj.WarnRoot.SetActive(isWarn);
+    }
+
     public void Attach(Collider2D otherCol)
     {
         if (mAttached)
@@ -82,6 +95,7 @@ public class BallBaseCtrl : MonoBehaviour {
         UIRootMgr.Instance.TopMasking = false;
 
         mViewObj.MyCollider.isTrigger = true;
+        Vector3 lastMoveDir = MoveDir;
         SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = true;
         Destroy(GetComponent<BallStop>());
@@ -101,9 +115,12 @@ public class BallBaseCtrl : MonoBehaviour {
         {
             ParentWin.DestroyEqualNum(MyData, hitDir);
         }
-        ParentWin.StartRot(MyTrans.position, MoveDir);
+        ParentWin.StartRot(MyTrans.position, lastMoveDir);
 
         MyBallType = BallType.IdleBall;
+
+        ParentWin.GunCtrl.CreateWaitBall(-1, false);
+
     }
 
 
@@ -141,7 +158,17 @@ public class BallBaseCtrl : MonoBehaviour {
     }
     #endregion
 
-
+    //当飞出的球碰到物体后
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (MyBallType == BallType.IdleBall)
+        {
+            if (col.gameObject.name.Contains(GameConstUtils.NAME_BORDER)) //碰到边界
+            {
+                TDebug.LogError("失败了");
+            }
+        }
+    }
 
     //Vector2 GetFixedPos(Vector2 ball , Vector2 spdDir , Vector2 curPos)//得到修正后的坐标，矫正碰撞延迟
     //{
@@ -179,5 +206,6 @@ public enum BallType
     IdleBall,       
     RunByGunBall,   //炮台发射的球
     ForceAddBall,   //强制增加的球，此球不引发掉落
+    DeadBall,       //即将或已经消失的球
 }
 

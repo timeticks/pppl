@@ -9,14 +9,16 @@ using System.Collections.Generic;
 /// </summary>
 public class HexaMapData
 {
+    public static float DefaultRadius = 36f;
+
     public static Vector2 StartPos;
-    public static float Radius = 36f;
+    public static float Radius = 48f;
     public static float HeightRatio = Radius*1.732f;       //根号3
 
     public int Width, Height;
 
     public XyCoordRef CenterXy;
-    public BallNodeData[][] Balls;
+    private BallNodeData[][] Balls;
 
     public HexaMapData(int cols, int rows)
     {
@@ -32,6 +34,12 @@ public class HexaMapData
         }
 
     }
+
+    public float BallScaleRatio()
+    {
+        return Radius/DefaultRadius;
+    }
+
     public BallNodeData GetNode(int x, int y)
     {
         if ((x < 0 || x >= Width) || (y < 0 || y >= Height))

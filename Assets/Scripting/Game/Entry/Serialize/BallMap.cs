@@ -31,7 +31,7 @@ public class BallMap : BaseObject
     public int level;
     public int diffiStart;  //起始难度
     public int diffiCoeff;  //难度系数
-    public Eint[] ballList;    //打通之后开通的地图
+    public Eint[] ballList;    //此地图的小球类型列表
     public Eint[] scoreLoot;
     public Eint[] endLoot;
 

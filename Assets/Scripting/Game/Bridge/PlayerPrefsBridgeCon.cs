@@ -727,15 +727,16 @@ public partial class PlayerPrefsBridge
         
     }
 
+    private static System.Random mBallRand = new System.Random();
     public int GetNextRandBall()
     {
         BallMap map = BallMap.Fetcher.GetBallMapCopy(BallMapAcce.CurMapIdx, false);
-        return map.ballList[Random.Range(0, map.ballList.Length)];
+        return map.ballList[mBallRand.Next(0, map.ballList.Length)];
     }
 
     public void AddBall(int posIndex, int num)
     {
-        BallMapAcce.BallDict.Add(posIndex, num);
+        BallMapAcce.BallDict[posIndex] = num;
     }
 
 

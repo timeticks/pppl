@@ -100,6 +100,7 @@ public class GameClient : MonoBehaviour
         mAssetsLoader.Init();
 
         gameObject.CheckAddComponent<AppBridge>().Init();
+        TDebug.InEditor = PlatformUtils.EnviormentTy == EnviormentType.Editor;
         ///初始化默认设置系统时间为服务器时间
         if(AppTimer.CurTimeStampMsSecond ==0)
             AppTimer.SetCurStamp((TUtility.DateTimeToStamp(DateTime.Now)));

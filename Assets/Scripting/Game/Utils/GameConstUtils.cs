@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class GameConstUtils
 {
+    public static string NAME_BORDER = "Border";
+    public static string NAME_RIGHT_BORDER = "RightBorder";
+    public static string NAME_LEFT_BORDER = "LeftBorder";
+    public static string NAME_TOP_BORDER = "TopBorder";
+    public static string NAME_DOWN_BORDER = "DownBorder";
+
+    public static string TAG_UNTAGGED = "Untagged";
+
+
     public static int module_travel { get { return GameConst.GetGameConst("module_travel"); } }
     public static int module_inventory { get { return GameConst.GetGameConst("module_inventory"); } }
     public static int module_cave { get { return GameConst.GetGameConst("module_cave"); } }
