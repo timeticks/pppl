@@ -9,6 +9,9 @@ public enum WinName
     Window_Lua = 20,
 
 
+    Window_BallBattle = 110000,    //战斗界面  
+
+    ////////////////////////////////////////////////////////////////////旧//////////////////////////////////////////////////////////////////
     //放于WindowRoot层...需要设置对应值，以防在删除的时候造成对应值改变
     Window_Login           = 1000,
     Window_CreateRole      = 1001,
@@ -35,7 +38,6 @@ public enum WinName
 
     WindowBig_WorldChoose       = 10050,
     Window_SiteHang             = 10051,    //地点挂机
-    Window_ChoosePlotDungeon    = 10052,    //剧情秘境
     Window_ChooseWarDungeon     = 10053,    //试炼秘境  
     Window_SectList             = 10054,    //宗门列表
     Window_HangUpDetial         = 10055,    //挂机详情
@@ -113,7 +115,6 @@ public enum WinName
     Window_AchieveReward         = 100905,
     
                             
-    Window_BallBattle              = 110000,    //战斗界面  
     Window_PrepareSpell        = 110010,    //预设技能
                                             
     Window_DungeonMap          = 111000,    //秘境地图

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a7c992aa3170ad644a6ced8965ea9c03
-timeCreated: 1524368346
+timeCreated: 1525246198
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -238,8 +238,8 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaUsage: 0
-  alphaIsTransparency: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -294,8 +294,8 @@ TextureImporter:
       name: ACommon_Mask
       rect:
         serializedVersion: 2
-        x: 1020
-        y: 992
+        x: 30
+        y: 3
         width: 2
         height: 2
       alignment: 0
@@ -307,8 +307,8 @@ TextureImporter:
       name: BG_Panel_1
       rect:
         serializedVersion: 2
-        x: 653
-        y: 450
+        x: 405
+        y: 225
         width: 88
         height: 92
       alignment: 0
@@ -320,8 +320,8 @@ TextureImporter:
       name: BG_Panel_2
       rect:
         serializedVersion: 2
-        x: 463
-        y: 619
+        x: 338
+        y: 403
         width: 73
         height: 63
       alignment: 0
@@ -333,8 +333,8 @@ TextureImporter:
       name: BG_Panel_3
       rect:
         serializedVersion: 2
-        x: 916
-        y: 447
+        x: 680
+        y: 472
         width: 32
         height: 38
       alignment: 0
@@ -346,8 +346,8 @@ TextureImporter:
       name: BG_Panel_4
       rect:
         serializedVersion: 2
-        x: 463
-        y: 790
+        x: 334
+        y: 3
         width: 33
         height: 39
       alignment: 0
@@ -356,50 +356,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: BG_Panel_5
-      rect:
-        serializedVersion: 2
-        x: 951
-        y: 422
-        width: 69
-        height: 70
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 30, y: 41, z: 37, w: 27}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: BG_Panel_6
-      rect:
-        serializedVersion: 2
-        x: 463
-        y: 750
-        width: 33
-        height: 38
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 23, z: 20, w: 14}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: BG_Panel_7
-      rect:
-        serializedVersion: 2
-        x: 916
-        y: 408
-        width: 32
-        height: 37
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 24, z: 19, w: 12}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: BTN5
       rect:
         serializedVersion: 2
-        x: 498
-        y: 805
+        x: 292
+        y: 3
         width: 40
         height: 39
       alignment: 0
@@ -408,24 +369,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: BTN_1
-      rect:
-        serializedVersion: 2
-        x: 852
-        y: 727
-        width: 138
-        height: 141
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: BTN_2
       rect:
         serializedVersion: 2
-        x: 863
-        y: 870
+        x: 2
+        y: 19
         width: 142
         height: 132
       alignment: 0
@@ -437,8 +385,8 @@ TextureImporter:
       name: BTN_3
       rect:
         serializedVersion: 2
-        x: 2
-        y: 800
+        x: 379
+        y: 319
         width: 207
         height: 82
       alignment: 0
@@ -450,8 +398,8 @@ TextureImporter:
       name: BTN_4
       rect:
         serializedVersion: 2
-        x: 980
-        y: 585
+        x: 249
+        y: 3
         width: 41
         height: 39
       alignment: 0
@@ -463,8 +411,8 @@ TextureImporter:
       name: BTN_5
       rect:
         serializedVersion: 2
-        x: 500
-        y: 890
+        x: 847
+        y: 429
         width: 38
         height: 36
       alignment: 0
@@ -476,10 +424,10 @@ TextureImporter:
       name: BTN_6
       rect:
         serializedVersion: 2
-        x: 992
-        y: 776
-        width: 30
-        height: 34
+        x: 990
+        y: 409
+        width: 24
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 7, z: 0, w: 24}
@@ -489,8 +437,8 @@ TextureImporter:
       name: BTN_7
       rect:
         serializedVersion: 2
-        x: 980
-        y: 626
+        x: 595
+        y: 468
         width: 41
         height: 42
       alignment: 0
@@ -502,8 +450,8 @@ TextureImporter:
       name: BTN_8
       rect:
         serializedVersion: 2
-        x: 498
-        y: 846
+        x: 638
+        y: 468
         width: 40
         height: 42
       alignment: 0
@@ -512,24 +460,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: BTN_9
-      rect:
-        serializedVersion: 2
-        x: 538
-        y: 609
-        width: 127
-        height: 58
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: Bg_back_1
       rect:
         serializedVersion: 2
-        x: 850
-        y: 597
+        x: 81
+        y: 382
         width: 128
         height: 128
       alignment: 0
@@ -541,8 +476,8 @@ TextureImporter:
       name: Bg_chongzhi_3
       rect:
         serializedVersion: 2
-        x: 196
-        y: 790
+        x: 42
+        y: 9
         width: 8
         height: 8
       alignment: 0
@@ -554,8 +489,8 @@ TextureImporter:
       name: Bg_ditu_01
       rect:
         serializedVersion: 2
-        x: 901
-        y: 340
+        x: 871
+        y: 4
         width: 32
         height: 32
       alignment: 0
@@ -567,8 +502,8 @@ TextureImporter:
       name: Bg_ditu_02
       rect:
         serializedVersion: 2
-        x: 916
-        y: 374
+        x: 837
+        y: 4
         width: 32
         height: 32
       alignment: 0
@@ -580,8 +515,8 @@ TextureImporter:
       name: Bg_ditu_03
       rect:
         serializedVersion: 2
-        x: 1017
-        y: 896
+        x: 52
+        y: 13
         width: 4
         height: 4
       alignment: 0
@@ -593,8 +528,8 @@ TextureImporter:
       name: Bg_ditu_04
       rect:
         serializedVersion: 2
-        x: 1017
-        y: 902
+        x: 48
+        y: 3
         width: 4
         height: 4
       alignment: 0
@@ -606,8 +541,8 @@ TextureImporter:
       name: Bg_ditu_05
       rect:
         serializedVersion: 2
-        x: 1017
-        y: 908
+        x: 42
+        y: 3
         width: 4
         height: 4
       alignment: 0
@@ -616,102 +551,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: Bg_kuang_01
-      rect:
-        serializedVersion: 2
-        x: 363
-        y: 471
-        width: 96
-        height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 30, y: 24, z: 30, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_02
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 347
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 24, z: 32, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_03
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 347
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 24, z: 32, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_04
-      rect:
-        serializedVersion: 2
-        x: 134
-        y: 405
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 24, z: 32, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_05
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 413
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 24, z: 32, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_06
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 413
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 32, y: 24, z: 32, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Bg_kuang_07
-      rect:
-        serializedVersion: 2
-        x: 363
-        y: 569
-        width: 96
-        height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 30, y: 24, z: 30, w: 24}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: Bg_kuang_11
       rect:
         serializedVersion: 2
-        x: 2
-        y: 479
+        x: 403
+        y: 156
         width: 64
         height: 64
       alignment: 0
@@ -723,8 +567,8 @@ TextureImporter:
       name: Bg_lingshou
       rect:
         serializedVersion: 2
-        x: 702
-        y: 818
+        x: 308
+        y: 222
         width: 95
         height: 95
       alignment: 0
@@ -736,8 +580,8 @@ TextureImporter:
       name: Bg_point
       rect:
         serializedVersion: 2
-        x: 351
-        y: 379
+        x: 898
+        y: 69
         width: 90
         height: 90
       alignment: 0
@@ -749,8 +593,8 @@ TextureImporter:
       name: Bg_txdi_1
       rect:
         serializedVersion: 2
-        x: 178
-        y: 587
+        x: 298
+        y: 217
         width: 8
         height: 100
       alignment: 0
@@ -762,8 +606,8 @@ TextureImporter:
       name: Bg_txdi_2
       rect:
         serializedVersion: 2
-        x: 1007
-        y: 812
+        x: 288
+        y: 217
         width: 8
         height: 100
       alignment: 0
@@ -775,8 +619,8 @@ TextureImporter:
       name: Bg_txkuang_2
       rect:
         serializedVersion: 2
-        x: 799
-        y: 842
+        x: 579
+        y: 6
         width: 51
         height: 52
       alignment: 0
@@ -788,8 +632,8 @@ TextureImporter:
       name: Bg_xiala_01
       rect:
         serializedVersion: 2
-        x: 680
-        y: 847
+        x: 714
+        y: 489
         width: 19
         height: 21
       alignment: 0
@@ -801,8 +645,8 @@ TextureImporter:
       name: Bg_xiala_02
       rect:
         serializedVersion: 2
-        x: 178
-        y: 689
+        x: 648
+        y: 323
         width: 16
         height: 16
       alignment: 0
@@ -814,8 +658,8 @@ TextureImporter:
       name: Bg_xuecao_1
       rect:
         serializedVersion: 2
-        x: 541
-        y: 915
+        x: 589
+        y: 181
         width: 256
         height: 43
       alignment: 0
@@ -827,8 +671,8 @@ TextureImporter:
       name: Bg_xuecao_2
       rect:
         serializedVersion: 2
-        x: 211
-        y: 781
+        x: 682
+        y: 12
         width: 46
         height: 46
       alignment: 0
@@ -840,8 +684,8 @@ TextureImporter:
       name: Bg_xuetiaob_1
       rect:
         serializedVersion: 2
-        x: 498
-        y: 701
+        x: 673
+        y: 159
         width: 40
         height: 20
       alignment: 0
@@ -853,8 +697,8 @@ TextureImporter:
       name: Bg_xuetiaoh_1
       rect:
         serializedVersion: 2
-        x: 498
-        y: 723
+        x: 631
+        y: 159
         width: 40
         height: 20
       alignment: 0
@@ -866,8 +710,8 @@ TextureImporter:
       name: Bg_xuetiaol_1
       rect:
         serializedVersion: 2
-        x: 498
-        y: 745
+        x: 589
+        y: 159
         width: 40
         height: 20
       alignment: 0
@@ -879,8 +723,8 @@ TextureImporter:
       name: Bg_zhucexian
       rect:
         serializedVersion: 2
-        x: 863
-        y: 1004
+        x: 760
+        y: 161
         width: 143
         height: 18
       alignment: 0
@@ -892,8 +736,8 @@ TextureImporter:
       name: Btn_Back
       rect:
         serializedVersion: 2
-        x: 178
-        y: 547
+        x: 905
+        y: 341
         width: 73
         height: 38
       alignment: 0
@@ -905,36 +749,10 @@ TextureImporter:
       name: Btn_Tab
       rect:
         serializedVersion: 2
-        x: 253
-        y: 505
+        x: 178
+        y: 154
         width: 106
         height: 50
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Btn_fang
-      rect:
-        serializedVersion: 2
-        x: 822
-        y: 124
-        width: 76
-        height: 195
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Btn_fangh
-      rect:
-        serializedVersion: 2
-        x: 935
-        y: 159
-        width: 76
-        height: 195
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -944,23 +762,10 @@ TextureImporter:
       name: Btn_jia1
       rect:
         serializedVersion: 2
-        x: 68
-        y: 479
+        x: 337
+        y: 156
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Btn_jiantou
-      rect:
-        serializedVersion: 2
-        x: 540
-        y: 802
-        width: 138
-        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -970,8 +775,8 @@ TextureImporter:
       name: Btn_mo2
       rect:
         serializedVersion: 2
-        x: 188
-        y: 588
+        x: 803
+        y: 4
         width: 32
         height: 32
       alignment: 0
@@ -983,8 +788,8 @@ TextureImporter:
       name: Btn_you_1
       rect:
         serializedVersion: 2
-        x: 2
-        y: 58
+        x: 147
+        y: 316
         width: 64
         height: 64
       alignment: 0
@@ -996,8 +801,8 @@ TextureImporter:
       name: Btn_zuo_1
       rect:
         serializedVersion: 2
-        x: 950
-        y: 356
+        x: 81
+        y: 316
         width: 64
         height: 64
       alignment: 0
@@ -1009,8 +814,8 @@ TextureImporter:
       name: Fr_chongzhi_1
       rect:
         serializedVersion: 2
-        x: 253
-        y: 557
+        x: 249
+        y: 44
         width: 108
         height: 108
       alignment: 0
@@ -1022,62 +827,10 @@ TextureImporter:
       name: Icon_hd
       rect:
         serializedVersion: 2
-        x: 951
-        y: 568
+        x: 990
+        y: 439
         width: 27
         height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Icon_lingshi
-      rect:
-        serializedVersion: 2
-        x: 799
-        y: 778
-        width: 50
-        height: 62
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Icon_npc
-      rect:
-        serializedVersion: 2
-        x: 822
-        y: 321
-        width: 77
-        height: 77
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Icon_qianneng
-      rect:
-        serializedVersion: 2
-        x: 196
-        y: 721
-        width: 58
-        height: 58
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: Icon_xianyu
-      rect:
-        serializedVersion: 2
-        x: 461
-        y: 417
-        width: 64
-        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1087,8 +840,8 @@ TextureImporter:
       name: SP_1
       rect:
         serializedVersion: 2
-        x: 461
-        y: 549
+        x: 309
+        y: 324
         width: 68
         height: 68
       alignment: 0
@@ -1100,8 +853,8 @@ TextureImporter:
       name: SP_10
       rect:
         serializedVersion: 2
-        x: 469
-        y: 831
+        x: 280
+        y: 319
         width: 27
         height: 73
       alignment: 0
@@ -1113,8 +866,8 @@ TextureImporter:
       name: SP_11
       rect:
         serializedVersion: 2
-        x: 233
-        y: 622
+        x: 588
+        y: 321
         width: 18
         height: 18
       alignment: 0
@@ -1123,24 +876,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_12
-      rect:
-        serializedVersion: 2
-        x: 259
-        y: 667
-        width: 202
-        height: 183
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_13
       rect:
         serializedVersion: 2
-        x: 259
-        y: 906
+        x: 777
+        y: 38
         width: 239
         height: 20
       alignment: 0
@@ -1149,24 +889,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_14
-      rect:
-        serializedVersion: 2
-        x: 540
-        y: 669
-        width: 133
-        height: 131
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 66, y: 65, z: 66, w: 65}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_15
       rect:
         serializedVersion: 2
-        x: 259
-        y: 852
+        x: 369
+        y: 6
         width: 208
         height: 52
       alignment: 0
@@ -1175,37 +902,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_17
-      rect:
-        serializedVersion: 2
-        x: 680
-        y: 706
-        width: 117
-        height: 110
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 58, y: 55, z: 58, w: 54}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: SP_19
-      rect:
-        serializedVersion: 2
-        x: 951
-        y: 494
-        width: 70
-        height: 72
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 12, y: 60, z: 56, w: 11}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 884
+        x: 338
+        y: 468
         width: 255
         height: 42
       alignment: 0
@@ -1217,8 +918,8 @@ TextureImporter:
       name: SP_20
       rect:
         serializedVersion: 2
-        x: 992
-        y: 714
+        x: 995
+        y: 9
         width: 27
         height: 27
       alignment: 0
@@ -1230,8 +931,8 @@ TextureImporter:
       name: SP_21
       rect:
         serializedVersion: 2
-        x: 992
-        y: 743
+        x: 940
+        y: 5
         width: 30
         height: 31
       alignment: 0
@@ -1243,8 +944,8 @@ TextureImporter:
       name: SP_22
       rect:
         serializedVersion: 2
-        x: 463
-        y: 684
+        x: 905
+        y: 5
         width: 33
         height: 31
       alignment: 0
@@ -1253,24 +954,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_23
-      rect:
-        serializedVersion: 2
-        x: 794
-        y: 569
-        width: 45
-        height: 50
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 19, y: 29, z: 25, w: 20}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_24
       rect:
         serializedVersion: 2
-        x: 498
-        y: 767
+        x: 980
+        y: 332
         width: 40
         height: 36
       alignment: 0
@@ -1279,24 +967,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_25
-      rect:
-        serializedVersion: 2
-        x: 461
-        y: 483
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_26
       rect:
         serializedVersion: 2
-        x: 841
-        y: 487
+        x: 178
+        y: 206
         width: 108
         height: 108
       alignment: 0
@@ -1305,24 +980,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_27
-      rect:
-        serializedVersion: 2
-        x: 980
-        y: 670
-        width: 42
-        height: 42
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 21, y: 21, z: 20, w: 20}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_28
       rect:
         serializedVersion: 2
-        x: 196
-        y: 662
+        x: 532
+        y: 167
         width: 55
         height: 57
       alignment: 0
@@ -1334,8 +996,8 @@ TextureImporter:
       name: SP_29
       rect:
         serializedVersion: 2
-        x: 634
-        y: 573
+        x: 628
+        y: 323
         width: 18
         height: 16
       alignment: 0
@@ -1347,8 +1009,8 @@ TextureImporter:
       name: SP_3
       rect:
         serializedVersion: 2
-        x: 675
-        y: 662
+        x: 898
+        y: 468
         width: 122
         height: 42
       alignment: 0
@@ -1357,37 +1019,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_30
-      rect:
-        serializedVersion: 2
-        x: 211
-        y: 829
-        width: 46
-        height: 53
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 20, y: 29, z: 25, w: 23}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: SP_31
-      rect:
-        serializedVersion: 2
-        x: 799
-        y: 621
-        width: 47
-        height: 54
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 20, y: 32, z: 26, w: 21}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_32
       rect:
         serializedVersion: 2
-        x: 794
-        y: 522
+        x: 730
+        y: 13
         width: 45
         height: 45
       alignment: 0
@@ -1399,8 +1035,8 @@ TextureImporter:
       name: SP_33
       rect:
         serializedVersion: 2
-        x: 799
-        y: 677
+        x: 632
+        y: 11
         width: 48
         height: 47
       alignment: 0
@@ -1412,8 +1048,8 @@ TextureImporter:
       name: SP_34
       rect:
         serializedVersion: 2
-        x: 799
-        y: 896
+        x: 469
+        y: 161
         width: 61
         height: 62
       alignment: 0
@@ -1425,8 +1061,8 @@ TextureImporter:
       name: SP_35
       rect:
         serializedVersion: 2
-        x: 1007
-        y: 914
+        x: 30
+        y: 7
         width: 10
         height: 10
       alignment: 0
@@ -1438,8 +1074,8 @@ TextureImporter:
       name: SP_36
       rect:
         serializedVersion: 2
-        x: 188
-        y: 622
+        x: 990
+        y: 390
         width: 24
         height: 17
       alignment: 0
@@ -1451,8 +1087,8 @@ TextureImporter:
       name: SP_38
       rect:
         serializedVersion: 2
-        x: 680
-        y: 827
+        x: 714
+        y: 469
         width: 19
         height: 18
       alignment: 0
@@ -1464,8 +1100,8 @@ TextureImporter:
       name: SP_39
       rect:
         serializedVersion: 2
-        x: 634
-        y: 591
+        x: 608
+        y: 323
         width: 18
         height: 16
       alignment: 0
@@ -1477,8 +1113,8 @@ TextureImporter:
       name: SP_4
       rect:
         serializedVersion: 2
-        x: 833
-        y: 400
+        x: 905
+        y: 381
         width: 81
         height: 85
       alignment: 0
@@ -1490,8 +1126,8 @@ TextureImporter:
       name: SP_40
       rect:
         serializedVersion: 2
-        x: 1008
-        y: 996
+        x: 16
+        y: 5
         width: 12
         height: 12
       alignment: 0
@@ -1503,8 +1139,8 @@ TextureImporter:
       name: SP_41
       rect:
         serializedVersion: 2
-        x: 1008
-        y: 1010
+        x: 2
+        y: 5
         width: 12
         height: 12
       alignment: 0
@@ -1517,7 +1153,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2
-        y: 545
+        y: 153
         width: 174
         height: 160
       alignment: 0
@@ -1529,8 +1165,8 @@ TextureImporter:
       name: SP_43
       rect:
         serializedVersion: 2
-        x: 667
-        y: 544
+        x: 211
+        y: 394
         width: 125
         height: 116
       alignment: 0
@@ -1542,8 +1178,8 @@ TextureImporter:
       name: SP_44
       rect:
         serializedVersion: 2
-        x: 743
-        y: 285
+        x: 2
+        y: 315
         width: 77
         height: 195
       alignment: 0
@@ -1555,8 +1191,8 @@ TextureImporter:
       name: SP_45
       rect:
         serializedVersion: 2
-        x: 178
-        y: 471
+        x: 213
+        y: 318
         width: 65
         height: 74
       alignment: 0
@@ -1568,8 +1204,8 @@ TextureImporter:
       name: SP_46
       rect:
         serializedVersion: 2
-        x: 531
-        y: 475
+        x: 146
+        y: 19
         width: 101
         height: 132
       alignment: 0
@@ -1578,24 +1214,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_48
-      rect:
-        serializedVersion: 2
-        x: 245
-        y: 318
-        width: 104
-        height: 185
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_49
       rect:
         serializedVersion: 2
-        x: 743
-        y: 482
+        x: 735
+        y: 427
         width: 88
         height: 38
       alignment: 0
@@ -1607,8 +1230,8 @@ TextureImporter:
       name: SP_5
       rect:
         serializedVersion: 2
-        x: 541
-        y: 960
+        x: 413
+        y: 404
         width: 320
         height: 62
       alignment: 0
@@ -1620,8 +1243,8 @@ TextureImporter:
       name: SP_50
       rect:
         serializedVersion: 2
-        x: 799
-        y: 726
+        x: 286
+        y: 154
         width: 49
         height: 50
       alignment: 0
@@ -1630,24 +1253,11 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: SP_51
-      rect:
-        serializedVersion: 2
-        x: 463
-        y: 717
-        width: 33
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 16, y: 15, z: 16, w: 15}
-      outline: []
-      tessellationDetail: -1
-    - serializedVersion: 2
       name: SP_6
       rect:
         serializedVersion: 2
-        x: 188
-        y: 641
+        x: 715
+        y: 160
         width: 43
         height: 19
       alignment: 0
@@ -1659,8 +1269,8 @@ TextureImporter:
       name: SP_7
       rect:
         serializedVersion: 2
-        x: 2
-        y: 707
+        x: 495
+        y: 226
         width: 192
         height: 91
       alignment: 0
@@ -1672,8 +1282,8 @@ TextureImporter:
       name: SP_8
       rect:
         serializedVersion: 2
-        x: 233
-        y: 642
+        x: 990
+        y: 370
         width: 18
         height: 18
       alignment: 0
@@ -1685,8 +1295,8 @@ TextureImporter:
       name: SP_9
       rect:
         serializedVersion: 2
-        x: 222
-        y: 590
+        x: 972
+        y: 6
         width: 21
         height: 30
       alignment: 0
@@ -1698,8 +1308,8 @@ TextureImporter:
       name: SP_TiLi
       rect:
         serializedVersion: 2
-        x: 1007
-        y: 926
+        x: 790
+        y: 3
         width: 11
         height: 33
       alignment: 0
@@ -1711,8 +1321,8 @@ TextureImporter:
       name: SP_TiLi2
       rect:
         serializedVersion: 2
-        x: 1007
-        y: 961
+        x: 777
+        y: 3
         width: 11
         height: 33
       alignment: 0
@@ -1724,8 +1334,8 @@ TextureImporter:
       name: SP_TiLi_BG
       rect:
         serializedVersion: 2
-        x: 634
-        y: 535
+        x: 990
+        y: 294
         width: 17
         height: 36
       alignment: 0
@@ -1737,8 +1347,8 @@ TextureImporter:
       name: SP_shadow
       rect:
         serializedVersion: 2
-        x: 2
-        y: 928
+        x: 359
+        y: 60
         width: 537
         height: 94
       alignment: 0
@@ -1750,8 +1360,8 @@ TextureImporter:
       name: TextBg
       rect:
         serializedVersion: 2
-        x: 540
-        y: 870
+        x: 735
+        y: 467
         width: 160
         height: 43
       alignment: 0

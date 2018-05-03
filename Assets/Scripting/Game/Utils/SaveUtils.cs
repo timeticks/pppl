@@ -57,6 +57,7 @@ public class SaveUtils
     {
         //获取路径
         string tempStr = FileUtils.ReadBytesString(FileUtils.PersistentDataPath, key);
+        TDebug.LogInEditor("读取路径：" + FileUtils.PersistentDataPath+"/"+key);
         if (tempStr.Length <= 0) return defaultString;
         return tempStr;
     }

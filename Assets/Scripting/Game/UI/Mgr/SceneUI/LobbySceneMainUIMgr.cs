@@ -14,6 +14,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public CanvasGroup LobbyUI; 
         public Text TextGold;
         public Text TextDiamond;
+        public Panel_ChooseMap Panel_ChooseMap;
         public ViewObj(UIViewBase view)
         {
             if (LobbyTop != null) return;
@@ -21,6 +22,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             LobbyUI = view.GetCommon<CanvasGroup>("LobbyUI");
             TextGold = view.GetCommon<Text>("TextGold");
             TextDiamond = view.GetCommon<Text>("TextDiamond");
+            Panel_ChooseMap = view.GetCommon<GameObject>("Panel_ChooseMap").AddComponent<Panel_ChooseMap>();
         }
     }
 
@@ -82,11 +84,19 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ActivityBtn,     mViewObj.BtnActivity.transform);
 
         PlayerPrefsBridge.Instance.LoadPlayer();
-        if (PVEMgr.Instance == null)
-        {
-            gameObject.CheckAddComponent<PVEMgr>().Init(30001);
-        }
+        //if (PVEMgr.Instance == null)
+        //{
+        //    gameObject.CheckAddComponent<PVEMgr>().Init(30001);
+        //}
         //else PVEMgr.Instance.SwitchMap(30001);
+        PlayerPrefs.DeleteAll();
+
+        mViewObj.Panel_ChooseMap.Init();
+
+        //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
+        //{
+        //    UIRootMgr.Instance.OpenWindow<Window_BallBattle>(WinName.Window_BallBattle).OpenWindow(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
+        //}
     }
 
     public enum SubBtnType

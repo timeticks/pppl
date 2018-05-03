@@ -20,7 +20,10 @@ public class LobbyDialogue :BaseObject
                 mFetcher = value;
         }
     }
-    private string          mDescribe = "";
+
+    public string ch;
+    public string eg;
+
 
     public LobbyDialogue() : base() { }
 
@@ -31,10 +34,6 @@ public class LobbyDialogue :BaseObject
     }
 
 
-    public string Describe
-    {
-        get { return mDescribe; }
-    }
 
 
     public static string GetDescStr(string key, params string[] st)
@@ -42,7 +41,7 @@ public class LobbyDialogue :BaseObject
         LobbyDialogue temp = LobbyDialogue.LobbyDialogueFetcher.GetLobbyDialogueByCopy(key);
         if (temp != null)
         {
-            try { return string.Format(temp.Describe, st).Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\u3000","\u3000"); }
+            try { return string.Format(temp.ch, st).Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\u3000","\u3000"); }
             catch { return string.Format("文本参数个数不匹配:{0}|{1}", key, st.Length); }
         }
         else

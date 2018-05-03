@@ -11,6 +11,8 @@ public class GameConstUtils
     public static string NAME_DOWN_BORDER = "DownBorder";
 
     public static string TAG_UNTAGGED = "Untagged";
+    public static string TAG_BALL = "Ball";
+    public static string TAG_CENTER_ANCHOR = "CenterAnchor";
 
 
     public static int module_travel { get { return GameConst.GetGameConst("module_travel"); } }

@@ -18,7 +18,9 @@ public class BallStop : MonoBehaviour
             TDebug.LogInEditor("超出边界，销毁");
             UIRootMgr.Instance.TopMasking = false;
             mBallCtrl.ParentWin.DisableBall(mBallCtrl);
+            mBallCtrl.ParentWin.FreshMutilDown(true);
             mBallCtrl.ParentWin.GunCtrl.CreateWaitBall(mBallCtrl.MyData.Num, true);
+            PlayerPrefsBridge.Instance.saveMapAccessor();
             Destroy(this);
         }
     }
@@ -31,9 +33,16 @@ public class BallStop : MonoBehaviour
     {
         TDebug.Log(transform.parent.name + "  " + mBallCtrl.MyBallType.ToString());
 
-        if (mBallCtrl.MyBallType == BallType.RunByGunBall)
+        if (mBallCtrl.MyBallType == BallType.ForceAddBall)
         {
-            if (col.gameObject.CompareTag("Ball") || col.gameObject.CompareTag("CenterAnchor")) //附着
+            if (col.gameObject.CompareTag(GameConstUtils.TAG_CENTER_ANCHOR) || col.gameObject.CompareTag(GameConstUtils.TAG_BALL)) //附着
+            {
+                mBallCtrl.Attach(col);
+            }
+        }
+        else if (mBallCtrl.MyBallType == BallType.RunByGunBall)
+        {
+            if (col.gameObject.CompareTag(GameConstUtils.TAG_CENTER_ANCHOR) || col.gameObject.CompareTag(GameConstUtils.TAG_BALL)) //附着
             {
                 mBallCtrl.Attach(col);
             }

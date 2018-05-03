@@ -89,7 +89,7 @@ public class BallBaseCtrl : MonoBehaviour {
             return;
         }
         BallBaseCtrl otherBallCtrl = otherCol.GetComponent<BallBaseCtrl>();
-        if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag("CenterAnchor"))
+        if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag(GameConstUtils.TAG_CENTER_ANCHOR))
             return;
 
         UIRootMgr.Instance.TopMasking = false;
@@ -103,24 +103,33 @@ public class BallBaseCtrl : MonoBehaviour {
         Vector3 localPosWithCenter = ParentWin.InverseTransformPointWithCenter(MyTrans); //球相对于中心球的位置
         XyCoordRef xyPos = ParentWin.MapData.GetNearestXy(new Vector2(localPosWithCenter.x, localPosWithCenter.y), true);
 
-        Vector2 hitDir = otherCol.transform.localPosition - MyTrans.localPosition;
+        Vector3 hitDir = otherCol.transform.position - MyTrans.position;
+        float dot = Vector3.Dot(hitDir.normalized, lastMoveDir.normalized);
+        Vector3 boundDir = Vector3.one;
+        if (dot <= 0.01f) 
+            boundDir = lastMoveDir;
+        else
+            boundDir = lastMoveDir - Vector3.Dot(hitDir.normalized, lastMoveDir.normalized) * hitDir.normalized * 2;   //反射方向
+        TDebug.LogInEditorF("方向 hitDir:{0}   lastMoveDir:{1}   boundDir:{2}   dot:{3}", hitDir, lastMoveDir * 10, boundDir, dot);
 
         //得到与col的相对位置
         //HexagonPosType posType = HexagonGridMgr.CurHexagon.GetHexagonPosType(Vector2.zero, offsetPos);
         TDebug.LogFormat("xy:{0}" , xyPos.ToString());
         ParentWin.AddBall(this, xyPos);
-        PlayerPrefsBridge.Instance.BallMapAcce.CurBall++;
+        PlayerPrefsBridge.Instance.BallMapAcce.FireBallAmount++;
 
         if (MyBallType == BallType.RunByGunBall)
         {
-            ParentWin.DestroyEqualNum(MyData, hitDir);
+            bool isDestroyEqual = ParentWin.DestroyEqualNum(MyData, new Vector2(boundDir.x, boundDir.y));
+            if (!isDestroyEqual)
+                ParentWin.FreshMutilDown(true);
         }
         ParentWin.StartRot(MyTrans.position, lastMoveDir);
 
         MyBallType = BallType.IdleBall;
 
         ParentWin.GunCtrl.CreateWaitBall(-1, false);
-
+        PlayerPrefsBridge.Instance.saveMapAccessor();
     }
 
 
@@ -158,13 +167,18 @@ public class BallBaseCtrl : MonoBehaviour {
     }
     #endregion
 
-    //当飞出的球碰到物体后
+    //碰到边界
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (MyBallType == BallType.IdleBall)
+        if (MyData == null) return;
+        if (!MyData.IsDisable && MyBallType == BallType.IdleBall && gameObject.CompareTag(GameConstUtils.TAG_BALL))
         {
             if (col.gameObject.name.Contains(GameConstUtils.NAME_BORDER)) //碰到边界
             {
+                int mapIdx = PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx;
+                PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx = 0;
+                PlayerPrefsBridge.Instance.saveMapAccessor();
+                UIRootMgr.Instance.OpenWindow<Window_MapEndShow>(WinName.Window_MapEndShow).OpenWindow(mapIdx);
                 TDebug.LogError("失败了");
             }
         }
@@ -206,6 +220,5 @@ public enum BallType
     IdleBall,       
     RunByGunBall,   //炮台发射的球
     ForceAddBall,   //强制增加的球，此球不引发掉落
-    DeadBall,       //即将或已经消失的球
 }
 

@@ -101,12 +101,10 @@ public partial class PlayerPrefsBridge
     public void LoadPlayer()
     {
         string savePlayer = SaveUtils.GetGameSave(GameSaveType.Player.ToString());
+        mBallMapAccessor = JsonMapper.ToObject<BallMapAccessor>(SaveUtils.GetGameSave(GameSaveType.BallMap.ToString()));
         if (savePlayer.Length > 0)
         {
             mPlayerData = JsonMapper.ToObject<GamePlayer>(savePlayer);
-            mPlayerData.Hero = Hero.Fetcher.GetHeroCopy(1001);
-            mSpellInventory.Read(SaveUtils.GetGameSave(GameSaveType.InvSpell.ToString(), ""));
-            mEquipsInventory.Read(SaveUtils.GetGameSave(GameSaveType.InvEquip.ToString(), ""));
             mItemsInventory.Read(SaveUtils.GetGameSave(GameSaveType.InvItem.ToString(), ""));
         }
         else

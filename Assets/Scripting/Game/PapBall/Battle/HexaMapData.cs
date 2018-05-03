@@ -20,8 +20,10 @@ public class HexaMapData
     public XyCoordRef CenterXy;
     private BallNodeData[][] Balls;
 
-    public HexaMapData(int cols, int rows)
+    public HexaMapData(int cols, int rows , int radius)
     {
+        Radius = radius;
+        HeightRatio = radius * 1.732f;
         Width = cols;
         Height = rows;
         CenterXy = new XyCoordRef(Width / 2, Height / 2);

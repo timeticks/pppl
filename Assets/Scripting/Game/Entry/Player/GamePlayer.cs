@@ -165,34 +165,6 @@ public sealed class GamePlayer : GamePlayerBase
 
     #endregion
 
-    //public int getPromType(PromType type)
-    //{
-    //    switch (type)
-    //    {
-    //        case PromType.Str: return Hero.str;
-    //        case Mana: return Hero.mana;
-    //        case Mind: return Hero.mind;
-    //        case Con: return Hero.con;
-    //        case Vit: return Hero.vit;
-    //        case Luk: return Hero.luk;
-    //        case Hp: return Hero.hp;
-    //        case Mp: return Hero.mp;
-    //        case Attack: return Hero.attack;
-    //        case DefPhysical: return Hero.defPhysical;
-    //        case DefMagic: return Hero.defMagic;
-    //        case Hit: return Hero.hit;
-    //        case Dodge: return Hero.dodge;
-    //        case Crit: return Hero.crit;
-    //        case Resilience: return Hero.resilience;
-    //        case Tough: return Hero.tough;
-    //        case Block: return Hero.block;
-    //        case Broken: return Hero.broken;
-    //        case DmgInc: return Hero.dmgInc;
-    //        case DmgDec: return hero.dmgDec;
-    //    }
-    //    return 0;
-    //}
-
     #region 测试
     static System.Random rand = new System.Random();
     public static GamePlayer GetTest()

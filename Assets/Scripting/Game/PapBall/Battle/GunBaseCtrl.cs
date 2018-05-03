@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GunBaseCtrl : MonoBehaviour {
     private Transform mTrans;
@@ -11,28 +12,34 @@ public class GunBaseCtrl : MonoBehaviour {
 
     public class ViewObj
     {
-        public RectTransform Gun;
-        public Transform WaitNextRoot;
+        public RectTransform GunRoot;
+        public Transform WaitNextRoot;
+        public Image GunImage;
         public ViewObj(UIViewBase view)
         {
-            if (Gun != null) return;
-            Gun = view.GetCommon<RectTransform>("Gun");
-            WaitNextRoot = view.GetCommon<Transform>("WaitNextRoot");        }
+            if (GunRoot != null) return;
+            GunRoot = view.GetCommon<RectTransform>("GunRoot");
+            WaitNextRoot = view.GetCommon<Transform>("WaitNextRoot");
+            GunImage = view.GetCommon<Image>("GunImage");        }
     }    private ViewObj mViewObj;
-    private List<BallBaseCtrl> mWaitBallList = new List<BallBaseCtrl>();
+    public List<BallBaseCtrl> WaitBallList = new List<BallBaseCtrl>();
     private BallBaseCtrl mCurWaitBall {
-        get { return mWaitBallList[0]; }
+        get { return WaitBallList[0]; }
     }
 
-    public void Init (Window_BallBattle parentWin)
+    public void Init (Window_BallBattle parentWin , List<int> nextList)
 	{
 	    if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         mParentWin = parentWin;
         mTrans = transform;
-        for (int i = 0; i < 3; i++)
+
+        for (int i = 0; i < nextList.Count; i++)
         {
-            CreateWaitBall(PlayerPrefsBridge.Instance.GetNextRandBall() , i);
+            if (nextList[i] < 0) nextList[i] = PlayerPrefsBridge.Instance.GetNextRandBall();
+            CreateWaitBall(nextList[i], i);
         }
+        
+        
 	    
         IsMovingGun = false;
 
@@ -52,11 +59,11 @@ public class GunBaseCtrl : MonoBehaviour {
                 //RaycastHit hit;
                 //if (Physics.Raycast(ray, out hit, 100f, 1 << LayerMask.NameToLayer("UI")))
                 {
-                    Vector3 gunScreenPos = UIRootMgr.Instance.MyUICam.WorldToScreenPoint(mTrans.position);
+                    Vector3 gunScreenPos = UIRootMgr.Instance.MyUICam.WorldToScreenPoint(mViewObj.GunRoot.position);
                     //mLastDir = hit.point - mTrans.position;
                     mLastDir = Input.mousePosition - gunScreenPos;
                     float angle = -Mathf.Atan(mLastDir.x / mLastDir.y) * Mathf.Rad2Deg;
-                    mViewObj.Gun.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                    mViewObj.GunRoot.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
                 }
             }
         }
@@ -71,7 +78,8 @@ public class GunBaseCtrl : MonoBehaviour {
         UIRootMgr.Instance.TopMasking = true;
         IsMovingGun = false;
         mCurWaitBall.StartRun(mLastDir , BallType.RunByGunBall);
-        mWaitBallList.RemoveAt(0);
+        WaitBallList.RemoveAt(0);
+        PlayerPrefsBridge.Instance.BallMapAcce.CurRound++;
     }
 
     /// <summary>
@@ -83,10 +91,10 @@ public class GunBaseCtrl : MonoBehaviour {
             CreateWaitBall(ballIdx, 0);
         else
         {
-            CreateWaitBall(ballIdx, mWaitBallList.Count);
-            for (int i = 0; i < mWaitBallList.Count; i++)
+            CreateWaitBall(ballIdx, WaitBallList.Count);
+            for (int i = 0; i < WaitBallList.Count; i++)
             {
-                SetBallPosByIndex(mWaitBallList[i], i);
+                SetBallPosByIndex(WaitBallList[i], i);
             }
         }
     }
@@ -100,7 +108,7 @@ public class GunBaseCtrl : MonoBehaviour {
 
         SetBallPosByIndex(ballCtrl, ballIndex);
 
-        mWaitBallList.Insert(ballIndex,ballCtrl);
+        WaitBallList.Insert(ballIndex,ballCtrl);
     }
 
     //根据index，设置大小和位置

@@ -31,9 +31,10 @@ public static class LangMgr
         return TUtility.TryGetValueStr(hash, LangType.ToString().ToLower(), "");
     }
 
-    public static string GetText(string textKey)  //根据语言读取文本
+    public static string GetText(string textKey, params string[] st)  //根据语言读取文本
     {
-        return textKey;
+        return LobbyDialogue.GetDescStr(textKey, st);
+        //return textKey;
         string pre = textKey.Remove(textKey.IndexOf("_"));
         Hashtable tab = null;
         switch (pre)

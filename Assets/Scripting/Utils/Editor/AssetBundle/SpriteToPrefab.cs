@@ -38,7 +38,7 @@ public class SpriteToPrefab : MonoBehaviour
         string savePath = "";
         if (!saveCurPath)
         {
-            EditorUtility.SaveFilePanel("Save Atlas", LastPath, "DontChangeTheName", "prefab");
+            savePath = EditorUtility.SaveFilePanel("Save Atlas", LastPath, "DontChangeTheName", "prefab");
             if (savePath == "") return;
             if (!savePath.Contains("DontChangeTheName"))
             {

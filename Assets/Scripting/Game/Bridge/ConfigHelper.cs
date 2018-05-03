@@ -367,11 +367,12 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    List<BallMap> IBallMapFetcher.GetAllBallMapCopy(bool isCopy=true)
+    List<BallMap> IBallMapFetcher.GetAllBallMapCopy(BallMap.MapType ty , bool isCopy=true)
     {
         List<BallMap> mapList = new List<BallMap>();
         foreach (var temp in mMapCached)
         {
+            if (temp.Value.mapType != ty) continue;
             if (isCopy) mapList.Add(temp.Value.Clone());
             else mapList.Add(temp.Value);
         }

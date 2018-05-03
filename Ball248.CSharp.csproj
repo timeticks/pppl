@@ -202,6 +202,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Protocol\ProduceAccessor.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\AttrProb.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\AttrTable.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Ball.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\BallMap.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\BaseObject.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Buff.cs" />
@@ -322,12 +323,12 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_VIP.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_shop.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_BattleHand.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_ChooseMap.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_PrestigeTaskList.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_RewardLook.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerChallenge.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerRank.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_ItemDetail.cs" />
-    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapChoose.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapDetail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\BaseMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\LoadingCircleCtrl.cs" />
@@ -459,6 +460,7 @@
     <Compile Include="Assets\Scripting\Utils\View\WindowView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Build\GameData\Ball.txt" />
     <None Include="Assets\Build\GameData\BallMap.txt" />
     <None Include="Assets\Build\GameData\DropGrade.txt" />
     <None Include="Assets\Build\GameData\DropQualityRate.txt" />

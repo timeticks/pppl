@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IBallMapFetcher
 {
     BallMap GetBallMapCopy(int idx,bool isCopy=true);
-    List<BallMap> GetAllBallMapCopy(bool isCopy=true);
+    List<BallMap> GetAllBallMapCopy(BallMap.MapType ty ,bool isCopy = true);
 }
 public class BallMap : BaseObject 
 {
@@ -21,7 +21,10 @@ public class BallMap : BaseObject
     }
     public enum MapType
     {
+        None,
+        Test,
         Normal,
+        DIY,
     }
 
     public MapType mapType;
@@ -31,6 +34,8 @@ public class BallMap : BaseObject
     public int level;
     public int diffiStart;  //起始难度
     public int diffiCoeff;  //难度系数
+    public int ballRadius;
+    public int[] pos;
     public Eint[] ballList;    //此地图的小球类型列表
     public Eint[] scoreLoot;
     public Eint[] endLoot;

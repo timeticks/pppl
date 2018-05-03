@@ -179,7 +179,6 @@ public class Window_MapEventList : WindowBase
             FreshEvent();
 
             //刷新红点
-            BadgeTips.FreshWindow(WinName.Window_ChoosePlotDungeon);
             BadgeTips.FreshWindow(WinName.WindowBig_WorldChoose);
         };
         UIRootMgr.Instance.IsLoading = true;

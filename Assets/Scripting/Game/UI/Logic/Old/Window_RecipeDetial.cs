@@ -196,26 +196,6 @@ public class Window_RecipeDetial : WindowBase {
     }
     void Init(AuxSkillLevel.SkillType skillType)
     {
-        mSkillType = skillType;
-        if (skillType== AuxSkillLevel.SkillType.MakeDrug)
-        {
-            mViewObj.TextTitleLeft.text = "丹药配方";
-        }
-        else if (skillType == AuxSkillLevel.SkillType.Forge)
-        {
-            mViewObj.TextTitleLeft.text = "法宝图纸";
-        }
-        else if (skillType == AuxSkillLevel.SkillType.Mine)
-        {
-            mViewObj.TextTitleLeft.text = "矿脉地图";
-        }
-        else if (skillType == AuxSkillLevel.SkillType.GatherHerb)
-        {
-            mViewObj.TextTitleLeft.text = "药山地图";
-        }
-        FreshStateButtons();
-        FreshProficiency();
-        AutoChooseRecipe(skillType);
         mViewObj.BtnExit.SetOnClick(delegate() { CloseWin(); });
         mViewObj.ResetSiteScroll();
     }
@@ -228,33 +208,6 @@ public class Window_RecipeDetial : WindowBase {
             BadgeTips.SetBadgeView(mViewObj.BtnUpSpeed.transform);
     }
 
-    //自动选择配方,有制作进度选择制作中的配方，没有制作进度显示当前技能等级下的第一个配方
-    void AutoChooseRecipe(AuxSkillLevel.SkillType skillType)
-    {
-        ProduceItem item = PlayerPrefsBridge.Instance.GetProduceItem(skillType);
-        if (item != null)
-        {
-            ChooseRecipe(item.RecipeID);
-        }
-        else
-        {
-            int curLevel = PlayerPrefsBridge.Instance.PlayerData.AuxSkillList[(int)mSkillType].Level;
-            List<Recipe> showList = Recipe.GetLevelRecipes(mSkillType, curLevel,PlayerPrefsBridge.Instance.PlayerData.MySect);
-            int tempId = showList[0].idx;
-            ChooseRecipe(tempId);
-        }
-    }
-   /// <summary>
-   /// 通过配方id选择配方
-   /// </summary>
-   /// <param name="recipeId"></param>
-    void ChooseRecipe(int recipeId)
-    {
-        int curLevel = PlayerPrefsBridge.Instance.PlayerData.AuxSkillList[(int)mSkillType].Level;
-        Recipe recipe = Recipe.RecipeFetcher.GetRecipeByCopy(recipeId);
-        BtnEvt_RecipeItemClick((int)recipe.SkillLevel);
-        BtnEvt_RecipeBtnClick(recipeId);     
-    }
     //点击对应境界按钮
     public void BtnEvt_RecipeItemClick(int levelDemand)
     {
@@ -335,44 +288,6 @@ public class Window_RecipeDetial : WindowBase {
         mViewObj.BtnMask.SetOnClick(delegate() { mViewObj.LvUpCostDetial.SetActive(false); });
     }
 
-    ///初始化配方境界标签
-    void FreshStateButtons(bool reset=true )
-    {
-        int curLevel = PlayerPrefsBridge.Instance.PlayerData.AuxSkillList[(int)mSkillType].Level;
-        for (int i = mRecipeStatelist.Count; i < curLevel; i++)
-        {
-            GameObject g = Instantiate(mViewObj.Part_ItemRecipe);
-            TUtility.SetParent(g.transform, mViewObj.RootItemRecipe.transform, false);
-            RecipeStateObj item = new RecipeStateObj(g.GetComponent<UIViewBase>());
-            mRecipeStatelist.Add(item);
-        }
-  
-        for (int i = 0; i < mRecipeStatelist.Count; i++)
-        {
-            RecipeStateObj recpObj = mRecipeStatelist[mRecipeStatelist.Count-i-1];
-            AuxSkillLevel skillLevel = AuxSkillLevel.AuxSkillFetcher.GetAuxSkilleByCopy(i + 1, (AuxSkillLevel.SkillType)((int)mSkillType));
-            recpObj.TextState.text = TUtility.GetTagStr(skillLevel.name);
-            recpObj.LevelDamand = i + 1;
-            int tempIndex =i+1;
-            if (i >curLevel-1)
-            {
-                recpObj.gameobject.SetActive(false);
-            }
-            else
-            {
-                recpObj.gameobject.SetActive(true);
-                recpObj.isOpen = false;
-                recpObj.BtnRecipeState.SetOnClick(delegate() { BtnEvt_RecipeItemClick(tempIndex); });
-            }
-            if (reset)
-            {
-                recpObj.Mark.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                recpObj.RootRecipeBtn.gameObject.SetActive(false);
-                recpObj.contentSizeFit.ResetSize();
-            }
-        }
-      
-    }
     void FreshRecipeInfo(int recipeId)
     {
         FreshBadge(false);
@@ -505,33 +420,6 @@ public class Window_RecipeDetial : WindowBase {
         }
       
     }
-    ///刷新生活技能熟练度
-    void FreshProficiency()
-    {
-        AuxSkillLevel skill = PlayerPrefsBridge.Instance.PlayerData.AuxSkillList[(int)mSkillType];
-        if (skill != null)
-        {
-            mViewObj.TextState.text = skill.name;
-            if (skill.CurProficiency >= skill.Proficiency)
-            {
-                mViewObj.BtnUpAuxSkill.SetOnClick(delegate() { BtnEvt_UpLevelAuxSkill(skill.mType); });
-                mViewObj.LvUpTip.gameObject.SetActive(true);
-                mViewObj.ProScrollRoot.gameObject.SetActive(false);
-                HeroLevelUp lvUp = HeroLevelUp.LevelUpFetcher.GetLevelUpByCopy(skill.State);
-                mViewObj.TextLvDemand.text = string.Format("角色等级达到{0}", lvUp.name);         
-                Item item = Item.Fetcher.GetItemCopy(skill.Item);
-                mViewObj.TextLvUpCost.text = item.name;
-                mViewObj.BtnLvUpCost.SetOnClick(delegate() { BtnEvt_LvUpCostClick(item.desc); });
-            }
-            else
-            {
-                mViewObj.LvUpTip.gameObject.SetActive(false);
-                mViewObj.ProScrollRoot.gameObject.SetActive(true);
-                mViewObj.ProScrollRoot.Fresh((float)skill.CurProficiency / skill.Proficiency, string.Format("{0}/{1}", skill.CurProficiency, skill.Proficiency), "熟练度");
-            }
-
-        }
-    }
     private long mOffsetTime = 0;
     void FreshTime()
     {
@@ -616,7 +504,6 @@ public class Window_RecipeDetial : WindowBase {
         NetPacket.S2C_FinishProduce msg = MessageBridge.Instance.S2C_FinishProduce(ios);
         UIRootMgr.LobbyUI.ShowDropInfo(msg.TranslateList);
         UIRootMgr.LobbyUI.AppendTextNewLine(string.Format("获得{0}点熟练度",msg.Prociency));
-        FreshProficiency();
         BtnEvt_RecipeBtnClick(mSelectRecipeId);
     }
     public void S2C_AuxSkillLevelUp(BinaryReader ios)

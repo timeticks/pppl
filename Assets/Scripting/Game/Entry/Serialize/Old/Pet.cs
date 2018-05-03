@@ -123,7 +123,7 @@ public class Pet : DescObject
         get
         {
             LobbyDialogue dia = LobbyDialogue.LobbyDialogueFetcher.GetLobbyDialogueByCopy(mType.GetDesc());
-            return string.Format("<color=#{0}>{1}</color>", dia.Describe, this.name);
+            return string.Format("<color=#{0}>{1}</color>", dia.ch, this.name);
         }
     }
 

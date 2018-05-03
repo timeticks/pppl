@@ -509,10 +509,6 @@ public class Window_DungeonMap : WindowBase
 
     void S2C_MapEnd(BinaryReader ios)
     {
-        UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_MapEnd msg = MessageBridge.Instance.S2C_MapEnd(ios);
-        Window_MapEndShow mapEndWin = UIRootMgr.Instance.OpenWindow<Window_MapEndShow>(WinName.Window_MapEndShow, CloseUIEvent.None);
-        mapEndWin.OpenWindow(mMapIdx, msg.FinishEvents, msg.EndType, msg.EndId, delegate() { CloseWindow(); });
     }
    
     void MapEnd(MapEndType endType)

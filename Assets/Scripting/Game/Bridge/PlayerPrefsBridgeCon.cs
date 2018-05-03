@@ -712,20 +712,38 @@ public partial class PlayerPrefsBridge
         BallMapAcce.Score = 0;
         BallMapAcce.NextBallList = new List<int>();;
         BallMapAcce.CenterAnchorRotate = 0;
-        BallMapAcce.BallDict = new Dictionary<int, int>();
-        BallMapAcce.MutilBallTimeDown = 10;
+        BallMapAcce.BallDict = new Dictionary<string, int>();
+        BallMapAcce.MutilAddBallDown = 5;
+        BallMapAcce.CurRound = 0;
+        BallMapAcce.MapMaxSize = 29;
     }
 
-    public void SaveMapAccessor(double anchorRotate)
+    public void saveMapAccessor()
     {
-        
+        if (Window_BallBattle.Instance != null)
+        {
+            BallMapAcce.NextBallList.Clear();
+            for (int i = 0; i < Window_BallBattle.Instance.GunCtrl.WaitBallList.Count; i++)
+            {
+                BallMapAcce.NextBallList.Add(Window_BallBattle.Instance.GunCtrl.WaitBallList[i].MyData.Num);
+            }
+
+            BallMapAcce.BallDict.Clear();
+            for (int i = 0; i < Window_BallBattle.Instance.MapData.Width; i++)
+            {
+                for (int j = 0; j < Window_BallBattle.Instance.MapData.Height; j++)
+                {
+                    BallNodeData tempNode = Window_BallBattle.Instance.MapData.GetNode(i, j);
+                    if (tempNode != null && tempNode.BallCtrl != null)
+                    {
+                        BallMapAcce.BallDict.Add(Window_BallBattle.Instance.MapData.GetNodeIndex(tempNode.Pos.m_X, tempNode.Pos.m_Y).ToString(), tempNode.BallCtrl.MyData.Num);
+                    }
+                }
+            }
+            saveBallMapAccessor();
+        }
     }
 
-    //球已发射，进行数据刷新。在球碰到其他球，或此球反弹过多销毁时调用
-    public void FireBall()
-    {
-        
-    }
 
     private static System.Random mBallRand = new System.Random();
     public int GetNextRandBall()
@@ -736,7 +754,7 @@ public partial class PlayerPrefsBridge
 
     public void AddBall(int posIndex, int num)
     {
-        BallMapAcce.BallDict[posIndex] = num;
+        //BallMapAcce.BallDict[posIndex] = num;
     }
 
 
@@ -785,6 +803,13 @@ public partial class PlayerPrefsBridge
     }
 
 
+    void saveBallMapAccessor()
+    {
+        string saveStr = JsonMapper.ToJsonWithType<BallMapAccessor>(mBallMapAccessor);
+        TDebug.LogInEditor(saveStr);
+        SaveUtils.SetGameSave(GameSaveType.BallMap.ToString(), saveStr);
+    }
+
 
 
 }
@@ -795,6 +820,7 @@ public enum GameSaveType
     InvItem,
     InvEquip,
     InvSpell,
+    BallMap,
     Player,
 }
 
