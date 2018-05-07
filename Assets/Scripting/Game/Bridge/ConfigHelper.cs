@@ -11,7 +11,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
-    IQualityTableFetcher
+    IQualityTableFetcher,IPartnerDialogueFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -61,6 +61,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, MonsterLevelUp> mMonsterLevelUpCached            = new Dictionary<int, MonsterLevelUp>(12);
     public Dictionary<int, MonsterRate>   mMonsterRateCached                = new Dictionary<int, MonsterRate>(12);
     public Dictionary<int, QualityTable> mQualityTableCached                = new Dictionary<int, QualityTable>(12);
+    public Dictionary<string, Dictionary<string, PartnerDialogue>> mPartnerDialogueCached = new Dictionary<string, Dictionary<string, PartnerDialogue>>(12);
 
     public static ConfigHelper Instance
     {
@@ -171,6 +172,16 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 mQualityTableCached.Add(temp.Value.dropQuality, temp.Value);
             }
             TDebug.Log(string.Format("初始QualityTable成功:{0}项", mQualityTableCached.Count));
+        }
+        else if (dataName == DataName.PartnerDialogue)
+        {
+            Dictionary<string, PartnerDialogue> pool = LitJson.JsonMapper.ToObject<Dictionary<string, PartnerDialogue>>(text);
+            foreach (var temp in pool)
+            {
+                if (temp.Value.intimacyRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, 5 };
+                //mPartnerDialogueCached.Add(temp.Value.name, temp.Value);
+            }
+            TDebug.Log(string.Format("初始PartnerDialogue成功:{0}项", mQualityTableCached.Count));
         }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
@@ -466,7 +477,25 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-
+    private List<PartnerDialogue> mCurPartnerDialogueList = new List<PartnerDialogue>();
+    PartnerDialogue IPartnerDialogueFetcher.GetPartnerDialogueCopy(PartnerData partnerData, int dayHour, bool isCopy = true)
+    {
+        PartnerDialogue origin = null;
+        Partner partner = Partner.Fetcher.GetPartnerCopy(partnerData.idx);
+        string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.GetIntimacyLevel());
+        Dictionary<string, PartnerDialogue> dict;
+        if (mPartnerDialogueCached.TryGetValue(key, out dict))
+        {
+            foreach (var temp in dict)
+            {
+                if (temp.Value.timeRange[0] >= dayHour || temp.Value.timeRange[1] >= dayHour)
+                    continue;
+            }
+            return origin.Clone();
+        }
+        TDebug.LogError(string.Format("PartnerDialogue没有此key:{0}", key));
+        return null;
+    }
 
 
 

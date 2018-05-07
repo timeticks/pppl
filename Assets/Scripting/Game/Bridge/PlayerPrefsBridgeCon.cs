@@ -810,7 +810,11 @@ public partial class PlayerPrefsBridge
         SaveUtils.SetGameSave(GameSaveType.BallMap.ToString(), saveStr);
     }
 
-
+    public void savePartnerModule()
+    {
+        string saveStr = JsonMapper.ToJsonWithType<PartnerAccessor>(mPartnerAccessor);
+        SaveUtils.SetGameSave(GameSaveType.Partner.ToString(), saveStr);
+    }
 
 }
 
@@ -822,6 +826,7 @@ public enum GameSaveType
     InvSpell,
     BallMap,
     Player,
+    Partner,
 }
 
 

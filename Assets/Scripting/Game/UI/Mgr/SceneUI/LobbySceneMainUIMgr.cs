@@ -15,6 +15,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public Text TextGold;
         public Text TextDiamond;
         public Panel_ChooseMap Panel_ChooseMap;
+        public TextButton TBtnPartner;
         public ViewObj(UIViewBase view)
         {
             if (LobbyTop != null) return;
@@ -22,6 +23,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             LobbyUI = view.GetCommon<CanvasGroup>("LobbyUI");
             TextGold = view.GetCommon<Text>("TextGold");
             TextDiamond = view.GetCommon<Text>("TextDiamond");
+            TBtnPartner = view.GetCommon<TextButton>("TBtnPartner");
             Panel_ChooseMap = view.GetCommon<GameObject>("Panel_ChooseMap").AddComponent<Panel_ChooseMap>();
         }
     }
@@ -92,6 +94,9 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         PlayerPrefs.DeleteAll();
 
         mViewObj.Panel_ChooseMap.Init();
+
+        mViewObj.TBtnPartner.TextBtn.text = LangMgr.GetText("同 伴");
+        mViewObj.TBtnPartner.SetOnAduioClick(BtnEvt_OpenPartner);
 
         //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
         //{
@@ -232,15 +237,6 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
     {
     }
 
-    public void BtnEvt_OpenRoleInfo()
-    {
-     //   TDebug.LogError("角色信息暂时频闭");
-        WindowBig_RoleInfo win = UIRootMgr.Instance.GetOpenListWindow<WindowBig_RoleInfo>(WinName.WindowBig_RoleInfo);
-        if (win == null)
-            UIRootMgr.Instance.OpenWindow<WindowBig_RoleInfo>(WinName.WindowBig_RoleInfo).OpenWindow();
-        else
-            win.BtnEvt_Exit();
-    }
 
     public void BtnEvt_ItemInventory()
     {
@@ -252,17 +248,17 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None).OpenWindow();
     }
 
-
-    public void BtnEvt_OpenMail()
-    {
-        UIRootMgr.Instance.OpenWindow<Window_Mail>(WinName.Window_Mail,CloseUIEvent.None).OpenWindow();
-    }
     public void BtnEvt_OpenShop()
     {
         SaveUtils.SetIntInPlayer(ModuleType.module_shop.ToString(), BadgeStatus.Normal.ToInt());
 
         UIRootMgr.Instance.OpenWindow<WindowBig_Store>(WinName.WindowBig_Store).OpenWindow();
         //UIRootMgr.Instance.Window_UpTips.InitTips(LangMgr.GetText("暂未开放"), Color.red);
+    }
+
+    void BtnEvt_OpenPartner()
+    {
+        UIRootMgr.Instance.OpenWindow<Window_CreatePartner>(WinName.Window_CreatePartner).OpenWindow();
     }
 
     public void AppendLobbyTips(string tips)

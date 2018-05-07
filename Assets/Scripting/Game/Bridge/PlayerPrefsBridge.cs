@@ -51,6 +51,9 @@ public partial class PlayerPrefsBridge
     private ShopAccessor mShopAccessor = new ShopAccessor(); //商店限制购买问题
     private AchievementAccessor mAchievementAccessor = new AchievementAccessor();
 
+    private PartnerAccessor mPartnerAccessor = new PartnerAccessor();
+    public PartnerAccessor PartnerAcce { get { return mPartnerAccessor; } }
+
     public BallMapAccessor BallMapAcce { get { return mBallMapAccessor; } }
     private BallMapAccessor mBallMapAccessor = new BallMapAccessor();
 
@@ -101,13 +104,18 @@ public partial class PlayerPrefsBridge
     public void LoadPlayer()
     {
         string savePlayer = SaveUtils.GetGameSave(GameSaveType.Player.ToString());
-        mBallMapAccessor = JsonMapper.ToObject<BallMapAccessor>(SaveUtils.GetGameSave(GameSaveType.BallMap.ToString()));
-        if (savePlayer.Length > 0)
-        {
-            mPlayerData = JsonMapper.ToObject<GamePlayer>(savePlayer);
-            mItemsInventory.Read(SaveUtils.GetGameSave(GameSaveType.InvItem.ToString(), ""));
-        }
-        else
+        //if (savePlayer.Length > 0)
+        //{
+        //    string tempSave = "";
+        //    mBallMapAccessor = JsonMapper.ToObject<BallMapAccessor>(SaveUtils.GetGameSave(GameSaveType.BallMap.ToString()));
+        //    mPlayerData = JsonMapper.ToObject<GamePlayer>(savePlayer);
+        //    mItemsInventory.Read(SaveUtils.GetGameSave(GameSaveType.InvItem.ToString(), ""));
+
+        //    tempSave = SaveUtils.GetGameSave(GameSaveType.Partner.ToString());
+        //    if(tempSave.Length>0)
+        //        mPartnerAccessor = JsonMapper.ToObject<PartnerAccessor>(tempSave);
+        //}
+        //else
         {
             CreateNewPlayer();
         }

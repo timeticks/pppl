@@ -21,16 +21,25 @@ public class GameConst : BaseObject
         }
     }
 
-    public Eint num;
+    public Estring num;
 
     public static int GetGameConst(string key)
     {
-        GameConst GameConst = GameConst.Fetcher.GetGameConstNoCopy(key);
-        if (GameConst != null)
+        GameConst gameConst = GameConst.Fetcher.GetGameConstNoCopy(key);
+        if (gameConst != null)
         {
-            return GameConst.num;
+            return int.Parse((string)gameConst.num);
         }
         return 0;
+    }
+    public static int[] GetGameConstArray(string key)
+    {
+        GameConst gameConst = GameConst.Fetcher.GetGameConstNoCopy(key);
+        if (gameConst != null)
+        {
+            return TUtility.SplitToIntArray(gameConst.num);
+        }
+        return new int[0];
     }
 
     public GameConst():base()

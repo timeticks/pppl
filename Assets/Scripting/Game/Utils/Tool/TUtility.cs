@@ -625,6 +625,22 @@ public class TUtility:TUtilityBase
         childTran.GetComponent<RectTransform>().sizeDelta = sizeDetla;
     }
 
+    public static int[] SplitToIntArray(string str, char splitChar = '|')
+    {
+        string[] s = str.Split(splitChar);
+        int[] l = new int[s.Length];
+        if (s != null && s.Length > 0)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                int temp = 0;
+                int.TryParse(s[i], out temp);
+                l[i] = temp;
+            }
+        }
+        return l;
+    }
+
 
     #region 时间相关
     /// <summary>
@@ -800,6 +816,9 @@ public class TUtility:TUtilityBase
     }
 
     #endregion
+
+
+
 
 
     /// <summary>

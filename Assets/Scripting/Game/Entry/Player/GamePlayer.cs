@@ -16,6 +16,9 @@ public class GamePlayerBase
     public Eint Gold = 0;       //普通货币
     public Eint Diamond = 0;    //充值货币
     public Eint Potential = 0;
+    public Eint memoryPiece;    //记忆碎片数量
+
+
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
 
     public Eint HeadIconIdx = 0;   //头像
@@ -35,6 +38,7 @@ public class GamePlayerBase
     public bool IsSetName;    //是否已经取名
     public Elong VipTime = 0;      //vip的到期时间
     public Eint PlayerIdx = 0;
+
 
     public void CopyBy(GamePlayerBase origin)
     {
@@ -194,3 +198,4 @@ public enum WealthType : byte
     Exp,
     Max
 }
+

@@ -179,6 +179,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Player\BallMapAccessor.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\GamePlayer.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PVEHero.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Player\PartnerAccessor.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\PlayerAttribute.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Player\User.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Protocol\Old\AchievementAccessor.cs" />
@@ -252,6 +253,8 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Travel.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\TravelEvent.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\TravelSmallEvent.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Partner.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\PartnerDialogue.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Produce.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\QualityTable.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Skill.cs" />
@@ -309,7 +312,6 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_ItemInventory.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Login.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Mail.cs" />
-    <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_MapEndShow.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_MapEventList.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_NpcInteract.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_PrestigeStore.cs" />
@@ -328,8 +330,10 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_RewardLook.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerChallenge.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerRank.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_CreatePartner.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_ItemDetail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapDetail.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapEndShow.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\BaseMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\LoadingCircleCtrl.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\Window_Guide.cs" />
@@ -370,6 +374,7 @@
     <Compile Include="Assets\Scripting\Game\Utils\AssetBundle\Scriptable\ClientSetting.cs" />
     <Compile Include="Assets\Scripting\Game\Utils\AssetBundle\SharedAsset.cs" />
     <Compile Include="Assets\Scripting\Game\Utils\ClassExtensionUtils.cs" />
+    <Compile Include="Assets\Scripting\Game\Utils\EnumExtensionUtils.cs" />
     <Compile Include="Assets\Scripting\Game\Utils\FileUtils.cs" />
     <Compile Include="Assets\Scripting\Game\Utils\GameConstUtils.cs" />
     <Compile Include="Assets\Scripting\Game\Utils\GameUtils.cs" />

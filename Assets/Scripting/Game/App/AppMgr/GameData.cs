@@ -18,6 +18,7 @@ public enum DataName : short
     LobbyDialogue,
     HeroLevelUp,
     QualityTable,
+    PartnerDialogue,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,
