@@ -190,6 +190,8 @@
     <None Include="Assets\Build\GameData\Item.txt" />
     <None Include="Assets\Build\GameData\LobbyDialogue.txt" />
     <None Include="Assets\Build\GameData\Loot.txt" />
+    <None Include="Assets\Build\GameData\Partner.txt" />
+    <None Include="Assets\Build\GameData\PartnerDialogue.txt" />
     <None Include="Assets\Build\GameData\Produce.txt" />
     <None Include="Assets\Build\GameData\QualityTable.txt" />
     <None Include="Assets\Build\GameData\ServerTipsText.txt" />

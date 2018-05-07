@@ -99,6 +99,26 @@ public class RPGRandomUtility
         return GetIndexByPct(pctCopy);
     }
 
+    private static System.Random rand = new System.Random();
+    public static int GetIndexByPct(int[] probabillty)
+    {
+        int total = 0;
+
+        for (int i = 0; i < probabillty.Length; i++)
+        {
+            total += probabillty[i];
+        }
+        int randomPoint = (int)(rand.NextDouble() * total);
+        for (int i = 0; i < probabillty.Length; i++)
+        {
+            if (randomPoint < probabillty[i])
+            {
+                return i;
+            }
+            randomPoint -= probabillty[i];
+        }
+        return probabillty.Length - 1;
+    }
 
 
     /// <summary>

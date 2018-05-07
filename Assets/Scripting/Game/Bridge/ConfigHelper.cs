@@ -178,7 +178,19 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             Dictionary<string, PartnerDialogue> pool = LitJson.JsonMapper.ToObject<Dictionary<string, PartnerDialogue>>(text);
             foreach (var temp in pool)
             {
-                if (temp.Value.intimacyRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, 5 };
+                if (temp.Value.intimacyRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
+                if (temp.Value.chatNumRange.Length == 0) temp.Value.intimacyRange = new int[2] { 0, int.MaxValue };
+                if (temp.Value.memoryRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
+                if (temp.Value.timeRange.Length == 0) temp.Value.intimacyRange = new int[2] { 0, int.MaxValue };
+                if (temp.Value.characRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
+                if (temp.Value.sexRange.Length == 0) temp.Value.intimacyRange = new int[2] { (int)PartnerData.Sex.None+1, (int)PartnerData.Sex.Max };
+                for (int i = temp.Value.sexRange[0]; temp.Value.sexRange.Length>1 && i < temp.Value.sexRange[1]; i++)
+                {
+                    for (int j = temp.Value.sexRange[0]; temp.Value.sexRange.Length > 1 && j < temp.Value.sexRange[1]; j++)a
+                    {
+
+                    }
+                }
                 //mPartnerDialogueCached.Add(temp.Value.name, temp.Value);
             }
             TDebug.Log(string.Format("初始PartnerDialogue成功:{0}项", mQualityTableCached.Count));
@@ -478,21 +490,37 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     }
 
     private List<PartnerDialogue> mCurPartnerDialogueList = new List<PartnerDialogue>();
-    PartnerDialogue IPartnerDialogueFetcher.GetPartnerDialogueCopy(PartnerData partnerData, int dayHour, bool isCopy = true)
+    private List<int> mCurPartnerDialoguePctList = new List<int>();
+    PartnerDialogue IPartnerDialogueFetcher.GetPartnerDialogueCopy(PartnerData partnerData, int dayHour,int chatNum , bool isCopy = true)
     {
         PartnerDialogue origin = null;
         Partner partner = Partner.Fetcher.GetPartnerCopy(partnerData.idx);
         string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.GetIntimacyLevel());
         Dictionary<string, PartnerDialogue> dict;
+        int happyMemoryTy = (int) partnerData.happyMemory;
+        mCurPartnerDialogueList.Clear();
+        mCurPartnerDialoguePctList.Clear();
         if (mPartnerDialogueCached.TryGetValue(key, out dict))
         {
             foreach (var temp in dict)
             {
-                if (temp.Value.timeRange[0] >= dayHour || temp.Value.timeRange[1] >= dayHour)
+                //筛选时间、回忆、对话次数
+                if (temp.Value.timeRange[0] > dayHour || temp.Value.timeRange[1] < dayHour)
                     continue;
+                if (temp.Value.memoryRange[0] > happyMemoryTy || temp.Value.memoryRange[1] < happyMemoryTy)
+                    continue;
+                if (temp.Value.chatNumRange[0] > chatNum || temp.Value.chatNumRange[1] < chatNum)
+                    continue;
+                if (temp.Value.weight == GameConstUtils.num_certain_partner_dialogue_pct)
+                    return temp.Value;
+                mCurPartnerDialogueList.Add(temp.Value);
+                mCurPartnerDialoguePctList.Add(temp.Value.weight);
             }
             return origin.Clone();
         }
+        TDebug.LogInEditorF("待随机mCurPartnerDialogueList:{0}|{1}|{2}", mCurPartnerDialogueList.Count, dayHour , chatNum);
+        int randIndex = RPGRandomUtility.GetIndexByPct(mCurPartnerDialoguePctList.ToArray());
+        return mCurPartnerDialogueList[randIndex];
         TDebug.LogError(string.Format("PartnerDialogue没有此key:{0}", key));
         return null;
     }

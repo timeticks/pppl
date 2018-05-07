@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IPartnerDialogueFetcher
 {
-    PartnerDialogue GetPartnerDialogueCopy(PartnerData partner ,int dayHour, bool isCopy = true);
+    PartnerDialogue GetPartnerDialogueCopy(PartnerData partnerData, int dayHour, int chatNum, bool isCopy = true);
 }
 public class PartnerDialogue : BaseObject
 {
@@ -27,6 +27,8 @@ public class PartnerDialogue : BaseObject
     public int[] sexRange;
     public int[] characRange;
     public int[] memoryRange;
+    public int[] chatNumRange;
+    public int weight;
 
     public PartnerDialogue()
     {

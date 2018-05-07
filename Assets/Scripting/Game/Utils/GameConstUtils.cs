@@ -79,7 +79,24 @@ public class GameConstUtils
     public static int max_level { get { return GameConst.GetGameConst("max_level"); } }
     public static int max_gold { get { return GameConst.GetGameConst("max_gold"); } }
 
+
+
+
+
+
+
+
+    public static int num_certain_partner_dialogue_pct { get { return 10000; } }//伙伴某对话肯定出现的权重值
+
     public static int[] array_intimacy_level { get { return GameConst.GetGameConstArray("array_intimacy_level"); } }
+
+
+
+
+
+
+
+
 
     public static int GetNewModuleUnlockLevel(ModuleType ty)
     {
