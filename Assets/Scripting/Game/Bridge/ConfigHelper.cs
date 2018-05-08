@@ -11,57 +11,58 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
-    IQualityTableFetcher,IPartnerDialogueFetcher
+    IQualityTableFetcher,IPartnerDialogueFetcher,IPartnerFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
-    public Dictionary<int, Hero>             mHeroCached                    = new Dictionary<int, Hero>(12);
-    public Dictionary<int, HeroLevelUp>      mHeroLevelUpCached             = new Dictionary<int, HeroLevelUp>(12);
-    public Dictionary<int, Spell>            mSkillCached                   = new Dictionary<int, Spell>(12);
-    public Dictionary<int, Item> mItemCached                                = new Dictionary<int, Item>(12);
-    public Dictionary<int, Equip>            mEquipCached                   = new Dictionary<int,Equip>(12);
-    public Dictionary<int, PVEDialogue>      mPVEDialogueCached             = new Dictionary<int, PVEDialogue>(12);
-    public Dictionary<int, MapData>          mMapDataCached                 = new Dictionary<int, MapData>(12);
-    public Dictionary<int, Dialog>           mDialogCached                  = new Dictionary<int, Dialog>(12);
-    public Dictionary<int, Recipe>           mRecipeCached                  = new Dictionary<int, Recipe>(12);
-    public Dictionary<int, AuxSkillLevel>     mAuxSkillLevelCached           = new Dictionary<int, AuxSkillLevel>(12);
-    public Dictionary<int, Travel>           mTravelCached                  = new Dictionary<int, Travel>(12);
-    public Dictionary<int, TravelEvent>      mTravelEventCached             = new Dictionary<int, TravelEvent>(12);
-    public Dictionary<int, TravelSmallEvent> mTravelSmallEventCached        = new Dictionary<int, TravelSmallEvent>(12);
-    public Dictionary<string, LobbyDialogue> mLobbyDialogueCached           = new Dictionary<string, LobbyDialogue>(3);
-    public Dictionary<Sect.SectType, Sect>   mSectCached                    = new Dictionary<Sect.SectType, Sect>(3);
-    public Dictionary<int, SpellObtain>      mSpellObtainCached             = new Dictionary<int, SpellObtain>(12);
-    public Dictionary<int, MindTreeMap>     mMindTreeMapCached              = new Dictionary<int,MindTreeMap>(3);
-    public Dictionary<int, Loot>            mLootCached                     = new Dictionary<int, Loot>(12);
-    public Dictionary<int, Pet>             mPetCached                      = new Dictionary<int,Pet>(12);
-    public Dictionary<int, MapEvent>        mMapEventCached                 = new Dictionary<int, MapEvent>(12);
-    public Dictionary<int, Cave>            mCaveCached                     = new Dictionary<int, Cave>(12);
-    public Dictionary<int, SpellLevelUp>    mSpellLevelUpCached             = new Dictionary<int, SpellLevelUp>(12);
-    public Dictionary<int, PetLevelUp>      mPetLevelUpCached               = new Dictionary<int, PetLevelUp>(12);
-    public Dictionary<int, ErrorStatus>     mErrorStatusCached              = new Dictionary<int, ErrorStatus>(12);
-    public Dictionary<int, PropLevelUp>      mPropLevelUpCached             = new Dictionary<int, PropLevelUp>(12);
-    public Dictionary<int, Shop>               mShopCached                  = new Dictionary<int, Shop>(12);
-    public Dictionary<int, Commodity>        mCommodityCached               = new Dictionary<int, Commodity>(12);
-    public Dictionary<int, PrestigeLevel>      mPrestigeLevelCached         = new Dictionary<int, PrestigeLevel>(12);
-    public Dictionary<int, PrestigeTask>       mPrestigeTaskCached          = new Dictionary<int, PrestigeTask>(12);
-    public Dictionary<int, Tower>              mTowerCached                 = new Dictionary<int, Tower>(12);
-    public Dictionary<int, Achievement>         mAchievementCached            = new Dictionary<int, Achievement>(12);
-    public Dictionary<int, AchieveReward>   mAchieveRewardCached              = new Dictionary<int, AchieveReward>(12);
-    public Dictionary<int, BookSpell>          mBookSpellCached               = new Dictionary<int, BookSpell>(12);
-    public Dictionary<int, HeadIcon>          mHeadIconCached                = new Dictionary<int, HeadIcon>(12);
-    public Dictionary<int, Buff>              mBuffCached                   = new Dictionary<int, Buff>(12);
+    public Dictionary<int, Hero>             mHeroCached                        = new Dictionary<int, Hero>(12);
+    public Dictionary<int, HeroLevelUp>      mHeroLevelUpCached                 = new Dictionary<int, HeroLevelUp>(12);
+    public Dictionary<int, Spell>            mSkillCached                       = new Dictionary<int, Spell>(12);
+    public Dictionary<int, Item> mItemCached                                    = new Dictionary<int, Item>(12);
+    public Dictionary<int, Equip>            mEquipCached                       = new Dictionary<int,Equip>(12);
+    public Dictionary<int, PVEDialogue>      mPVEDialogueCached                 = new Dictionary<int, PVEDialogue>(12);
+    public Dictionary<int, MapData>          mMapDataCached                     = new Dictionary<int, MapData>(12);
+    public Dictionary<int, Dialog>           mDialogCached                      = new Dictionary<int, Dialog>(12);
+    public Dictionary<int, Recipe>           mRecipeCached                      = new Dictionary<int, Recipe>(12);
+    public Dictionary<int, AuxSkillLevel>     mAuxSkillLevelCached              = new Dictionary<int, AuxSkillLevel>(12);
+    public Dictionary<int, Travel>           mTravelCached                      = new Dictionary<int, Travel>(12);
+    public Dictionary<int, TravelEvent>      mTravelEventCached                 = new Dictionary<int, TravelEvent>(12);
+    public Dictionary<int, TravelSmallEvent> mTravelSmallEventCached            = new Dictionary<int, TravelSmallEvent>(12);
+    public Dictionary<string, LobbyDialogue> mLobbyDialogueCached               = new Dictionary<string, LobbyDialogue>(3);
+    public Dictionary<Sect.SectType, Sect>   mSectCached                        = new Dictionary<Sect.SectType, Sect>(3);
+    public Dictionary<int, SpellObtain>      mSpellObtainCached                 = new Dictionary<int, SpellObtain>(12);
+    public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
+    public Dictionary<int, Loot>            mLootCached                         = new Dictionary<int, Loot>(12);
+    public Dictionary<int, Pet>             mPetCached                          = new Dictionary<int,Pet>(12);
+    public Dictionary<int, MapEvent>        mMapEventCached                     = new Dictionary<int, MapEvent>(12);
+    public Dictionary<int, Cave>            mCaveCached                         = new Dictionary<int, Cave>(12);
+    public Dictionary<int, SpellLevelUp>    mSpellLevelUpCached                 = new Dictionary<int, SpellLevelUp>(12);
+    public Dictionary<int, PetLevelUp>      mPetLevelUpCached                   = new Dictionary<int, PetLevelUp>(12);
+    public Dictionary<int, ErrorStatus>     mErrorStatusCached                  = new Dictionary<int, ErrorStatus>(12);
+    public Dictionary<int, PropLevelUp>      mPropLevelUpCached                 = new Dictionary<int, PropLevelUp>(12);
+    public Dictionary<int, Shop>               mShopCached                      = new Dictionary<int, Shop>(12);
+    public Dictionary<int, Commodity>        mCommodityCached                   = new Dictionary<int, Commodity>(12);
+    public Dictionary<int, PrestigeLevel>      mPrestigeLevelCached             = new Dictionary<int, PrestigeLevel>(12);
+    public Dictionary<int, PrestigeTask>       mPrestigeTaskCached              = new Dictionary<int, PrestigeTask>(12);
+    public Dictionary<int, Tower>              mTowerCached                     = new Dictionary<int, Tower>(12);
+    public Dictionary<int, Achievement>         mAchievementCached              = new Dictionary<int, Achievement>(12);
+    public Dictionary<int, AchieveReward>   mAchieveRewardCached                = new Dictionary<int, AchieveReward>(12);
+    public Dictionary<int, BookSpell>          mBookSpellCached                 = new Dictionary<int, BookSpell>(12);
+    public Dictionary<int, HeadIcon>          mHeadIconCached                   = new Dictionary<int, HeadIcon>(12);
+    public Dictionary<int, Buff>              mBuffCached                       = new Dictionary<int, Buff>(12);
 
-    public Dictionary<int, DropQualityRate> mDropQualityRateCached          = new Dictionary<int, DropQualityRate>();
-    public Dictionary<AttrType, AttrTable>  mAttrTableCached                = new Dictionary<AttrType, AttrTable>();
-    public Dictionary<int, AttrProb>        mAttrProbCached                 = new Dictionary<int, AttrProb>();
-    public Dictionary<string, GameConst>     mGameConstCached               = new Dictionary<string, GameConst>(12);
-    public Dictionary<int, DropGrade>       mDropGradeCached                = new Dictionary<int, DropGrade>(12);
-    public Dictionary<int, BallMap>             mMapCached                      = new Dictionary<int, BallMap>(12);
-    public Dictionary<int, MonsterPrefix>   mMonsterPrefixCached            = new Dictionary<int, MonsterPrefix>(12);
-    public Dictionary<int, MonsterLevelUp> mMonsterLevelUpCached            = new Dictionary<int, MonsterLevelUp>(12);
-    public Dictionary<int, MonsterRate>   mMonsterRateCached                = new Dictionary<int, MonsterRate>(12);
-    public Dictionary<int, QualityTable> mQualityTableCached                = new Dictionary<int, QualityTable>(12);
-    public Dictionary<string, Dictionary<string, PartnerDialogue>> mPartnerDialogueCached = new Dictionary<string, Dictionary<string, PartnerDialogue>>(12);
+    public Dictionary<int, DropQualityRate> mDropQualityRateCached              = new Dictionary<int, DropQualityRate>();
+    public Dictionary<AttrType, AttrTable>  mAttrTableCached                    = new Dictionary<AttrType, AttrTable>();
+    public Dictionary<int, AttrProb>        mAttrProbCached                     = new Dictionary<int, AttrProb>();
+    public Dictionary<string, GameConst>    mGameConstCached                    = new Dictionary<string, GameConst>(12);
+    public Dictionary<int, DropGrade>       mDropGradeCached                    = new Dictionary<int, DropGrade>(12);
+    public Dictionary<int, BallMap>         mMapCached                          = new Dictionary<int, BallMap>(12);
+    public Dictionary<int, MonsterPrefix>   mMonsterPrefixCached                = new Dictionary<int, MonsterPrefix>(12);
+    public Dictionary<int, MonsterLevelUp>  mMonsterLevelUpCached               = new Dictionary<int, MonsterLevelUp>(12);
+    public Dictionary<int, MonsterRate>     mMonsterRateCached                  = new Dictionary<int, MonsterRate>(12);
+    public Dictionary<int, QualityTable>    mQualityTableCached                 = new Dictionary<int, QualityTable>(12);
+    public Dictionary<string, List<PartnerDialogue>> mPartnerDialogueCached     = new Dictionary<string, List<PartnerDialogue>>(12);
+    public Dictionary<int, Partner>         mPartnerCached                      = new Dictionary<int, Partner>(12);
 
     public static ConfigHelper Instance
     {
@@ -178,22 +179,53 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             Dictionary<string, PartnerDialogue> pool = LitJson.JsonMapper.ToObject<Dictionary<string, PartnerDialogue>>(text);
             foreach (var temp in pool)
             {
-                if (temp.Value.intimacyRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
-                if (temp.Value.chatNumRange.Length == 0) temp.Value.intimacyRange = new int[2] { 0, int.MaxValue };
-                if (temp.Value.memoryRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
-                if (temp.Value.timeRange.Length == 0) temp.Value.intimacyRange = new int[2] { 0, int.MaxValue };
-                if (temp.Value.characRange.Length == 0) temp.Value.intimacyRange = new int[2] { 1, int.MaxValue };
-                if (temp.Value.sexRange.Length == 0) temp.Value.intimacyRange = new int[2] { (int)PartnerData.Sex.None+1, (int)PartnerData.Sex.Max };
-                for (int i = temp.Value.sexRange[0]; temp.Value.sexRange.Length>1 && i < temp.Value.sexRange[1]; i++)
-                {
-                    for (int j = temp.Value.sexRange[0]; temp.Value.sexRange.Length > 1 && j < temp.Value.sexRange[1]; j++)a
-                    {
+                //转换配置时，会将范围数组的长度都设为2
+                if (temp.Value.intimacyRange.Length == 0) temp.Value.intimacyRange = new int[2] { 0, GameConstUtils.array_intimacy_level.Length };
+                else if (temp.Value.intimacyRange.Length == 1) temp.Value.intimacyRange = new int[2] { temp.Value.intimacyRange[0], temp.Value.intimacyRange[0] };
 
+                if (temp.Value.chatNumRange.Length == 0) temp.Value.chatNumRange = new int[2] { 0, int.MaxValue };
+                else if (temp.Value.chatNumRange.Length == 1) temp.Value.chatNumRange = new int[2] { temp.Value.chatNumRange[0], temp.Value.chatNumRange[0] };
+
+                if (temp.Value.memoryRange.Length == 0) temp.Value.memoryRange = new int[2] { 1, int.MaxValue };
+                else if (temp.Value.memoryRange.Length == 1) temp.Value.memoryRange = new int[2] { temp.Value.memoryRange[0], temp.Value.memoryRange[0] };
+
+                if (temp.Value.timeRange.Length == 0) temp.Value.timeRange = new int[2] { 0, 24 };
+                else if (temp.Value.timeRange.Length == 1) temp.Value.timeRange = new int[2] { temp.Value.timeRange[0], temp.Value.timeRange[0] };
+
+                if (temp.Value.characRange.Length == 0) temp.Value.characRange = new int[2] { (int)PartnerData.CharacType.None + 1, (int)PartnerData.CharacType.Max };
+                else if (temp.Value.characRange.Length == 1) temp.Value.characRange = new int[2] { temp.Value.characRange[0], temp.Value.characRange[0] };
+
+                if (temp.Value.sexRange.Length == 0) temp.Value.sexRange = new int[2] { (int)PartnerData.Sex.None + 1, (int)PartnerData.Sex.Max };
+                else if (temp.Value.sexRange.Length == 1) temp.Value.sexRange = new int[2] { temp.Value.sexRange[0], temp.Value.sexRange[0] };
+
+                for (int i = temp.Value.sexRange[0]; i <= (temp.Value.sexRange.Length > 1 ? temp.Value.sexRange[1] : temp.Value.sexRange[0]); i++)
+                {
+                    for (int j = temp.Value.characRange[0]; j <= (temp.Value.characRange.Length > 1 ? temp.Value.characRange[1] : temp.Value.characRange[0]); j++)
+                    {
+                        for (int k = temp.Value.intimacyRange[0]; k <= temp.Value.intimacyRange[1]+1; k++)
+                        {
+                            string groupKey = PartnerDialogue.GetGroupKey(i, j, k);
+                            if (mPartnerDialogueCached.ContainsKey(groupKey))
+                                mPartnerDialogueCached[groupKey].Add(temp.Value);
+                            else
+                            {
+                                TDebug.LogInEditorF("PartnerDialogue中新的GroupKey:{0}|sex:{1}|chara:{2}|inti:{3}", groupKey,i,j,k);
+                                mPartnerDialogueCached[groupKey] = new List<PartnerDialogue>() {temp.Value};
+                            }
+                        }
                     }
                 }
-                //mPartnerDialogueCached.Add(temp.Value.name, temp.Value);
             }
             TDebug.Log(string.Format("初始PartnerDialogue成功:{0}项", mQualityTableCached.Count));
+        }
+        else if (dataName == DataName.Partner)
+        {
+            Dictionary<string, Partner> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Partner>>(text);
+            foreach (var temp in pool)
+            {
+                mPartnerCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始Partner成功:{0}项", mPartnerCached.Count));
         }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
@@ -211,25 +243,26 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
 
     private ConfigHelper()
     {
-        Hero.Fetcher                            = this;
-        HeroLevelUp.LevelUpFetcher              = this;
-        Spell.Fetcher                           = this;
-        Equip.Fetcher                           = this;
-        Item.Fetcher                            = this;
-        Buff.Fetcher                            = this;
-        ErrorStatus.ErrorStatusFetcher                     = this;
-        GameConst.Fetcher                       = this;
-        AttrTable.Fetcher                       = this;
-        AttrProb.Fetcher                        = this;
-        DropQualityRate.Fetcher                 = this;
-        DropGrade.Fetcher                       = this;
+        Hero.Fetcher                                = this;
+        HeroLevelUp.LevelUpFetcher                  = this;
+        Spell.Fetcher                               = this;
+        Equip.Fetcher                               = this;
+        Item.Fetcher                                = this;
+        Buff.Fetcher                                = this;
+        ErrorStatus.ErrorStatusFetcher              = this;
+        GameConst.Fetcher                           = this;
+        AttrTable.Fetcher                           = this;
+        AttrProb.Fetcher                            = this;
+        DropQualityRate.Fetcher                     = this;
+        DropGrade.Fetcher                           = this;
         BallMap.Fetcher                             = this;
-        MonsterPrefix.Fetcher                   = this;
-        MonsterLevelUp.Fetcher                  = this;
-        MonsterRate.Fetcher                     = this;
-        LobbyDialogue.LobbyDialogueFetcher       = this;
-        QualityTable.Fetcher                    =this;
-
+        MonsterPrefix.Fetcher                       = this;
+        MonsterLevelUp.Fetcher                      = this;
+        MonsterRate.Fetcher                         = this;
+        LobbyDialogue.LobbyDialogueFetcher          = this;
+        QualityTable.Fetcher                        = this;
+        PartnerDialogue.Fetcher                     = this;
+        Partner.Fetcher                             = this;
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -493,39 +526,65 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     private List<int> mCurPartnerDialoguePctList = new List<int>();
     PartnerDialogue IPartnerDialogueFetcher.GetPartnerDialogueCopy(PartnerData partnerData, int dayHour,int chatNum , bool isCopy = true)
     {
-        PartnerDialogue origin = null;
         Partner partner = Partner.Fetcher.GetPartnerCopy(partnerData.idx);
         string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.GetIntimacyLevel());
-        Dictionary<string, PartnerDialogue> dict;
+        List<PartnerDialogue> dialogueList;
         int happyMemoryTy = (int) partnerData.happyMemory;
         mCurPartnerDialogueList.Clear();
         mCurPartnerDialoguePctList.Clear();
-        if (mPartnerDialogueCached.TryGetValue(key, out dict))
+        if (mPartnerDialogueCached.TryGetValue(key, out dialogueList))
         {
-            foreach (var temp in dict)
+            foreach (var temp in dialogueList)
             {
                 //筛选时间、回忆、对话次数
-                if (temp.Value.timeRange[0] > dayHour || temp.Value.timeRange[1] < dayHour)
+                if (temp.timeRange[0] > dayHour || temp.timeRange[1] < dayHour)
                     continue;
-                if (temp.Value.memoryRange[0] > happyMemoryTy || temp.Value.memoryRange[1] < happyMemoryTy)
+                if (temp.memoryRange[0] > happyMemoryTy || temp.memoryRange[1] < happyMemoryTy)
                     continue;
-                if (temp.Value.chatNumRange[0] > chatNum || temp.Value.chatNumRange[1] < chatNum)
+                if (temp.chatNumRange[0] > chatNum || temp.chatNumRange[1] < chatNum)
                     continue;
-                if (temp.Value.weight == GameConstUtils.num_certain_partner_dialogue_pct)
-                    return temp.Value;
-                mCurPartnerDialogueList.Add(temp.Value);
-                mCurPartnerDialoguePctList.Add(temp.Value.weight);
+                if (temp.weight == GameConstUtils.num_certain_partner_dialogue_pct)
+                    return temp;
+                mCurPartnerDialogueList.Add(temp);
+                mCurPartnerDialoguePctList.Add(temp.weight);
             }
-            return origin.Clone();
         }
-        TDebug.LogInEditorF("待随机mCurPartnerDialogueList:{0}|{1}|{2}", mCurPartnerDialogueList.Count, dayHour , chatNum);
-        int randIndex = RPGRandomUtility.GetIndexByPct(mCurPartnerDialoguePctList.ToArray());
-        return mCurPartnerDialogueList[randIndex];
+        TDebug.LogInEditorF("待随机mCurPartnerDialogueListCount:{0}|dayHour:{1}|chatNum:{2}", mCurPartnerDialogueList.Count, dayHour, chatNum);
+        if (mCurPartnerDialogueList.Count > 0)
+        {
+            int randIndex = RPGRandomUtility.GetIndexByPct(mCurPartnerDialoguePctList.ToArray());
+            return mCurPartnerDialogueList[randIndex];
+        }
         TDebug.LogError(string.Format("PartnerDialogue没有此key:{0}", key));
         return null;
     }
 
+    Partner IPartnerFetcher.GetPartnerCopy(int idx, bool isCopy = true)
+    {
+        Partner origin = null;
+        if (mPartnerCached.TryGetValue(idx, out origin))
+        {
+            return origin.Clone();
+        }
+        TDebug.LogError(string.Format("Partner没有此idx:{0}", idx));
 
+        return null;
+    }
+    Partner IPartnerFetcher.GetPartnerRandomCopy(PartnerData.Sex sex, PartnerData.CharacType characTy)
+    {
+        Partner origin = null;
+        foreach (var temp in mPartnerCached)
+        {
+            if (temp.Value.sex == sex && temp.Value.characType == characTy)
+            {
+                return temp.Value;
+            }
+        }
+
+        TDebug.LogError(string.Format("Partner没有此sex:{0} | characTy:{1}", sex, characTy));
+
+        return null;
+    }
 
 
     #region ============Old=================

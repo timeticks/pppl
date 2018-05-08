@@ -23,7 +23,7 @@ public class Partner : BaseObject
 
     public string desc;
     public PartnerData.Sex sex = PartnerData.Sex.Male ;
-    public PartnerData.HairColor characType;
+    public PartnerData.CharacType characType;
 
     public Partner()
     {

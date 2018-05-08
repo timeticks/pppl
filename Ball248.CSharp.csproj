@@ -326,6 +326,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_shop.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_BattleHand.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_ChooseMap.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_LobbyPartner.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_PrestigeTaskList.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_RewardLook.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerChallenge.cs" />

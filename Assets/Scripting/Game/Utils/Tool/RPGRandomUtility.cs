@@ -103,7 +103,6 @@ public class RPGRandomUtility
     public static int GetIndexByPct(int[] probabillty)
     {
         int total = 0;
-
         for (int i = 0; i < probabillty.Length; i++)
         {
             total += probabillty[i];

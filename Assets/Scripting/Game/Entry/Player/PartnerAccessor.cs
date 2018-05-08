@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PartnerAccessor
 {
-    public PartnerData.SelectStep selectStepIndex = PartnerData.SelectStep.Sex; //当前已选择的步骤，
+    public PartnerData.SelectStep selectStepIndex = PartnerData.SelectStep.None; //当前已选择的步骤，
     public PartnerData.Sex selectSex = PartnerData.Sex.None;
     public PartnerData.HairColor selectHairColor = PartnerData.HairColor.None;
     public PartnerData.SkinColor selectSkinColor = PartnerData.SkinColor.None;
     public PartnerData.CharacType selectCharacType = PartnerData.CharacType.None;
     public PartnerData.HappyMemory selectHappyMemory = PartnerData.HappyMemory.None;
+    public int selectPartnerIdx;
 
     public PartnerData curPartener;
 
@@ -26,6 +27,19 @@ public class PartnerAccessor
         }
         return 0;
     }
+
+    //根据已选择的同伴信息，生成同伴
+    public void InitCurPartnerBySelect()
+    {
+        curPartener = new PartnerData();
+        curPartener.createTime = AppTimer.CurTimeStampSecond;
+        curPartener.hairColor = selectHairColor;
+        curPartener.skinColor = selectSkinColor;
+        curPartener.intimacyNum = 0;
+        curPartener.happyMemory = selectHappyMemory;
+        curPartener.idx = selectPartnerIdx;
+    }
+
 }
 
 
@@ -56,6 +70,7 @@ public class PartnerData
     //选择步骤
     public enum SelectStep
     {
+        None,
         Sex,
         SkinColor,
         HairColor,

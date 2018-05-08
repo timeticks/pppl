@@ -46,7 +46,7 @@ public class LobbyDialogue :BaseObject
         }
         else
         {
-            return string.Format("文本为空:{0}", key);
+            return string.Format("nul:{0}", key);
         }
     }
 

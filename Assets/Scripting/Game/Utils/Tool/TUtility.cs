@@ -675,7 +675,13 @@ public class TUtility:TUtilityBase
         long lTime = long.Parse(timeStamp.ToString() + "0000");
         TimeSpan toNow = new TimeSpan(lTime);
         return dtStart.Add(toNow);
-    } 
+    }
+
+    public static int GetLocalDayHour()
+    {
+        return DateTime.Now.Hour;
+    }
+
     /// <summary>
     /// 将时间戳转化为与现在的倒计时,转化时:分:秒string 返回
     /// </summary>

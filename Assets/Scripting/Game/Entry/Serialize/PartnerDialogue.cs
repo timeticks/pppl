@@ -44,8 +44,10 @@ public class PartnerDialogue : BaseObject
         return (sexTy*10000 + characTy*100 + intimacy).ToString();
     }
 
-    public static string GetPartnerDialogueStr(PartnerData partner)
+    public static string GetPartnerDialogueStr(PartnerData partner, int dayHour, int chatNum)
     {
-        return "";
+        PartnerDialogue p = PartnerDialogue.Fetcher.GetPartnerDialogueCopy(partner, dayHour, chatNum, false);
+        if (p != null) return p.ch;
+        return LangMgr.GetText("无话可说");
     }
 }

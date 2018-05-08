@@ -15,7 +15,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public Text TextGold;
         public Text TextDiamond;
         public Panel_ChooseMap Panel_ChooseMap;
-        public TextButton TBtnPartner;
+        public Panel_LobbyPartner Panel_LobbyPartner;
         public ViewObj(UIViewBase view)
         {
             if (LobbyTop != null) return;
@@ -23,8 +23,8 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             LobbyUI = view.GetCommon<CanvasGroup>("LobbyUI");
             TextGold = view.GetCommon<Text>("TextGold");
             TextDiamond = view.GetCommon<Text>("TextDiamond");
-            TBtnPartner = view.GetCommon<TextButton>("TBtnPartner");
             Panel_ChooseMap = view.GetCommon<GameObject>("Panel_ChooseMap").AddComponent<Panel_ChooseMap>();
+            Panel_LobbyPartner = view.GetCommon<GameObject>("Panel_LobbyPartner").AddComponent<Panel_LobbyPartner>();
         }
     }
 
@@ -94,9 +94,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         PlayerPrefs.DeleteAll();
 
         mViewObj.Panel_ChooseMap.Init();
-
-        mViewObj.TBtnPartner.TextBtn.text = LangMgr.GetText("同 伴");
-        mViewObj.TBtnPartner.SetOnAduioClick(BtnEvt_OpenPartner);
+        mViewObj.Panel_LobbyPartner.Init();
 
         //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
         //{
