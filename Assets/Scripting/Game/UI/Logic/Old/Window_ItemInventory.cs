@@ -13,20 +13,21 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         public Text DescText;
         public Button SellBtn;
         public Button UseBtn;
-        public GameObject Part_SelectableItemBtnt;
+        public GameObject Part_SelectableItemBtn;
         public ScrollRect ScrollView;
         public Text TextFrameNum;
         public Image IconItem;
         public Text TextNum;
         public UIScroller Scroller;
         public GameObject RightBg;
+        public Button MaskBtn;
         public ViewObj(UIViewBase view)
         {
             if (ItemRoot == null) ItemRoot = view.GetCommon<Transform>("ItemRoot");
             if (DescText == null) DescText = view.GetCommon<Text>("DescText");
             if (NameText == null) NameText = view.GetCommon<Text>("NameText");
             if (SellBtn == null) SellBtn = view.GetCommon<Button>("SellBtn");
-            if (Part_SelectableItemBtnt == null) Part_SelectableItemBtnt = view.GetCommon<GameObject>("Part_SelectableItemBtnt");
+            if (Part_SelectableItemBtn == null) Part_SelectableItemBtn = view.GetCommon<GameObject>("Part_SelectableItemBtn");
             if (UseBtn == null) UseBtn = view.GetCommon<Button>("UseBtn");
             if (TextFrameNum == null) TextFrameNum = view.GetCommon<Text>("TextFrameNum");
             if (IconItem == null) IconItem = view.GetCommon<Image>("IconItem");
@@ -34,6 +35,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             if (Scroller == null) Scroller = view.GetCommon<UIScroller>("Scroller");
             if (ScrollView == null) ScrollView = view.GetCommon<ScrollRect>("ScrollView");
             if (RightBg == null) RightBg = view.GetCommon<GameObject>("RightBg");
+            if (MaskBtn == null) MaskBtn = view.GetCommon<Button>("MaskBtn");
         }
         public void ResetSiteScroll()
         {
@@ -48,10 +50,9 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
     {
         public Text NameText;
         public Button BgBtn;
-        public GameObject IconEquipMark;
         public Image IconItem;
-        public Sprite Bg_kuang_06;
-        public Sprite Bg_kuang_04;
+        public Sprite SP_45;
+        public Sprite SP_42;
         public int ItemId;
         public static Transform BadgeItemTrans;
         public override void Init(UIViewBase view)
@@ -60,34 +61,24 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             base.Init(view);
             if (NameText == null) NameText = view.GetCommon<Text>("NameText");
             if (BgBtn == null) BgBtn = view.GetCommon<Button>("BgBtn");
-            if (IconEquipMark == null) IconEquipMark = view.GetCommon<GameObject>("IconEquipMark");
             if (IconItem == null) IconItem = view.GetCommon<Image>("IconItem");
-            Bg_kuang_06 = view.GetCommon<Sprite>("Bg_kuang_06");
-            Bg_kuang_04 = view.GetCommon<Sprite>("Bg_kuang_04");
+            SP_45 = view.GetCommon<Sprite>("SP_45");
+            SP_42 = view.GetCommon<Sprite>("SP_42");
         }
         public void SelectItem(bool select)
         {
             if (BgBtn == null || BgBtn.image == null) return;
             BgBtn.enabled = !select;
-            BgBtn.image.overrideSprite = select ? Bg_kuang_06 : Bg_kuang_04;
-            BgBtn.image.sprite = select ? Bg_kuang_06 : Bg_kuang_04;
+            BgBtn.image.overrideSprite = select ? SP_42 : SP_45;
+            BgBtn.image.sprite = select ? SP_42 : SP_45;
         }
         public void InitItem(Item item)
         {
-            GameObject go = (GameObject)SharedAsset.Instance.LoadSpritePrefabObj("IconAtlas");
-            SpritePrefab commonSprite = go.GetComponent<SpritePrefab>();
+            //GameObject go = (GameObject)SharedAsset.Instance.LoadSpritePrefabObj("IconAtlas");
+            //SpritePrefab commonSprite = go.GetComponent<SpritePrefab>();
             this.ItemId = item.idx;
             this.NameText.text = TUtility.GetTextByQuality(item.name, item.quality);
-            this.IconItem.sprite = commonSprite.GetSprite(item.icon);
-            //if(SaveUtils.HasKeyInPlayer(EvtListenerType.InventoryBadgeOpen.ToString()))
-            //{
-            //    if (item.idx == GameConstUtils.InventoryBadgeItem)
-            //    {
-            //        BadgeItemTrans = this.BgBtn.transform;   //缓存下显示红点的item
-            //        BadgeTips.SetBadgeView(this.BgBtn.transform);
-            //    }
-            //    else if(BadgeItemTrans==this.BgBtn.transform) { BadgeTips.SetBadgeViewFlase(this.BgBtn.transform);}
-            //}
+            //this.IconItem.sprite = commonSprite.GetSprite(item.icon);
         }
     }
     private Dictionary<int, ItemObj> mItemList = new Dictionary<int, ItemObj>();
@@ -95,7 +86,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
     private int mCurSelectIndex;
     private int InventoryCapacity = 80;
 
-    public void OpenWindow()
+    public void OpenWindow(Item.ItemType onlyShowType = Item.ItemType.None)
     {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         OpenWin();
@@ -113,6 +104,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         mCurSelectIndex = 0;
         mViewObj.SellBtn.SetOnClick(BtnEvt_Sell);
         mViewObj.UseBtn.SetOnClick(BtnEvt_Use);
+        mViewObj.MaskBtn.SetOnClick(BtnEvt_Exit);
         FreshItem();
         if (mItemList.ContainsKey(0)) BtnEvt_ItemDetail(0);
     }
@@ -138,7 +130,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         else
         {
             item = new ItemObj();
-            item.Init(mViewObj.Scroller.GetNewObj(mViewObj.ItemRoot, mViewObj.Part_SelectableItemBtnt));
+            item.Init(mViewObj.Scroller.GetNewObj(mViewObj.ItemRoot, mViewObj.Part_SelectableItemBtn));
         }
         item.Scroller = mViewObj.Scroller;
         item.Index = index;
@@ -249,7 +241,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         //    BadgeTips.SetBadgeViewFlase(mItemList[mCurSelectIndex].BgBtn.transform);
         //}
 
-        mViewObj.IconItem.sprite = commonSprite.GetSprite(item.icon);
+        //mViewObj.IconItem.sprite = commonSprite.GetSprite(item.icon);
         mViewObj.NameText.text = TUtility.GetTextByQuality(item.name, item.quality);
         mViewObj.TextNum.text = string.Format(" 数量:{0}", item.num);
         mViewObj.DescText.text = "\u3000\u3000" + item.desc;
@@ -280,6 +272,11 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             return;
         }
         UIRootMgr.Instance.OpenWindow<Window_SellNumChoose>(WinName.Window_SellNumChoose, CloseUIEvent.None).OpenWindow(item.idx, item.num, SellItem);
+    }
+
+    public void BtnEvt_Exit()
+    {
+        CloseWindow();
     }
 
 

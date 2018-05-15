@@ -128,9 +128,11 @@ public partial class PlayerPrefsBridge
         mPlayerData.Hero = Hero.Fetcher.GetHeroCopy(1001);
         mPlayerData.name = "菜鸟";
         mPlayerData.PlayerUid = 10000 + 1;
-        mPlayerData.birthTime = AppTimer.CurTimeStampSecond;
+        mPlayerData.BirthTime = AppTimer.CurTimeStampSecond;
         mSpellInventory = new InventoryList(InventoryList.InventoryType.Spells);
         mItemsInventory = new InventoryList(InventoryList.InventoryType.Items);
+        addItem(105003001, 100, "");
+        addItem(105003002, 100, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
         saveGame();
@@ -217,17 +219,6 @@ public partial class PlayerPrefsBridge
                     variation = mPlayerData.Level;
                 }
                 AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.CurLevel, msg.Attributes[0].ToString()));
-                break;
-            }
-            case PlayerAttribute.CaveLevel:
-            {
-                mPlayerData.CaveLevel = msg.Attributes[0];
-                variation = mPlayerData.CaveLevel;
-                break;
-            }    
-            case PlayerAttribute.IsInRank:
-            {
-                mPlayerData.IsInRank = msg.Attributes[0]==1;
                 break;
             }
             case PlayerAttribute.IsSetName:

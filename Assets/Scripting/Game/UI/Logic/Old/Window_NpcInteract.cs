@@ -168,7 +168,7 @@ public class Window_NpcInteract :WindowBase
             int dialogId = talkNode.TryGetInt(0);
             if (dialogId > 0)
             {
-                Dialog dialog = Dialog.DialogFetcher.GetDialogByCopy(dialogId);
+                SelectDialog dialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogId);
                 
                 System.Action<int> callBack = delegate(int result) //按钮回调
                 {
@@ -181,7 +181,7 @@ public class Window_NpcInteract :WindowBase
                     }
                 };
                 int npcId = mNpcNode.GetNpcId();
-                ShowTalk(string.Format("{0}", dialog.Desc), dialog.Button, callBack);
+                //ShowTalk(string.Format("{0}", dialog.desc), dialog.button, callBack);
             }
             else
             {

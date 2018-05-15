@@ -159,6 +159,12 @@ public static class ClassExtensionUtils
         return defaultValue;
     }
 
+    //重置转义符
+    public static string RemoveN(this string key)
+    {
+        return key.Replace(@"\n", "\n").Replace(@"\f", "\f").Replace(@"\u3000", "\u3000");
+    }
+
     /// <summary>
     /// 枚举转为int
     /// </summary>

@@ -6,17 +6,16 @@ using System.Security.Policy;
 public class GamePlayerBase
 {
     public string name;
-    public Eint birthTime = 0;          //修炼时间
+    public Eint BirthTime = 0;          //修炼时间
     public Eint PlayerUid = 0;          //唯一id
 
     public Eint Level = 1;
-    public Eint CaveLevel = 1;  // 洞府等级
 
     public Elong Exp = 0;       //当前经验
     public Eint Gold = 0;       //普通货币
     public Eint Diamond = 0;    //充值货币
     public Eint Potential = 0;
-    public Eint memoryPiece;    //记忆碎片数量
+    public Eint MemoryPiece = 0;    //记忆碎片数量
 
 
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
@@ -30,11 +29,9 @@ public class GamePlayerBase
     //old..............
     public Sect.SectType MySect = Sect.SectType.None;
     public bool IsFinishNewerMap;
-    public long NextVipDailyDiamond;
     public long FinishGuideStep;
 
     public Dictionary<AttrType, int> AddProm = new Dictionary<AttrType, int>();
-    public bool IsInRank;     //是否加入排行榜排名
     public bool IsSetName;    //是否已经取名
     public Elong VipTime = 0;      //vip的到期时间
     public Eint PlayerIdx = 0;
@@ -43,10 +40,9 @@ public class GamePlayerBase
     public void CopyBy(GamePlayerBase origin)
     {
         this.name = origin.name;
-        this.birthTime = origin.birthTime;
+        this.BirthTime = origin.BirthTime;
         this.PlayerUid = origin.PlayerUid;
         this.Level = origin.Level;
-        this.CaveLevel = origin.CaveLevel;
         this.Exp = origin.Exp;
         this.Gold = origin.Gold;
         this.Diamond = origin.Diamond;
@@ -57,9 +53,7 @@ public class GamePlayerBase
         this.PetList = origin.PetList;
         this.MySect = origin.MySect;
         this.IsFinishNewerMap = origin.IsFinishNewerMap;
-        this.NextVipDailyDiamond = origin.NextVipDailyDiamond;
         this.AddProm = origin.AddProm;
-        this.IsInRank = origin.IsInRank;
         this.IsSetName = origin.IsSetName;
         this.VipTime = origin.VipTime;
         this.PlayerIdx = origin.PlayerIdx;

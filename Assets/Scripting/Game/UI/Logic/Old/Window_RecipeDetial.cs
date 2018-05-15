@@ -396,7 +396,7 @@ public class Window_RecipeDetial : WindowBase {
             {
                 mViewObj.TextCostList[i].gameObject.SetActive(false);
             }
-            Dictionary<int, LootType> recipeLoot = Loot.GetLootsId(new List<int> { recipe.Quality0,recipe.Quality1,recipe.Quality2,recipe.Quality3 });
+            Dictionary<int, LootItemType> recipeLoot = Loot.GetLootsId(new List<int> { recipe.Quality0,recipe.Quality1,recipe.Quality2,recipe.Quality3 });
             List<int> keys = new List<int>(recipeLoot.Keys);
             if (keys != null && keys.Count > 0)
             {

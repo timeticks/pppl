@@ -159,9 +159,9 @@ public class Recipe : DescObject
                 bool isExist = false;
                 for (int j = 0; j < dropList.Count; j++)
                 {
-                    if (translateID[i] == dropList[j].GoodsIdx)
+                    if (translateID[i] == dropList[j].goodsIdx)
                     {
-                        dropList[j].Amount++;
+                        dropList[j].amount++;
                         isExist = true;
                         break;
                     }
@@ -169,9 +169,9 @@ public class Recipe : DescObject
                 if (!isExist)
                 {
                     GoodsToDrop drop = new GoodsToDrop();
-                    drop.GoodsIdx = translateID[i];
-                    drop.Amount = 1;
-                    drop.MyType = LootType.Item;
+                    drop.goodsIdx = translateID[i];
+                    drop.amount = 1;
+                    drop.lootItemType = LootItemType.Item;
                     dropList.Add(drop);
                 }
             }
@@ -181,9 +181,9 @@ public class Recipe : DescObject
             for (int i = 0; i < translateID.Count; i++)
             {
                 GoodsToDrop drop = new GoodsToDrop();
-                drop.Amount = 1;
-                drop.MyType = LootType.Equip;
-                drop.GoodsIdx = translateID[i];
+                drop.amount = 1;
+                drop.lootItemType = LootItemType.Equip;
+                drop.goodsIdx = translateID[i];
                 dropList.Add(drop);
             }
         } 

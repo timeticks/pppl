@@ -194,6 +194,7 @@
     <None Include="Assets\Build\GameData\PartnerDialogue.txt" />
     <None Include="Assets\Build\GameData\Produce.txt" />
     <None Include="Assets\Build\GameData\QualityTable.txt" />
+    <None Include="Assets\Build\GameData\SelectDialog.txt" />
     <None Include="Assets\Build\GameData\ServerTipsText.txt" />
     <None Include="Assets\Build\GameData\Spell.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />

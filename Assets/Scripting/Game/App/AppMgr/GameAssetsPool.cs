@@ -6,7 +6,7 @@ public class GameAssetsPool : MonoBehaviour
 {
     public static GameAssetsPool Instance{get;private set;}
 
-    public Dictionary<string, DestroySelf> EffectDict = new Dictionary<string, DestroySelf>();
+    public Dictionary<string, List<DestroySelf>> EffectDict = new Dictionary<string, List<DestroySelf>>();
 
     internal List<DestroySelf> EffectList = new List<DestroySelf>();
     internal List<MonoBehaviour> OtherList = new List<MonoBehaviour>();
@@ -27,13 +27,17 @@ public class GameAssetsPool : MonoBehaviour
 
     public DestroySelf GetEffect(string eName)
     {
+        eName = eName.ToLower();
         if (EffectDict.ContainsKey(eName))
         {
-            DestroySelf d = EffectDict[eName];
-            if (d != null && !d.gameObject.activeSelf)
+            foreach (var temp in EffectDict[eName])
             {
-                return d;
+                if (temp != null && !temp.gameObject.activeSelf)
+                {
+                    return temp;
+                }
             }
+            
         }
         return CreateEffect(eName);
     }
@@ -50,7 +54,9 @@ public class GameAssetsPool : MonoBehaviour
             des = obj.CheckAddComponent<DestroySelf>();
         }
         des.Init(eName, loader.Release);
-        EffectDict.Add(eName, des);
+        if (!EffectDict.ContainsKey(eName))
+            EffectDict[eName] = new List<DestroySelf>();
+        EffectDict[eName].Add(des);
         return des;
     }
 

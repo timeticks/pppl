@@ -307,41 +307,57 @@ public partial class PlayerPrefsBridge
 
 
 
-    public int consumeLootType(LootType lootType, int id)
+    public int consumeLootType(LootItemType lootType, int id)
     {
         return 0;
     }
 
-    public int addLootType(LootType lootType, int id, int num)
+    public int addLootType(LootItemType lootType, int id, int num)
     {
         return 0;
     }
 
-
-    public void onLoot(List<GoodsToDrop> lootGoodsList, string action)
+    public List<GoodsToDrop> onLoot(int lootIdx, string action = "")
     {
-        if (lootGoodsList == null) return;
+        Loot loot = Loot.LootFetcher.GetLootByCopy(lootIdx);
+        if (loot == null)
+        {
+            return new List<GoodsToDrop>();
+        }
+        List<GoodsToDrop> goodsList = loot.onDropLoots();
+        onLootAndSave(goodsList,action);
+        return goodsList;
+    }
+
+    public HashSet<LootItemType> onLootAndSave(List<GoodsToDrop> lootGoodsList, string action)
+    {
+        if (lootGoodsList == null || lootGoodsList.Count==0) return new HashSet<LootItemType>();
 
         GoodsToDrop dropItem;
+        HashSet<LootItemType> lootItemTypeList = new HashSet<LootItemType>();
         for (int i = 0; i < lootGoodsList.Count; i++)
         {
             dropItem = lootGoodsList[i];
             if (dropItem == null) continue;
-            switch (dropItem.MyType)
+            if (!lootItemTypeList.Contains(dropItem.lootItemType))
             {
-                case LootType.Money:
+                lootItemTypeList.Add(dropItem.lootItemType);
+            }
+            switch (dropItem.lootItemType)
+            {
+                case LootItemType.Money:
                     {
-                        WealthType wealthType = (WealthType)(dropItem.GoodsIdx);
+                        WealthType wealthType = (WealthType)(dropItem.goodsIdx);
                         switch (wealthType)
                         {
                             case WealthType.Diamond:
                                 {
-                                    addDiamond(dropItem.Amount, action);
+                                    addDiamond(dropItem.amount, action);
                                     break;
                                 }
                             case WealthType.Gold:
                                 {
-                                    addGold(dropItem.Amount, action);
+                                    addGold(dropItem.amount, action);
                                     break;
                                 }
                             case WealthType.Potentail:
@@ -351,47 +367,47 @@ public partial class PlayerPrefsBridge
                                 }
                             case WealthType.Exp:
                                 {
-                                    addExp(dropItem.Amount, action);
+                                    addExp(dropItem.amount, action);
                                     break;
                                 }
                         }
                         break;
                     }
-                case LootType.Item:
+                case LootItemType.Item:
                     {
-                        if (addItem(dropItem.GoodsIdx, dropItem.Amount, action) == -1)
+                        if (addItem(dropItem.goodsIdx, dropItem.amount, action) == -1)
                             lootGoodsList.RemoveAt(i--); //先移除，然后进行i--
                         break;
                     }
 
-                case LootType.Pet:
+                case LootItemType.Pet:
                     {
                         //if (addPet(dropItem.GoodsIdx, action) == -1)
                         //    lootGoodsList.RemoveAt(i--); //先移除，然后进行i--
                         break;
                     }
 
-                case LootType.Spell:
+                case LootItemType.Spell:
                     {
-                        if (AddSpell(dropItem.GoodsIdx) == -1)
+                        if (AddSpell(dropItem.goodsIdx) == -1)
                             lootGoodsList.RemoveAt(i--); //先移除，然后进行i--
                         break;
                     }
 
-                case LootType.Equip:
+                case LootItemType.Equip:
                     {
                         //if (addEquip(dropItem.GoodsIdx, action) == -1)
                         //    lootGoodsList.RemoveAt(i--); //先移除，然后进行i--
                         break;
                     }
 
-                case LootType.Recipe:
+                case LootItemType.Recipe:
                     {
                         //if (addRecipe(dropItem.goodsIdx, action) == -1)
                         //    lootGoodsList.RemoveAt(i--); //先移除，然后进行i--
                         break;
                     }
-                case LootType.Prestige:
+                case LootItemType.Prestige:
                     {
                         //PrestigeType ty = PrestigeType.getValueByOrdinal(dropItem.goodsIdx);
                         //addPrestige(dropItem.amount, ty, action);
@@ -402,6 +418,24 @@ public partial class PlayerPrefsBridge
                     break;
             }
         }
+        foreach (var temp in lootItemTypeList)
+        {
+            switch (temp)
+            {
+                case LootItemType.Money: savePlayerModule();
+                    break;
+                case LootItemType.Item:  saveItemModule();
+                    break;
+                case LootItemType.Pet: break;
+                case LootItemType.Spell: break;
+                case LootItemType.Equip: saveEquipModule();
+                    break;
+                case LootItemType.Recipe: break;
+                case LootItemType.Prestige: break;
+                case LootItemType.Stuff : break;
+            }
+        }
+        return lootItemTypeList;
     }
     
 
@@ -716,6 +750,7 @@ public partial class PlayerPrefsBridge
         BallMapAcce.MutilAddBallDown = 5;
         BallMapAcce.CurRound = 0;
         BallMapAcce.MapMaxSize = 29;
+        BallMapAcce.goodsDropList = new List<GoodsToDrop>();
     }
 
     public void saveMapAccessor()
@@ -725,7 +760,7 @@ public partial class PlayerPrefsBridge
             BallMapAcce.NextBallList.Clear();
             for (int i = 0; i < Window_BallBattle.Instance.GunCtrl.WaitBallList.Count; i++)
             {
-                BallMapAcce.NextBallList.Add(Window_BallBattle.Instance.GunCtrl.WaitBallList[i].MyData.Num);
+                BallMapAcce.NextBallList.Add(Window_BallBattle.Instance.GunCtrl.WaitBallList[i].MyData.BallIdx);
             }
 
             BallMapAcce.BallDict.Clear();
@@ -736,7 +771,7 @@ public partial class PlayerPrefsBridge
                     BallNodeData tempNode = Window_BallBattle.Instance.MapData.GetNode(i, j);
                     if (tempNode != null && tempNode.BallCtrl != null)
                     {
-                        BallMapAcce.BallDict.Add(Window_BallBattle.Instance.MapData.GetNodeIndex(tempNode.Pos.m_X, tempNode.Pos.m_Y).ToString(), tempNode.BallCtrl.MyData.Num);
+                        BallMapAcce.BallDict.Add(Window_BallBattle.Instance.MapData.GetNodeIndex(tempNode.Pos.m_X, tempNode.Pos.m_Y).ToString(), tempNode.BallCtrl.MyData.BallIdx);
                     }
                 }
             }

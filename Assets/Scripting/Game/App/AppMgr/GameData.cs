@@ -20,6 +20,9 @@ public enum DataName : short
     QualityTable,
     PartnerDialogue,
     Partner,
+    Loot,
+    SelectDialog,
+    Ball,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,
@@ -65,8 +68,10 @@ public class GameData : MonoBehaviour
 
     void LoadDataBaseFromRes( DataName _name )
     {
-        try
+        //try
         {
+            TDebug.LogInEditorF("开始解析:{0}", _name.ToString());
+
             //进行litJson中int转long的方法，否则某些小于int.MaxValue的整数无法直接转为long   Can't assign value '0' (type System.Int32) to type System.Int64
             LitJson.JsonMapper.RegisterImporter<int, long>((int value) =>
             {
@@ -83,7 +88,7 @@ public class GameData : MonoBehaviour
             ConfigHelper.Instance.Init(_name, asset.text);
             //Dic_DataBase.Add(_name, (Hashtable)MiniJson.JsonDecode(asset.text));
         }
-        catch (System.Exception exc) { TDebug.LogError("读取配置表:" + _name +"===="+ exc.Message); }
+        //catch (System.Exception exc) { TDebug.LogError("读取配置表:" + _name +"===="+ exc.Message); }
     }
 
     

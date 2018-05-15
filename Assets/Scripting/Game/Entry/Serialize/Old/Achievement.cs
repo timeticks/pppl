@@ -277,9 +277,6 @@ public class Achieve
             case Achievement.ConType.Prom:
                 //str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.PlayerData.GetPromTypeNum((AttrType)achievement.ConProm), achievement.ConValue[index]);
                 break; 			
-            case Achievement.ConType.CaveLevel:
-                str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.PlayerData.CaveLevel, achievement.ConValue[index]);
-                break; 		
             case Achievement.ConType.ZazenTime:
                 str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.GetAchieveAccessor().ZazenTime/3600, achievement.ConValue[index]);
                 break;  		

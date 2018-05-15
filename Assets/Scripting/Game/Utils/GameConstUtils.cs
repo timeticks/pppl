@@ -90,7 +90,9 @@ public class GameConstUtils
 
     public static int[] array_intimacy_level { get { return GameConst.GetGameConstArray("array_intimacy_level"); } }
 
-
+    public static int id_universal_ball { get { return 405001001; } }    //万能球id
+    public static int id_item_universal_ball { get { return 105003001; } }    //万能球道具id
+    public static int id_item_next_ball { get { return 105003002; } }    //跳过道具id
 
 
 

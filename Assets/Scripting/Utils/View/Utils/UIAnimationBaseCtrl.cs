@@ -166,7 +166,7 @@ public class UIAnimationBaseCtrl : MonoBehaviour
                 if (m_IgnoreTimeScale) { yield return new WaitForSeconds(data.m_Delay / Time.timeScale); }
                 else yield return new WaitForSeconds(data.m_Delay);
             }
-            float maxTime = data.m_Duration;
+            float maxTime = Mathf.Max(0.001f ,data.m_Duration);
             float curTime = 0f;
             bool noPlayed = true;
 

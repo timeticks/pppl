@@ -38,8 +38,6 @@ public class GunBaseCtrl : MonoBehaviour {
             if (nextList[i] < 0) nextList[i] = PlayerPrefsBridge.Instance.GetNextRandBall();
             CreateWaitBall(nextList[i], i);
         }
-        
-        
 	    
         IsMovingGun = false;
 
@@ -78,8 +76,16 @@ public class GunBaseCtrl : MonoBehaviour {
         UIRootMgr.Instance.TopMasking = true;
         IsMovingGun = false;
         mCurWaitBall.StartRun(mLastDir , BallType.RunByGunBall);
+        mCurWaitBall.SetTrailActive(true,true);
         WaitBallList.RemoveAt(0);
         PlayerPrefsBridge.Instance.BallMapAcce.CurRound++;
+    }
+
+    public void DisableCurWaitBall()
+    {
+        BallBaseCtrl curWait = mCurWaitBall;
+        WaitBallList.RemoveAt(0);
+        curWait.DestroySelf();
     }
 
     /// <summary>

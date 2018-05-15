@@ -47,7 +47,8 @@ public class GameUtils
         return prob.Length - 1;
     }
 
-    public static int GetRandom(int min , int max)
+
+    public static int GetRandom(int min=0 , int max=10000)
     {
         return rand.Next(min, max);
     }

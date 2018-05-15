@@ -20,7 +20,12 @@ public class BallMapAccessor
     public Dictionary<string, int> BallDict = new Dictionary<string, int>();  //球的位置和信息
 
     public Eint MutilAddBallDown=0;                                 //多球加入倒计时
+    public List<GoodsToDrop> goodsDropList = new List<GoodsToDrop>();   //此场的收获
 
+    public Eint UseUniversalBallNum=0;  //使用万能球的个数
+    public Eint UseNextBallNum=0;       //使用跳过球的个数
+
+    public string[] sss = new string[1] {"ssssss"};
     public int GetCurDifficult()
     {
         return 1;

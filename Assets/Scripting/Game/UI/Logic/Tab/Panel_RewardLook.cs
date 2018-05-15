@@ -80,12 +80,12 @@ public class Panel_RewardLook : MonoBehaviour, IScrollWindow
 
         item.TextName.text = mTowerList[index].name;
         Loot loot = Loot.LootFetcher.GetLootByCopy(mTowerList[index].SpeReward);
-        if (loot == null || loot.LootsId.Length < 1)
+        if (loot == null || loot.lootMisc.Length < 1)
         {
             TDebug.LogError(string.Format("爬塔特殊奖励错误，id:{0}", mTowerList[index].idx));
             return;
         }
-        GoodsToDrop goods = new GoodsToDrop(loot.LootsId[0], loot.LootsNum[0], loot.LootsType[0]);
+        GoodsToDrop goods = new GoodsToDrop(loot.lootMisc[0], loot.lootNum[0], loot.lootItemType[0]);
         item.TextReward.text = goods.GetString();
 
         //是否已获得

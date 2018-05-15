@@ -16,6 +16,9 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public Text TextDiamond;
         public Panel_ChooseMap Panel_ChooseMap;
         public Panel_LobbyPartner Panel_LobbyPartner;
+        public Button BtnPlanet;
+        public Button BtnInventory;
+        public Button BtnStore;
         public ViewObj(UIViewBase view)
         {
             if (LobbyTop != null) return;
@@ -25,6 +28,9 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             TextDiamond = view.GetCommon<Text>("TextDiamond");
             Panel_ChooseMap = view.GetCommon<GameObject>("Panel_ChooseMap").AddComponent<Panel_ChooseMap>();
             Panel_LobbyPartner = view.GetCommon<GameObject>("Panel_LobbyPartner").AddComponent<Panel_LobbyPartner>();
+            BtnPlanet = view.GetCommon<Button>("BtnPlanet");
+            BtnInventory = view.GetCommon<Button>("BtnInventory");
+            BtnStore = view.GetCommon<Button>("BtnStore");
         }
     }
 
@@ -95,6 +101,9 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
         mViewObj.Panel_ChooseMap.Init();
         mViewObj.Panel_LobbyPartner.Init();
+        mViewObj.BtnInventory.SetOnAduioClick(BtnEvt_ItemInventory);
+        mViewObj.BtnPlanet.SetOnAduioClick(BtnEvt_OpenPlanet);
+        mViewObj.BtnStore.SetOnAduioClick(BtnEvt_OpenStore);
 
         //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
         //{
@@ -210,7 +219,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         int offsetTime = (int)((curTime - originTime) / 1000);
         int year = offsetTime / (24 * 60 * 60);
         int month =(offsetTime-(24*60*60*year))/(2*60*60);
-        long birthTime = PlayerPrefsBridge.Instance.PlayerData.birthTime;
+        long birthTime = PlayerPrefsBridge.Instance.PlayerData.BirthTime;
         long LoginTime = (curTime - birthTime) / 1000 / 24 / 60 / 60;
         string expStr = string.Format("{0}/{1}",
            PlayerPrefsBridge.Instance.PlayerData.Exp - HeroLevelUp.GetLevelAmountExp(PlayerPrefsBridge.Instance.PlayerData.Level-1),
@@ -238,15 +247,10 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     public void BtnEvt_ItemInventory()
     {
-        WindowBig_Assem win = UIRootMgr.Instance.GetOpenListWindow<WindowBig_Assem>(WinName.WindowBig_Assem);
-        if (win == null)
-            UIRootMgr.Instance.OpenWindow<WindowBig_Assem>(WinName.WindowBig_Assem).OpenWindow();
-        else
-            win.BtnEvt_Exit();
-        //UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None).OpenWindow();
+         UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None).OpenWindow();
     }
 
-    public void BtnEvt_OpenShop()
+    public void BtnEvt_OpenStore()
     {
         SaveUtils.SetIntInPlayer(ModuleType.module_shop.ToString(), BadgeStatus.Normal.ToInt());
 
@@ -254,9 +258,9 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //UIRootMgr.Instance.Window_UpTips.InitTips(LangMgr.GetText("暂未开放"), Color.red);
     }
 
-    void BtnEvt_OpenPartner()
+    void BtnEvt_OpenPlanet()
     {
-        UIRootMgr.Instance.OpenWindow<Window_CreatePartner>(WinName.Window_CreatePartner).OpenWindow();
+        //UIRootMgr.Instance.OpenWindow<Window_CreatePartner>(WinName.Window_CreatePartner).OpenWindow();
     }
 
     public void AppendLobbyTips(string tips)
@@ -271,10 +275,11 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //    luaWin = UIRootMgr.Instance.OpenWindow<Window_Lua>("LuaWindow_Test", CloseUIEvent.None);
         //    luaWin.OpenWindow();
         //}
-        //if (GUILayout.Button("      进入战斗"))
-        //{
-        //    BattleMgr.Instance.EnterPVE(BattleType.My_Auto_Fight, 1201101008,PVESceneType.None , null);
-        //}
+        if (GUILayout.Button("      进入对话"))
+        {
+            List<int> dialog = new List<int>() {301000001, 301000002, 301000003};
+            UIRootMgr.Instance.OpenWindow<Window_Chat>(WinName.Window_Chat, CloseUIEvent.None).OpenWindow(dialog);
+        }
         //if (GUILayout.Button("      进入战斗"))
         //{
         //    BattleMgr.Instance.EnterPVE(BattleType.My_Auto_Fight, 1201230002, null);

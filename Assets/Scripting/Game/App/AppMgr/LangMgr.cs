@@ -31,7 +31,7 @@ public static class LangMgr
         return TUtility.TryGetValueStr(hash, LangType.ToString().ToLower(), "");
     }
 
-    public static string GetText(string textKey, params string[] st)  //根据语言读取文本
+    public static string GetText(string textKey, params object[] st)  //根据语言读取文本
     {
         return LobbyDialogue.GetDescStr(textKey, st);
         //return textKey;

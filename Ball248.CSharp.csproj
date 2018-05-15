@@ -212,6 +212,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Equip.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Hero.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Item.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\LobbyDialogue.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterLevelUp.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterPrefix.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\MonsterRate.cs" />
@@ -221,13 +222,11 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\BookSpell.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Cave.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Commodity.cs" />
-    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Dialog.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\ErrorStatus.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\GameConst.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\GuideStep.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\HeadIcon.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\HeroLevelUp.cs" />
-    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\LobbyDialogue.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Loot.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Mail.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\MapData.cs" />
@@ -257,6 +256,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\PartnerDialogue.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Produce.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\QualityTable.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\SelectDialog.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Skill.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Setting\AppModeType.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Setting\AppSetting.cs" />
@@ -331,6 +331,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_RewardLook.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerChallenge.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_TowerRank.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_Chat.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_CreatePartner.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_ItemDetail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapDetail.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Mgr\SceneUI\LobbySceneMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\SceneUI\StartSceneMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\UIRootMgr.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Mgr\WorldRoot2D.cs" />
     <Compile Include="Assets\Scripting\Game\UI\UITUtility\BadgeTips.cs" />
     <Compile Include="Assets\Scripting\Game\UI\UITUtility\BigWindowBase.cs" />
     <Compile Include="Assets\Scripting\Game\UI\UITUtility\EffectTips.cs" />
@@ -482,6 +484,7 @@
     <None Include="Assets\Build\GameData\PartnerDialogue.txt" />
     <None Include="Assets\Build\GameData\Produce.txt" />
     <None Include="Assets\Build\GameData\QualityTable.txt" />
+    <None Include="Assets\Build\GameData\SelectDialog.txt" />
     <None Include="Assets\Build\GameData\ServerTipsText.txt" />
     <None Include="Assets\Build\GameData\Spell.txt" />
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />

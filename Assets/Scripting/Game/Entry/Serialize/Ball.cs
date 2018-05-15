@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public interface IBallFetcher
 {
-    Ball GetBallCopy(int idx,bool isCopy=true);
+    Ball GetBallCopy(int idx,bool isCopy);
 }
 public class Ball : BaseObject 
 {

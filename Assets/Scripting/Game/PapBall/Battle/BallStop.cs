@@ -19,9 +19,9 @@ public class BallStop : MonoBehaviour
             UIRootMgr.Instance.TopMasking = false;
             mBallCtrl.ParentWin.DisableBall(mBallCtrl);
             mBallCtrl.ParentWin.FreshMutilDown(true);
-            mBallCtrl.ParentWin.GunCtrl.CreateWaitBall(mBallCtrl.MyData.Num, true);
+            mBallCtrl.ParentWin.GunCtrl.CreateWaitBall(mBallCtrl.MyData.BallIdx, true);
             PlayerPrefsBridge.Instance.saveMapAccessor();
-            Destroy(this);
+            mBallCtrl.DestroySelf();
         }
     }
 

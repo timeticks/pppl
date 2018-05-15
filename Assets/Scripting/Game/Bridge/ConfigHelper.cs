@@ -4,14 +4,14 @@ using System.IO;
 using UnityEngine;
 
 public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetcher, 
-                         IDialogFetcher, IRecipeFetcher, IAuxSkillFetcher, ILobbyDialogueFetcher,ITravelFetcher,ITravelEventFetcher,ITravelSmallEventFetcher,
+                         ISelectDialogFetcher, IRecipeFetcher, IAuxSkillFetcher, ILobbyDialogueFetcher,ITravelFetcher,ITravelEventFetcher,ITravelSmallEventFetcher,
                          ISpellObtainFetcher, ISectFetcher, IMindTreeMapFetcher, ILootFetcher, IPetFetcher, IMapEventFetcher, ICaveFetcher, ISpellLevelUpFetcher,
                          IPetLevelUpFetcher, IErrorStatusFetcher,IGameConstFetcher,IPropLevelUpFetcher,ICommodityFetcher,IShopFetcher,IPrestigeLevelFetcher,
                          IPrestigeTaskFetcher,ITowerFetcher,IAchievementFetcher,IAchieveRewardFetcher,IBookSpellFetcher,IHeadIconFetcher,
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
-    IQualityTableFetcher,IPartnerDialogueFetcher,IPartnerFetcher
+    IQualityTableFetcher,IPartnerDialogueFetcher,IPartnerFetcher,IBallFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -22,7 +22,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, Equip>            mEquipCached                       = new Dictionary<int,Equip>(12);
     public Dictionary<int, PVEDialogue>      mPVEDialogueCached                 = new Dictionary<int, PVEDialogue>(12);
     public Dictionary<int, MapData>          mMapDataCached                     = new Dictionary<int, MapData>(12);
-    public Dictionary<int, Dialog>           mDialogCached                      = new Dictionary<int, Dialog>(12);
     public Dictionary<int, Recipe>           mRecipeCached                      = new Dictionary<int, Recipe>(12);
     public Dictionary<int, AuxSkillLevel>     mAuxSkillLevelCached              = new Dictionary<int, AuxSkillLevel>(12);
     public Dictionary<int, Travel>           mTravelCached                      = new Dictionary<int, Travel>(12);
@@ -32,7 +31,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<Sect.SectType, Sect>   mSectCached                        = new Dictionary<Sect.SectType, Sect>(3);
     public Dictionary<int, SpellObtain>      mSpellObtainCached                 = new Dictionary<int, SpellObtain>(12);
     public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
-    public Dictionary<int, Loot>            mLootCached                         = new Dictionary<int, Loot>(12);
     public Dictionary<int, Pet>             mPetCached                          = new Dictionary<int,Pet>(12);
     public Dictionary<int, MapEvent>        mMapEventCached                     = new Dictionary<int, MapEvent>(12);
     public Dictionary<int, Cave>            mCaveCached                         = new Dictionary<int, Cave>(12);
@@ -63,6 +61,9 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, QualityTable>    mQualityTableCached                 = new Dictionary<int, QualityTable>(12);
     public Dictionary<string, List<PartnerDialogue>> mPartnerDialogueCached     = new Dictionary<string, List<PartnerDialogue>>(12);
     public Dictionary<int, Partner>         mPartnerCached                      = new Dictionary<int, Partner>(12);
+    public Dictionary<int, Loot>            mLootCached                         = new Dictionary<int, Loot>(12);
+    public Dictionary<int, SelectDialog>    mSelectDialogCached                 = new Dictionary<int, SelectDialog>(12);
+    public Dictionary<int, Ball>            mBallCached                         = new Dictionary<int, Ball>(12);
 
     public static ConfigHelper Instance
     {
@@ -227,6 +228,34 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始Partner成功:{0}项", mPartnerCached.Count));
         }
+        else if (dataName == DataName.Loot)
+        {
+            Dictionary<string, Loot> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Loot>>(text);
+            foreach (var temp in pool)
+            {
+                mLootCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始Loot成功:{0}项", mLootCached.Count));
+        }
+        else if (dataName == DataName.SelectDialog)
+        {
+            Dictionary<string, SelectDialog> pool = LitJson.JsonMapper.ToObject<Dictionary<string, SelectDialog>>(text);
+            foreach (var temp in pool)
+            {
+                Debug.Log(temp.Value.idx);
+                mSelectDialogCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始SelectDialog成功:{0}项", mSelectDialogCached.Count));
+        }
+        else if (dataName == DataName.Ball)
+        {
+            Dictionary<string, Ball> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Ball>>(text);
+            foreach (var temp in pool)
+            {
+                mBallCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始Ball成功:{0}项", mBallCached.Count));
+        } 
         //if (assets == TUtils.MDEncode("Hero"))
         //{
         //    int length = ios.ReadInt16();
@@ -263,6 +292,9 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         QualityTable.Fetcher                        = this;
         PartnerDialogue.Fetcher                     = this;
         Partner.Fetcher                             = this;
+        Loot.LootFetcher                            = this;
+        SelectDialog.DialogFetcher                  = this;
+        Ball.Fetcher                                = this;
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -274,7 +306,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         //SpellObtain.SpellObtainFetcher           = this;
         //Sect.SectFetcher                        = this;
         //MindTreeMap.MindTreeMapFetcher            = this;
-        //Loot.LootFetcher                         = this;
         //Pet.PetFetcher                           = this;
         //MapEvent.MapEventFetcher                 = this;
         //Cave.CaveFetcher                         = this;
@@ -400,12 +431,12 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    Dialog IDialogFetcher.GetDialogByCopy(int idx)
+    SelectDialog ISelectDialogFetcher.GetSelectDialogByCopy(int idx)
     {
-        Dialog origin = null;
-        if (mDialogCached.TryGetValue(idx, out origin))
+        SelectDialog origin = null;
+        if (mSelectDialogCached.TryGetValue(idx, out origin))
         {
-            return new Dialog(origin);
+            return origin.Clone();
         }
         TDebug.LogError(string.Format("Dialog没有此Idx:{0}", idx));
         return null;
@@ -564,7 +595,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         Partner origin = null;
         if (mPartnerCached.TryGetValue(idx, out origin))
         {
-            return origin.Clone();
+            return isCopy ? origin.Clone() : origin;
         }
         TDebug.LogError(string.Format("Partner没有此idx:{0}", idx));
 
@@ -586,6 +617,18 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
+
+    Ball IBallFetcher.GetBallCopy(int idx, bool isCopy)
+    {
+        Ball origin = null;
+        if (mBallCached.TryGetValue(idx, out origin))
+        {
+            return isCopy ? origin.Clone() : origin;
+        }
+        TDebug.LogError(string.Format("Ball没有此idx:{0}", idx));
+
+        return null;
+    }
 
     #region ============Old=================
     
@@ -771,7 +814,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         Loot origin = null;
         if (mLootCached.TryGetValue(id, out origin))
         {
-            return new Loot(origin);
+            return origin.Clone();
         }
         TDebug.LogError(string.Format("Loot没有此id:{0}", id));
         return null;

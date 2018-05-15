@@ -353,31 +353,31 @@ public class TUtility:TUtilityBase
         return tag.Length == 2?tag.Insert(1, "  "):tag;
     }
 
-    public static string TryGetLootGoodsName(LootType type,int id)
+    public static string TryGetLootGoodsName(LootItemType type,int id)
     {
         switch(type)
         {
-            case LootType.Recipe:
+            case LootItemType.Recipe:
                 Recipe recipe = Recipe.RecipeFetcher.GetRecipeByCopy(id);
                 return recipe == null ? "无效图纸" : recipe.name;
-            case LootType.Equip:
+            case LootItemType.Equip:
                 Equip equip = Equip.Fetcher.GetEquipCopy(id);
                 return equip == null ? "无效法宝" : GetTextByQuality(equip.name, equip.curQuality);
-            case LootType.Money:
+            case LootItemType.Money:
             {
                 WealthType wealth = (WealthType) id;
                 return wealth.GetDesc();
             }
-            case LootType.Item:
+            case LootItemType.Item:
                 Item item = Item.Fetcher.GetItemCopy(id);
                 return item == null ? "无效道具" : GetTextByQuality(item.name, item.quality);
-            case LootType.Pet:
+            case LootItemType.Pet:
                 Pet pet = Pet.PetFetcher.GetPetByCopy(id);
                 return pet == null ? "无效宠物" : pet.name;
             //case LootType.spell:
             //    OldSpell spell = OldSpell.SpellFetcher.GetSpellByCopy(id);
             //    return spell == null ? "无效功法" : spell.name;
-            case LootType.Prestige:
+            case LootItemType.Prestige:
             {
                 PrestigeLevel.PrestigeType ty = (PrestigeLevel.PrestigeType)id;
                 return string.Format("{0}声望", ty.GetDesc());

@@ -48,8 +48,9 @@ public class Window_MapEndShow : WindowBase
         BallMap ballMap = BallMap.Fetcher.GetBallMapCopy(mMapIdx);
         if (ballMap == null) return;
 
-        mViewObj.EndText.text = string.Format("分数：{0}\n获得物品：{1}",
-            PlayerPrefsBridge.Instance.BallMapAcce.Score.ToString()
+        mViewObj.EndText.text = string.Format("分数：{0}\n获得物品：\n{1}",
+            PlayerPrefsBridge.Instance.BallMapAcce.Score.ToString(),
+            GoodsToDrop.getListString(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList)
             );
 
         mViewObj.TBtnOk.TextBtn.text = LangMgr.GetText("确定");

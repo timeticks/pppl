@@ -75,7 +75,7 @@ public class Window_RoleMainInfo : WindowBase {
             if (sect != null) sectName = sect.name;
         }
         long curTime = AppTimer.CurTimeStampMsSecond;
-        long birthTime = PlayerPrefsBridge.Instance.PlayerData.birthTime;
+        long birthTime = PlayerPrefsBridge.Instance.PlayerData.BirthTime;
         long LoginTime = (curTime - birthTime) / 1000 / 24 / 60 / 60;
 
         mViewObj.TextSect.text = string.Format("宗门:{0}" , sectName);

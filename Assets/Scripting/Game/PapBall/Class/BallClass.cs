@@ -7,20 +7,21 @@ public class BallNodeData
     public static System.Random rand = new System.Random();
 
     public XyCoordRef Pos;          //如果不是转盘上的球，此值为null
-    public int Num=-1;
-    public bool IsSearched=false;   //是否寻找过
+    public int BallIdx=-1;
+    public int SearchedByIdx;       //上一次被寻找过的ballIdx
+    public bool IsAdded = false;    //是否已经添加到相同列表中
     public bool IsDisable;          //是否禁用
     public bool IsLinkCenter;       //是否有与中心球连接
     public List<XyCoordRef> NearList;   //用于缓存邻近的坐标
 
     public BallBaseCtrl BallCtrl;
 
-    public BallNodeData(int num)
+    public BallNodeData(int ballIdx)
     {
-        Num = num;
+        BallIdx = ballIdx;
         Pos = null;
     }
-    public BallNodeData(XyCoordRef pos , int num , HexaMapData mapData)
+    public BallNodeData(XyCoordRef pos , int ballIdx , HexaMapData mapData)
     {
         Pos = pos;
         NearList = HexaMathf.GetInRange(1, Pos.m_X, Pos.m_Y);
@@ -29,7 +30,7 @@ public class BallNodeData
             if (!mapData.IsLegal(NearList[i].m_X, NearList[i].m_Y))
                 NearList.RemoveAt(i);
         }
-        Num = num;
+        BallIdx = ballIdx;
     }
 
 

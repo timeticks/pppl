@@ -23,6 +23,8 @@ public class BallBaseCtrl : MonoBehaviour {
         public CircleCollider2D MyCollider;
         public Text TextNum;
         public GameObject WarnRoot;
+        public ParticleSystem TrailParticle;
+        
         public ViewObj(UIViewBase view)
         {
             if (MyImage != null) return;
@@ -32,6 +34,7 @@ public class BallBaseCtrl : MonoBehaviour {
             MyCollider = view.GetCommon<CircleCollider2D>("Part_BattleBall");
             TextNum = view.GetCommon<Text>("TextNum");
             WarnRoot = view.GetCommon<GameObject>("WarnRoot");
+            TrailParticle = view.GetCommon<ParticleSystem>("TrailParticle");
         }
     }
 
@@ -42,8 +45,7 @@ public class BallBaseCtrl : MonoBehaviour {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         MyTrans = transform;
         ParentWin = parentWin;
-        MyData = new BallNodeData(ballIdx);
-        mViewObj.TextNum.text = MyData.Num.ToString();
+        SetBallIdx(ballIdx);
         SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = false;
         mViewObj.MyCollider.isTrigger = true;
@@ -51,6 +53,19 @@ public class BallBaseCtrl : MonoBehaviour {
         MyTrans.tag = GameConstUtils.TAG_UNTAGGED;
         mViewObj.MyRectTrans.localScale = Vector3.one * scaleRatio;
         mViewObj.WarnRoot.gameObject.SetActive(false);
+        SetTrailActive(false, false);
+    }
+
+    public void SetBallIdx(int ballIdx)
+    {
+        Ball ball = Ball.Fetcher.GetBallCopy(ballIdx, false);
+        MyData = new BallNodeData(ballIdx);
+        SetBallIcon(ball.icon.ToString());
+    }
+
+    public void SetBallIcon(string icon)
+    {
+        mViewObj.TextNum.text = icon;
     }
 
     public void StartRun(Vector3 dir , BallType ballType)
@@ -81,6 +96,15 @@ public class BallBaseCtrl : MonoBehaviour {
             mViewObj.WarnRoot.SetActive(isWarn);
     }
 
+    public void SetTrailActive(bool objActive , bool particleEmitting)
+    {
+        objActive = false; //TODO:不要尾迹
+        if (mViewObj.TrailParticle.gameObject.activeSelf != objActive)
+            mViewObj.TrailParticle.gameObject.SetActive(objActive);
+        if (!particleEmitting)
+            mViewObj.TrailParticle.Stop();
+    }
+
     public void Attach(Collider2D otherCol)
     {
         if (mAttached)
@@ -98,6 +122,7 @@ public class BallBaseCtrl : MonoBehaviour {
         Vector3 lastMoveDir = MoveDir;
         SetRigibodyAndVelocity(true, false, Vector2.zero);
         mAttached = true;
+        SetTrailActive(true, false);
         Destroy(GetComponent<BallStop>());
 
         Vector3 localPosWithCenter = ParentWin.InverseTransformPointWithCenter(MyTrans); //球相对于中心球的位置
@@ -118,18 +143,27 @@ public class BallBaseCtrl : MonoBehaviour {
         ParentWin.AddBall(this, xyPos);
         PlayerPrefsBridge.Instance.BallMapAcce.FireBallAmount++;
 
+        bool isDestroyEqual = false;
         if (MyBallType == BallType.RunByGunBall)
         {
-            bool isDestroyEqual = ParentWin.DestroyEqualNum(MyData, new Vector2(boundDir.x, boundDir.y));
+            isDestroyEqual = ParentWin.DestroyEqualNum(MyData, new Vector2(boundDir.x, boundDir.y));
             if (!isDestroyEqual)
                 ParentWin.FreshMutilDown(true);
         }
+
         ParentWin.StartRot(MyTrans.position, lastMoveDir);
-
         MyBallType = BallType.IdleBall;
-
         ParentWin.GunCtrl.CreateWaitBall(-1, false);
         PlayerPrefsBridge.Instance.saveMapAccessor();
+
+        if (isDestroyEqual)
+        {
+            //爆炸特效
+            DestroySelf exploEffect = GameAssetsPool.Instance.GetEffect("FE_BallColExplosion");
+            TUtility.SetParent(exploEffect.transform, MyTrans.parent);//如果会消除，则特效不跟随球体走
+            exploEffect.transform.position = (otherCol.transform.position + MyTrans.position) / 2;
+            exploEffect.gameObject.SetActive(true);
+        }
     }
 
 
@@ -182,6 +216,12 @@ public class BallBaseCtrl : MonoBehaviour {
                 TDebug.LogError("失败了");
             }
         }
+    }
+
+
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
     }
 
     //Vector2 GetFixedPos(Vector2 ball , Vector2 spdDir , Vector2 curPos)//得到修正后的坐标，矫正碰撞延迟

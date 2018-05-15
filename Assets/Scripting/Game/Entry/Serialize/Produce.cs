@@ -18,11 +18,11 @@ public class Produce : BaseObject
         }
     }
 
-    public LootType makeType;
+    public LootItemType makeType;
     public int makeId;
     public Eint workerMake;
 
-    public LootType[] needTypes;
+    public LootItemType[] needTypes;
     public int[] needIds;
     public int[] needNums;
 

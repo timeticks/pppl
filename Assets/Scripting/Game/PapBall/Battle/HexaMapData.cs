@@ -66,14 +66,17 @@ public class HexaMapData
         Balls[x][y] = data;
     }
 
-    public void ResetNodeSearch()
+    public void ResetNodeSearch(bool resetSearch , bool resetAdd)
     {
         for (int i = 0; i < Balls.Length; i++)
         {
             for (int j = 0; j < Balls[i].Length; j++)
             {
-                if(Balls[i][j]!=null)
-                    Balls[i][j].IsSearched = false;
+                if (Balls[i][j] != null)
+                {
+                    if (resetSearch) Balls[i][j].SearchedByIdx = 0;
+                    if (resetAdd) Balls[i][j].IsAdded = false;
+                }
             }
         }
     }
