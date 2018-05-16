@@ -14,7 +14,7 @@ public class MindTreeMapCtrl
     public static MindTreeMapCtrl Instance { get; private set; }
 
     public int MapIdx = 1002100001;
-    public Dictionary<int, MindTreeNode> mMapDict = new Dictionary<int, MindTreeNode>();  //每个坐标的信息
+    public Dictionary<int, MindTreeNode> mMapRootDict = new Dictionary<int, MindTreeNode>();  //每个根节点坐标的信息
     public MapData.MapType MyMapType;
 
     #region 进行处理
@@ -106,11 +106,11 @@ public class MindTreeMapCtrl
 
     public void DoNode(MindTreeNode node)
     {
-        //TDebug.Log(string.Format("执行 [{0}]", node.CacheString));
         //if (MyMapType == MapData.MapType.SingleMap)
         {
         }
         if (node == null) return;
+        TDebug.LogInEditorF("执行 [{0}]", node.CacheString);
         if (DoGetNode(node, DoNode))//如果是get节点，进行执行查询回调,  有处理，则不向下执行
         {
             return;
@@ -121,23 +121,31 @@ public class MindTreeMapCtrl
         }
         switch (node.Type)
         {
-            //case MindTreeNodeType.setTalk:
-            //{
-            //    Window_NpcInteract setTalkWin = UIRootMgr.Instance.GetOpenListWindow<Window_NpcInteract>(WinName.Window_NpcInteract);
-            //    if (setTalkWin != null)
-            //    {
-            //        setTalkWin.OpenTalk(node);
-            //    }
-            //    else
-            //    {
-            //        setTalkWin = UIRootMgr.Instance.OpenWindow<Window_NpcInteract>(WinName.Window_NpcInteract, CloseUIEvent.None);
-            //        setTalkWin.OpenWindow(null);//沿用
-            //        setTalkWin.OpenTalk(node);
-            //        TDebug.Log(string.Format("执行{0}时，窗口未打开", node.CacheString));
-            //    }
-            //    break;
-            //}
-                
+            case MindTreeNodeType.setTalk:  
+            {
+                Window_Chat setTalkWin = UIRootMgr.Instance.OpenWindow<Window_Chat>(WinName.Window_Chat);
+                List<int> idList = new List<int>();
+                for (int i = 0; i < node.Values.Count; i++) //获取对话列表
+                {
+                    idList.Add(node.TryGetInt(i));
+                }
+                System.Action<int> del = delegate(int result)
+                {
+                    bool haveTalk = CheckLegal_HaveTalkAnyBranch(node.ChildNode);
+                    MindTreeNode childNode = DoNextByResult(node, result);
+                    if (childNode != null)
+                    {
+                        DoNode(childNode);
+                    }
+                };
+                setTalkWin.OpenWindow(idList, del);
+                break;
+            }
+            case MindTreeNodeType.condition:
+            {
+                StartDoList(node.ChildNode);
+                break;
+            }
             //case MindTreeNodeType.setBattle:
             //{
             //    Window_NpcInteract setBattleNpcWin = UIRootMgr.Instance.GetOpenListWindow<Window_NpcInteract>(WinName.Window_NpcInteract);
@@ -173,27 +181,15 @@ public class MindTreeMapCtrl
             //    if (!Shop.GetShopOpen(storeId, out msg) && UIRootMgr.Instance.MessageBox.ShowStatus(msg))
             //        return;
             //    UIRootMgr.Instance.IsLoading = true;
-            //    GameClient.Instance.RegisterNetCodeHandler(NetCode_S.ShopInfo, S2C_ShopInfo);
-            //    GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_ShopInfo(storeId));              
             //    break;
             //}
             //case MindTreeNodeType.modEnter:
-            //case MindTreeNodeType.condition:
-            //    StartDoList(node.ChildNode);
-            //    break;
             //case MindTreeNodeType.modLeave://暂时不做
             //    break;
-            //default:
-            //    TDebug.LogError("错误处理的类型" + node.CacheString);
-            //    break;
+            default:
+                TDebug.LogError("错误处理的类型" + node.CacheString);
+                break;
         }
-    }
-    void S2C_ShopInfo(BinaryReader ios)
-    {
-        UIRootMgr.Instance.IsLoading = false;
-        GameClient.Instance.RegisterNetCodeHandler(NetCode_S.ShopInfo, null);
-        NetPacket.S2C_ShopInfo msg = MessageBridge.Instance.S2C_ShopInfo(ios);
-        //UIRootMgr.Instance.OpenWindowWithHide<Window_PrestigeStore>(WinName.Window_PrestigeStore,WinName.Window_NpcInteract).OpenWindow(msg.ShopId);
     }
 
     //处理set节点，只表现
@@ -201,111 +197,122 @@ public class MindTreeMapCtrl
     {
         switch (node.Type)
         {
-            //case MindTreeNodeType.setPlace:
-            //{
-            //    Window_DungeonMap setPlaceWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-            //    Window_NpcInteract npcWin = UIRootMgr.Instance.GetOpenListWindow<Window_NpcInteract>(WinName.Window_NpcInteract);
-            //    if (setPlaceWin != null)
-            //    {
-            //        if (npcWin != null) npcWin.CloseWindow();
-            //        int toPos = node.TryGetInt(0);
-            //        XyCoordRef xy = setPlaceWin.MyMapData.GetNodeXyByIndex(toPos);
-            //        if (setPlaceWin.RoleMoveTo(xy))
-            //        {
-            //            TDebug.Log("强制移动成功");
-            //        }
-            //        else TDebug.LogError(string.Format("强制移动失败: x[{0}] , y[{1}]", xy.m_X, xy.m_Y));
-            //    }
-            //    break;
-            //}
-                
-            //case MindTreeNodeType.setEnd: //触发结局
-            //{
-            //    Window_DungeonMap mapWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-            //    mapWin.SendMapEnd(MapEndType.TriggerEnd, node);
-            //    break;
-            //}
-            //case MindTreeNodeType.setEnter:
-            //    int closeEnterPos = node.TryGetInt(0);
-            //    if (closeEnterPos < 0) { TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString)); }
-            //    break;
-            //case MindTreeNodeType.setEvent:
-            //    int evnetId = node.TryGetInt(0);
-            //    int eventStatus = node.TryGetInt(1);
-            //    if (evnetId <= 0) { TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString)); }
-            //    break;
-            //case MindTreeNodeType.setNPC:
-            //    int npcId = node.TryGetInt(0);
-            //    int npcStatus = node.TryGetInt(1);
-            //    OldHero hero = OldHero.HeroFetcher.GetHeroByCopy(npcId);
-            //    if (hero!=null)
-            //    {
-            //        Window_DungeonMap setNPCWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-            //        if (setNPCWin != null)
-            //        {
-            //            string descStr="";
-            //            if (npcStatus == (int) NpcStatus.Dead)
-            //            {
-            //                descStr = LobbyDialogue.GetDescStr("npcDead", hero.name);
-            //                setNPCWin.AppendNewLineDecs(descStr);
-            //            }
-            //            //else if (npcStatus == (int) NpcStatus.Disable)
-            //            //{
-            //            //    descStr = LobbyDialogue.GetDescStr("npcDisable", hero.Name);
-            //            //}
-            //            //else if (npcStatus == (int) NpcStatus.Enable)
-            //            //{
-            //            //    descStr = LobbyDialogue.GetDescStr("npcEnable", hero.Name);
-            //            //}
-            //            setNPCWin.FreshNpc();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString));
-            //    }
-            //    break;
-            //case MindTreeNodeType.setItem:
-            //    int itemId = node.TryGetInt(0);
-            //    int itemValue = node.TryGetInt(1);
-            //    Item item = Item.Fetcher.GetItemCopy(itemId);
-            //    if (item!=null)
-            //    {
-            //        Window_DungeonMap setItemWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-            //        if (setItemWin != null)
-            //        {
-            //            string descStr = "";
-            //            if (itemValue > 0)
-            //            {
-            //                descStr = LobbyDialogue.GetDescStr("addItem", itemValue.ToString(), item.name);
-            //            }
-            //            else
-            //            {
-            //                descStr = LobbyDialogue.GetDescStr("lostItem", itemValue.ToString(), item.name);
-            //            }
-            //            setItemWin.AppendNewLineDecs(descStr);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString));
-            //    }
-            //    break;
-            //case MindTreeNodeType.setMsg:
-            //    TDebug.Log("setMsg");
-            //    Window_DungeonMap setMsgWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-                
-            //    if (setMsgWin != null)
-            //    {
-            //        int msgId = node.TryGetInt(0);
-            //        Dialog dialog = Dialog.DialogFetcher.GetDialogByCopy(msgId);
-            //        if (dialog!=null)
-            //        setMsgWin.AppendNewLineDecs(dialog.Desc);
-            //    }
-            //    break;
-            //case MindTreeNodeType.setDesc:
-            //    break;
-            //default: return false;
+            case MindTreeNodeType.setPlace:
+            {
+                break;
+            }
+            case MindTreeNodeType.setEnd: //触发结局
+            {
+                Window_DungeonMap mapWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
+                mapWin.SendMapEnd(MapEndType.TriggerEnd, node);
+                break;
+            }
+            case MindTreeNodeType.setEnter:
+            {
+                int closeEnterPos = node.TryGetInt(0);
+                if (closeEnterPos < 0) { TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString)); }
+                break;
+            }
+            case MindTreeNodeType.setEvent:
+            {
+                int evnetId = node.TryGetInt(0);
+                int eventStatus = node.TryGetInt(1);
+                if (evnetId <= 0) { TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString)); }
+                break;
+            }
+            case MindTreeNodeType.setNPC:
+            {
+                int npcId = node.TryGetInt(0);
+                int npcStatus = node.TryGetInt(1);
+                OldHero hero = OldHero.HeroFetcher.GetHeroByCopy(npcId);
+                if (hero != null)
+                {
+                    Window_DungeonMap setNPCWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
+                    if (setNPCWin != null)
+                    {
+                        string descStr = "";
+                        if (npcStatus == (int)NpcStatus.Dead)
+                        {
+                            descStr = LobbyDialogue.GetDescStr("npcDead", hero.name);
+                            setNPCWin.AppendNewLineDecs(descStr);
+                        }
+                        setNPCWin.FreshNpc();
+                    }
+                }
+                else
+                {
+                    TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString));
+                }
+                break;
+            }
+            case MindTreeNodeType.setItem:
+            {
+                int itemId = node.TryGetInt(0);
+                int itemValue = node.TryGetInt(1);
+                Item item = Item.Fetcher.GetItemCopy(itemId);
+                if (item != null)
+                {
+                    Window_DungeonMap setItemWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
+                    if (setItemWin != null)
+                    {
+                        string descStr = "";
+                        if (itemValue > 0)
+                        {
+                            descStr = LobbyDialogue.GetDescStr("addItem", itemValue.ToString(), item.name);
+                        }
+                        else
+                        {
+                            descStr = LobbyDialogue.GetDescStr("lostItem", itemValue.ToString(), item.name);
+                        }
+                        setItemWin.AppendNewLineDecs(descStr);
+                    }
+                }
+                else
+                {
+                    TDebug.LogError(string.Format("节点信息错误:[{0}]", node.CacheString));
+                }
+                break;
+            }
+            case MindTreeNodeType.setMsg:
+            {
+                TDebug.Log("setMsg");
+                Window_DungeonMap setMsgWin = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
+
+                if (setMsgWin != null)
+                {
+                    string msgId = node.TryGetString(0);
+                    LobbyDialogue dialog = LobbyDialogue.LobbyDialogueFetcher.GetLobbyDialogueByCopy(msgId);
+                    if (dialog != null)
+                        setMsgWin.AppendNewLineDecs(dialog.ch);
+                }
+                break;
+            }
+            case MindTreeNodeType.setDesc:
+            {
+                break;
+            }
+            case MindTreeNodeType.setSex:
+            {
+                int itemValue = node.TryGetInt(0);
+                PlayerPrefsBridge.Instance.PartnerAcce.selectSex = (PartnerData.Sex)(itemValue);
+                PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
+            case MindTreeNodeType.setHairColor:
+            {
+                int itemValue = node.TryGetInt(0);
+                PlayerPrefsBridge.Instance.PartnerAcce.selectSex = (PartnerData.Sex)(itemValue);
+                PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
+            case MindTreeNodeType.setGuideStep:
+            {
+                int itemValue = node.TryGetInt(0);
+                PlayerPrefsBridge.Instance.PlayerData.GuideStepIndex = itemValue;
+                PlayerPrefsBridge.Instance.savePlayerModule();
+                break;
+            }
+            default: return false;
         }
         return true;
     }
@@ -349,21 +356,18 @@ public class MindTreeMapCtrl
                 }
                 else { callBack(1); }
                 break;
-            case MindTreeNodeType.getSect:
+            case MindTreeNodeType.getGuideStep:  //只要大于等于就返回1
             {
-                ServPacketHander del = delegate(BinaryReader ios)
-                {
-                    GameClient.Instance.RegisterNetCodeHandler(NetCode_S.CheckCondition, null);
-                    UIRootMgr.Instance.IsLoading = false;
-                    NetPacket.S2C_CheckCondition msg = MessageBridge.Instance.S2C_CheckCondition(ios);
-                    callBack(msg.IsStatisfy ? 1 : 0);
-                };
-                UIRootMgr.Instance.IsLoading = true;
-                GameClient.Instance.RegisterNetCodeHandler(NetCode_S.CheckCondition, del);
-                Sect.SectType sectType = (Sect.SectType)node.TryGetInt(0);
-                GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_CheckCondition(MapData.ConditionType.Sect,0, (int)sectType));
-                //if (PlayerPrefsBridge.Instance.PlayerData.MySect == sectType) { callBack(1); }
-                //else { callBack(0); }
+                int tempMisc = node.TryGetInt(0);
+                if (PlayerPrefsBridge.Instance.PlayerData.GuideStepIndex >= tempMisc) { callBack(1); }
+                else { callBack(0); }
+                break;
+            }
+            case MindTreeNodeType.getMapLevel:  //只要大于等于就返回1
+            {
+                int tempMisc = node.TryGetInt(0);
+                if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel >= tempMisc) { callBack(1); }
+                else { callBack(0); }
                 break;
             }
             case MindTreeNodeType.getLevel:
@@ -392,20 +396,7 @@ public class MindTreeMapCtrl
                 int eventId = node.TryGetInt(0);
                 int needEventStatus = node.TryGetInt(1);
                 int curEventStatus = -1; //事件未触发状态为-1
-                if (PlayerPrefsBridge.Instance.GetMapSaveCondition(DungeonMapAccessor.MapSaveType.Event, eventId, out curEventStatus))
-                {
-                    bool isSatisfy = false;
-                    if (needEventStatus == 0 && curEventStatus >= 0) //如果目标状态为0 ，则只要事件触发过，就都为真
-                    {
-                        isSatisfy = true;
-                    }
-                    else
-                    {
-                        isSatisfy = needEventStatus == curEventStatus;
-                    }
-                    callBack(isSatisfy ? 1 : 0);
-                }
-                else { callBack(0); }
+                
                 break;
             default:
                 TDebug.LogError("错误的类型" + node.Type);
@@ -455,9 +446,9 @@ public class MindTreeMapCtrl
     //找到对应的npc
     public MindTreeNode GetNpcNode(int nodePos, int npc)
     {
-        if (mMapDict.ContainsKey(nodePos) && mMapDict[nodePos]!=null)
+        if (mMapRootDict.ContainsKey(nodePos) && mMapRootDict[nodePos]!=null)
         {
-            List<MindTreeNode> temp = mMapDict[nodePos].ChildNode;
+            List<MindTreeNode> temp = mMapRootDict[nodePos].ChildNode;
             for (int i = 0; i < temp.Count; i++)
             {
                 if (temp[i].Type == MindTreeNodeType.npc && temp[i].GetNpcId() ==npc)
@@ -506,9 +497,9 @@ public class MindTreeMapCtrl
             saveMap = PlayerPrefsBridge.Instance.GetDungeonMapCopy();
         }
 
-        if (mMapDict.ContainsKey(nodePos) && mMapDict[nodePos] != null)
+        if (mMapRootDict.ContainsKey(nodePos) && mMapRootDict[nodePos] != null)
         {
-            List<MindTreeNode> npcList = mMapDict[nodePos].GetChild(MindTreeNodeType.npc);
+            List<MindTreeNode> npcList = mMapRootDict[nodePos].GetChild(MindTreeNodeType.npc);
             for (int i = 0; i < npcList.Count; i++)
             {
                 int npcId = npcList[i].GetNpcId();
@@ -536,18 +527,18 @@ public class MindTreeMapCtrl
 
     public MindTreeNode GetNodeByPos(int nodePos)
     {
-        if (mMapDict.ContainsKey(nodePos) && mMapDict[nodePos] != null)
+        if (mMapRootDict.ContainsKey(nodePos) && mMapRootDict[nodePos] != null)
         {
-            return mMapDict[nodePos];
+            return mMapRootDict[nodePos];
         }
         return null;
     }
 
     public MindTreeNode GetPosChild(int nodePos, MindTreeNodeType nodeTy)
     {
-        if (mMapDict.ContainsKey(nodePos) && mMapDict[nodePos] != null)
+        if (mMapRootDict.ContainsKey(nodePos) && mMapRootDict[nodePos] != null)
         {
-            List<MindTreeNode> temp = mMapDict[nodePos].ChildNode;
+            List<MindTreeNode> temp = mMapRootDict[nodePos].ChildNode;
             for (int i = 0; i < temp.Count; i++)
             {
                 if (temp[i].Type == nodeTy)
@@ -559,20 +550,20 @@ public class MindTreeMapCtrl
         return null;
     }
 
-    //获取进入事件
-    public MindTreeNode GetModEnter(int nodePos)
+    //获取值相同的，子根节点
+    public MindTreeNode GetRootGuideStep(int guideStep)
     {
-        if (mMapDict.ContainsKey(nodePos) && mMapDict[nodePos] != null)
+        if (mMapRootDict.ContainsKey(guideStep) && mMapRootDict[guideStep] != null)
         {
             DungeonMapAccessor map = PlayerPrefsBridge.Instance.GetDungeonMapCopy();
             for (int i = 0; i < map.EnterClosePos.Count; i++)
             {
-                if (map.EnterClosePos[i] == nodePos) //如果已经关闭，直接返回null
+                if (map.EnterClosePos[i] == guideStep) //如果已经关闭，直接返回null
                 {
                     return null;
                 }
             }
-            List<MindTreeNode> temp = mMapDict[nodePos].ChildNode;
+            List<MindTreeNode> temp = mMapRootDict[guideStep].ChildNode;
             for (int i = 0; i < temp.Count; i++)
             {
                 if (temp[i].Type == MindTreeNodeType.modEnter)
@@ -582,6 +573,16 @@ public class MindTreeMapCtrl
             }
         }
         return null;
+    }
+
+    public void DoRootGuideStep(int guideStep)
+    {
+        if (mMapRootDict.ContainsKey(guideStep) && mMapRootDict[guideStep] != null)
+        {
+            List<MindTreeNode> temp = mMapRootDict[guideStep].ChildNode;
+            DoNodeList(temp);
+        }
+        return;
     }
 
 
@@ -596,7 +597,7 @@ public class MindTreeMapCtrl
     public static bool CheckLegal(MindTreeMapCtrl treeMap)
     {
         bool isLegal = true;
-        foreach (var item in treeMap.mMapDict) //检查是否合法
+        foreach (var item in treeMap.mMapRootDict) //检查是否合法
         {
             if (!CheckLegal(item.Value.ChildNode))
             {
@@ -736,7 +737,7 @@ public class MindTreeMapCtrl
             return;
         }
         MyMapType = mapType;
-        string str = treeMap.Content;
+        string str = treeMap.content;
         str.Replace("\r", "");
         string[] strs = str.Split('\n');
         List<string> strList = new List<string>(strs);
@@ -747,7 +748,7 @@ public class MindTreeMapCtrl
         }
         for (int i = 0; i < strList.Count; i++) //移除空回车
         {
-            int tabCount = YamlParse.GetTabCount(strList[i]);
+            int tabCount = YamlParse.GetTabSpaceCount(strList[i]);
             if (tabCount == 0){
                 strList.RemoveAt(i);
                 i--;
@@ -761,7 +762,7 @@ public class MindTreeMapCtrl
             strList.RemoveAt(0);
             if (curStr != "")
             {
-                int tabCount = YamlParse.GetTabCount(curStr);
+                int tabCount = YamlParse.GetTabSpaceCount(curStr);
                 if (tabCount == 0) continue;
                 if (tabCount == 1) //根节点，为地图位置
                 {
@@ -792,7 +793,7 @@ public class MindTreeMapCtrl
                 }
             }
         }
-        mMapDict = nodeDict;
+        mMapRootDict = nodeDict;
         Instance = this;
     }
     

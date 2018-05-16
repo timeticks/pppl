@@ -11,8 +11,8 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         public Transform ItemRoot;
         public Text NameText;
         public Text DescText;
-        public Button SellBtn;
-        public Button UseBtn;
+        public TextButton SellTBtn;
+        public TextButton UseTBtn;
         public GameObject Part_SelectableItemBtn;
         public ScrollRect ScrollView;
         public Text TextFrameNum;
@@ -26,9 +26,9 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             if (ItemRoot == null) ItemRoot = view.GetCommon<Transform>("ItemRoot");
             if (DescText == null) DescText = view.GetCommon<Text>("DescText");
             if (NameText == null) NameText = view.GetCommon<Text>("NameText");
-            if (SellBtn == null) SellBtn = view.GetCommon<Button>("SellBtn");
+            if (SellTBtn == null) SellTBtn = view.GetCommon<TextButton>("SellTBtn");
             if (Part_SelectableItemBtn == null) Part_SelectableItemBtn = view.GetCommon<GameObject>("Part_SelectableItemBtn");
-            if (UseBtn == null) UseBtn = view.GetCommon<Button>("UseBtn");
+            if (UseTBtn == null) UseTBtn = view.GetCommon<TextButton>("UseTBtn");
             if (TextFrameNum == null) TextFrameNum = view.GetCommon<Text>("TextFrameNum");
             if (IconItem == null) IconItem = view.GetCommon<Image>("IconItem");
             if (TextNum == null) TextNum = view.GetCommon<Text>("TextNum");
@@ -85,15 +85,14 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
     private ViewObj mViewObj;
     private int mCurSelectIndex;
     private int InventoryCapacity = 80;
-
+    private Item.ItemType mShowType;
     public void OpenWindow(Item.ItemType onlyShowType = Item.ItemType.None)
     {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
         OpenWin();
+        mShowType = onlyShowType;
         Init();
         mViewObj.ResetSiteScroll();
-        RegisterNetCodeHandler(NetCode_S.SellItem, S2C_ItemSell);
-        RegisterNetCodeHandler(NetCode_S.UseItem, S2C_UseItem);
     }
     public override void CloseWindow(CloseActionType actionType = CloseActionType.None)
     {
@@ -102,8 +101,8 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
     public void Init()
     {
         mCurSelectIndex = 0;
-        mViewObj.SellBtn.SetOnClick(BtnEvt_Sell);
-        mViewObj.UseBtn.SetOnClick(BtnEvt_Use);
+        mViewObj.SellTBtn.SetOnClick(BtnEvt_Sell);
+        mViewObj.UseTBtn.SetOnClick(BtnEvt_Use);
         mViewObj.MaskBtn.SetOnClick(BtnEvt_Exit);
         FreshItem();
         if (mItemList.ContainsKey(0)) BtnEvt_ItemDetail(0);
@@ -111,7 +110,18 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
 
     List<Item> GetItemList()
     {
-        return PlayerPrefsBridge.Instance.GetItemAllListCopy();
+        List<Item> itemList = PlayerPrefsBridge.Instance.GetItemAllListCopy();
+        if (mShowType != Item.ItemType.None)
+        {
+            for (int i = itemList.Count-1; i >= 0; i--)
+            {
+                if (itemList[i] == null || itemList[i].type != mShowType)
+                {
+                    itemList.RemoveAt(i);
+                }
+            }
+        }
+        return itemList;
     }
     private List<Item> ItemList;
 
@@ -170,7 +180,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             mViewObj.NameText.text = "你的背包的空的";
             mViewObj.DescText.text = "";
             mViewObj.TextNum.text = "";
-            mViewObj.SellBtn.gameObject.SetActive(false);
+            mViewObj.SellTBtn.gameObject.SetActive(false);
             mViewObj.Scroller.Scrollbar.gameObject.SetActive(false);
             mViewObj.RightBg.SetActive(false);
         }
@@ -195,7 +205,7 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         //itemList.Sort((x, y) => { return x.idx.CompareTo(y.idx); });
         itemList.Sort((x, y) =>
         {
-            if ((x.type == Item.ItemType.Stuff && y.type == Item.ItemType.Task) || (y.type == Item.ItemType.Stuff && x.type == Item.ItemType.Task))
+            if ((x.type == Item.ItemType.Intimacy && y.type == Item.ItemType.Recall) || (y.type == Item.ItemType.Intimacy && x.type == Item.ItemType.Recall))
             {
                 return ((int)x.type).CompareTo((int)y.type);
             }
@@ -246,8 +256,8 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         mViewObj.TextNum.text = string.Format(" 数量:{0}", item.num);
         mViewObj.DescText.text = "\u3000\u3000" + item.desc;
 
-        mViewObj.SellBtn.gameObject.SetActive(item.canSell);
-        mViewObj.UseBtn.gameObject.SetActive(item.CanUse());
+        mViewObj.SellTBtn.gameObject.SetActive(item.canSell);
+        mViewObj.UseTBtn.gameObject.SetActive(item.CanUse(mShowType));
         foreach (var temp in mItemList)
         {
             if(null!=temp.Value)temp.Value.SelectItem(temp.Value.Index == mCurSelectIndex);
@@ -310,26 +320,20 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         itemList = SortByMaxStack(itemList);
         Item item = itemList[mCurSelectIndex];
         if (item == null) return;
-        curUseItem = new Item();
-        curUseItem.name = item.name;
-        curUseItem.num = 1;
-        if (item.CanUse())
+        int useNum = 1;
+        TDebug.LogInEditorF("使用道具：{0}，效果等待写", item.idx);
+        if (PlayerPrefsBridge.Instance.useItem(item.idx, useNum, true) >= 0)
         {
-            UIRootMgr.Instance.IsLoading = true;
-            GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_UseItem(item.idx, 1));
+            UIRootMgr.LobbyUI.ShowDropInfo(new GoodsToDrop(item.idx, useNum, LootItemType.Item),
+                string.Format("你使用了{0}×{1}", item.name, 1));
+            PlayerPrefsBridge.Instance.saveItemModule();
+
+            FreshItem();
+            BtnEvt_ItemDetail(mCurSelectIndex);
         }
-    }
-    void S2C_UseItem(BinaryReader ios)
-    {
-        UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_UseItem msg = MessageBridge.Instance.S2C_UseItem(ios);
-        Item item = Item.Fetcher.GetItemCopy(msg.ItemIdx);
-        UIRootMgr.LobbyUI.ShowDropInfo(msg.GoodsList, string.Format("你使用了{0}×{1}", item.name, 1));
-        FreshItem();
-        BtnEvt_ItemDetail(mCurSelectIndex);
-        //if (item.EffectType == Item.ItemEffectType.AddProm)
-        //{
-        //    PlayerPrefsBridge.Instance.FreshPromAchieve();
-        //}
+        else
+        {
+            TDebug.LogInEditorF("使用失败：{0}", item.idx);
+        }
     }
 }

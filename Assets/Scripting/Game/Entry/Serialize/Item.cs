@@ -41,9 +41,16 @@ public class Item : ItemBase
     public enum ItemType
     {
         None = 0,
-        Task,
-        Stuff,
-        Drug,
+        Recall,     //增加记忆
+        Intimacy,   //增加好感
+        BattleItem, //战斗中使用
+        Max
+    }
+    public enum ItemEffectType
+    {
+        None = 0,
+        AddRecall,     //增加记忆
+        AddIntimacy,   //增加好感
         Max
     }
 
@@ -55,7 +62,10 @@ public class Item : ItemBase
     public int level ;
     public int useLimitType ;   //使用条件
     public int useLimitValue ;
-    public bool canSell ;
+    public ItemEffectType effectType;
+    public int[] effectMisc;
+    public bool canSell;
+    public bool canUse;
     public int sell ;
     public int maxStack ;
     public int ownNum;          //是否是唯一道具
@@ -68,8 +78,10 @@ public class Item : ItemBase
         return this.MemberwiseClone() as Item;
     }
 
-    public bool CanUse()
+    public bool CanUse(Item.ItemType inventoryShowItemType)
     {
+        if (inventoryShowItemType == type)
+            return canUse;
         return false;
     }
 

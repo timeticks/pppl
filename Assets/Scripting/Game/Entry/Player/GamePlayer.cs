@@ -14,9 +14,11 @@ public class GamePlayerBase
     public Elong Exp = 0;       //当前经验
     public Eint Gold = 0;       //普通货币
     public Eint Diamond = 0;    //充值货币
-    public Eint Potential = 0;
-    public Eint MemoryPiece = 0;    //记忆碎片数量
+    public Eint RecallPiece = 0;    //记忆碎片数量
 
+    public Eint GuideStepIndex=6;     //游戏进度
+    public Eint UnlockMapLevel=6;     //当前解锁到的地图
+    public Eint RecallUnlockNum=0;    //下一个地图的解锁进度
 
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
 
@@ -32,33 +34,10 @@ public class GamePlayerBase
     public long FinishGuideStep;
 
     public Dictionary<AttrType, int> AddProm = new Dictionary<AttrType, int>();
-    public bool IsSetName;    //是否已经取名
     public Elong VipTime = 0;      //vip的到期时间
     public Eint PlayerIdx = 0;
 
 
-    public void CopyBy(GamePlayerBase origin)
-    {
-        this.name = origin.name;
-        this.BirthTime = origin.BirthTime;
-        this.PlayerUid = origin.PlayerUid;
-        this.Level = origin.Level;
-        this.Exp = origin.Exp;
-        this.Gold = origin.Gold;
-        this.Diamond = origin.Diamond;
-        this.Potential = origin.Potential;
-        this.HeadIconIdx = origin.HeadIconIdx;
-        this.SpellList = origin.SpellList;
-        this.EquipList = origin.EquipList;
-        this.PetList = origin.PetList;
-        this.MySect = origin.MySect;
-        this.IsFinishNewerMap = origin.IsFinishNewerMap;
-        this.AddProm = origin.AddProm;
-        this.IsSetName = origin.IsSetName;
-        this.VipTime = origin.VipTime;
-        this.PlayerIdx = origin.PlayerIdx;
-
-    }
 }
 
 

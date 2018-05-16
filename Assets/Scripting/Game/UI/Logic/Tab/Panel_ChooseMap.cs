@@ -27,6 +27,8 @@ public class Panel_ChooseMap :MonoBehaviour {
         public Transform MyTrans;
         public Image StarImage;
         public Button StarBtn;
+        public ParticleSystem StarParticle;
+        public ParticleSystem LineParticle;
         public override void Init(UIViewBase view)
         {
             if (View != null) return;
@@ -34,6 +36,8 @@ public class Panel_ChooseMap :MonoBehaviour {
             StarImage = view.GetCommon<Image>("StarImage");
             StarBtn = view.GetCommon<Button>("StarBtn");
             MyTrans = view.transform;
+            StarParticle = view.GetCommon<ParticleSystem>("StarParticle");
+            LineParticle = view.GetCommon<ParticleSystem>("LineParticle");
         }
     }
 
@@ -41,7 +45,7 @@ public class Panel_ChooseMap :MonoBehaviour {
     private ViewObj mViewObj;
     private List<Part_StarMapItem> mStarMapItemList = new List<Part_StarMapItem>();
     private int mCurMapIdx;
-
+    private int mMaxMapLevel;
     public void Init()
     {
         if (mViewObj == null) mViewObj = new ViewObj(GetComponent<UIViewBase>());
@@ -50,22 +54,72 @@ public class Panel_ChooseMap :MonoBehaviour {
         mViewObj.TBtnEnter.SetOnAduioClick(BtnEvt_EnterMap);
 
         List<BallMap> mapList = BallMap.Fetcher.GetAllBallMapCopy(BallMap.MapType.Normal);
+        mapList.Sort((x, y) => { return x.level.CompareTo(y.level); });
+
+        mMaxMapLevel = mapList[mapList.Count - 1].level;
+
         TAppUtility.Instance.AddViewInstantiate<Part_StarMapItem>(mStarMapItemList, mViewObj.Part_StarMapItem,
             mViewObj.ItemRoot, mapList.Count);
-
+        
         for (int i = 0; i < mapList.Count; i++)
         {
             BallMap ballMap = mapList[i];
             mStarMapItemList[i].MyTrans.localPosition = new Vector3(ballMap.pos[0],ballMap.pos[1] , ballMap.pos[2]);
             mStarMapItemList[i].MapIdx = ballMap.idx;
             int mapIdx = ballMap.idx;
-            mStarMapItemList[i].StarBtn.SetOnAduioClick(delegate() { BtnEvt_SelectMap(mapIdx); });
+            int mapLevel = mapList[i].level;
+            mStarMapItemList[i].StarBtn.SetOnAduioClick(delegate() { BtnEvt_SelectMap(mapLevel,mapIdx); });
+
         }
-        BtnEvt_SelectMap(mapList[0].idx);
+        for (int i = 0; i < mapList.Count; i++)
+        {
+            if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel >= i + 1)  //设置点亮和连线
+            {
+                mStarMapItemList[i].StarParticle.gameObject.SetActive(true);
+                if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel >= i + 2
+                    || i+1 == mapList.Count)
+                {
+                    int nextStarIndex = i + 1;
+                    if (i + 1 == mapList.Count) nextStarIndex = 0;
+
+                    float distance = Vector3.Distance(mStarMapItemList[i].MyTrans.localPosition, mStarMapItemList[nextStarIndex].MyTrans.localPosition);
+                    Vector3 lookDir = mStarMapItemList[nextStarIndex].MyTrans.localPosition - mStarMapItemList[i].MyTrans.localPosition;
+                    mStarMapItemList[i].LineParticle.transform.localRotation = Quaternion.LookRotation(lookDir);
+                    mStarMapItemList[i].LineParticle.gameObject.SetActive(true);
+                    TDebug.LogInEditorF("连线：{0}   {1}   {2}", i, distance, lookDir.ToString());
+                    ParticleSystem.MainModule main = mStarMapItemList[i].LineParticle.main;
+                    main.startLifetime = new ParticleSystem.MinMaxCurve(distance / 40f + 0.5f);//根据距离，设置其存活长度
+                    //var emitParams = new ParticleSystem.EmitParams();
+                    //mStarMapItemList[i].LineParticle.Emit(emitParams, 0);
+                    mStarMapItemList[i].LineParticle.Play();
+                }
+                else
+                {
+                    mStarMapItemList[i].LineParticle.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                mStarMapItemList[i].StarParticle.gameObject.SetActive(false);
+                mStarMapItemList[i].LineParticle.gameObject.SetActive(false);
+            }
+        }
+        if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel>0)
+            BtnEvt_SelectMap(mapList[0].level, mapList[0].idx);
     }
 
-    void BtnEvt_SelectMap(int mapIdx)
+    void BtnEvt_SelectMap(int mapLevel , int mapIdx)
     {
+        if (mapLevel == PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel+1)//下一等级
+        {
+            UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None).OpenWindow(Item.ItemType.Recall);
+            return;
+        }
+        else if (mapLevel > PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel+1)
+        {
+            UIRootMgr.Instance.Window_UpTips.InitTips(LangMgr.GetText("未开启"), Color.green);
+            return;
+        }
         mCurMapIdx = mapIdx;
         BallMap map = BallMap.Fetcher.GetBallMapCopy(mapIdx);
         mViewObj.DetailText.text = string.Format("{0}\n{1}",map.name , map.desc);

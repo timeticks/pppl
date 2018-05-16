@@ -115,10 +115,6 @@ public class Window_ItemDetail : WindowBase
         //itemList.Sort((x, y) => { return x.idx.CompareTo(y.idx); });
         itemList.Sort((x, y) =>
         {
-            if ((x.type == Item.ItemType.Stuff && y.type == Item.ItemType.Task) || (y.type == Item.ItemType.Stuff && x.type == Item.ItemType.Task))
-            {
-                return ((int)x.type).CompareTo((int)y.type);
-            }
             if(y.type == x.type)
                 return ((int)x.idx).CompareTo(y.idx);
             return ((int)y.type).CompareTo((int)x.type);

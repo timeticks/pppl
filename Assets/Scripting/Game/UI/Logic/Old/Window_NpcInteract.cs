@@ -162,36 +162,36 @@ public class Window_NpcInteract :WindowBase
     //打开对话界面
     public void OpenTalk(MindTreeNode talkNode)
     {
-        SwitchTab(TabType.Talk);
-        if (talkNode.Type == MindTreeNodeType.setTalk)
-        {
-            int dialogId = talkNode.TryGetInt(0);
-            if (dialogId > 0)
-            {
-                SelectDialog dialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogId);
+        //SwitchTab(TabType.Talk);
+        //if (talkNode.Type == MindTreeNodeType.setTalk)
+        //{
+        //    int dialogId = talkNode.TryGetInt(0);
+        //    if (dialogId > 0)
+        //    {
+        //        SelectDialog dialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogId);
                 
-                System.Action<int> callBack = delegate(int result) //按钮回调
-                {
-                    SwitchTab(TabType.Interact);
-                    bool haveTalk = MindTreeMapCtrl.CheckLegal_HaveTalkAnyBranch(talkNode.ChildNode);
-                    MindTreeNode childNode = MindTreeMapCtrl.Instance.DoNextByResult(talkNode, result);
-                    if (childNode == null || !MindTreeMapCtrl.CheckLegal_HaveTalkAnyBranch(childNode.ChildNode))//回调时，如果子节点没有对话了则关闭对话
-                    {
-                        CloseWindow(CloseActionType.OpenHide);
-                    }
-                };
-                int npcId = mNpcNode.GetNpcId();
-                //ShowTalk(string.Format("{0}", dialog.desc), dialog.button, callBack);
-            }
-            else
-            {
-                TDebug.LogError(string.Format("对话信息错误:[{0}]", talkNode.CacheString));
-            }
-        }
-        else
-        {
-            TDebug.LogError(string.Format("节点类型不符:[{0}]", talkNode.CacheString));
-        }
+        //        System.Action<int> callBack = delegate(int result) //按钮回调
+        //        {
+        //            SwitchTab(TabType.Interact);
+        //            bool haveTalk = MindTreeMapCtrl.CheckLegal_HaveTalkAnyBranch(talkNode.ChildNode);
+        //            MindTreeNode childNode = MindTreeMapCtrl.Instance.DoNextByResult(talkNode, result);
+        //            if (childNode == null || !MindTreeMapCtrl.CheckLegal_HaveTalkAnyBranch(childNode.ChildNode))//回调时，如果子节点没有对话了则关闭对话
+        //            {
+        //                CloseWindow(CloseActionType.OpenHide);
+        //            }
+        //        };
+        //        int npcId = mNpcNode.GetNpcId();
+        //        //ShowTalk(string.Format("{0}", dialog.desc), dialog.button, callBack);
+        //    }
+        //    else
+        //    {
+        //        TDebug.LogError(string.Format("对话信息错误:[{0}]", talkNode.CacheString));
+        //    }
+        //}
+        //else
+        //{
+        //    TDebug.LogError(string.Format("节点类型不符:[{0}]", talkNode.CacheString));
+        //}
     }
 
     //显示对话，设置监听
@@ -229,46 +229,46 @@ public class Window_NpcInteract :WindowBase
         int npcId = battleNode.TryGetInt(0);
         SwitchTab(TabType.Interact);
 
-        if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SingleMap || MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)//秘境中
-        {
-            Window_DungeonMap dungeonMap = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
-            if (dungeonMap != null && dungeonMap.OpenBattle(battleNode))
-            {
-                CloseWindow(CloseActionType.OpenHide);
-            }
-            else
-            {
-                TDebug.LogError(string.Format("错误的setBattle:[{0}]", battleNode.CacheString));
-            }
-        }
-        else if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SectMap)//门派地图中
-        {
-            BattleType battleType = (BattleType)battleNode.TryGetInt(1);
-            System.Action<int> callBack = delegate(int result) //战斗回调
-            {
-                string descStr = "";
-                OldHero hero = OldHero.HeroFetcher.GetHeroByCopy(npcId);
-                if (result == 0)
-                {
-                    descStr = LobbyDialogue.GetDescStr("fightFail", hero.name);
-                }
-                else
-                {
-                    descStr = LobbyDialogue.GetDescStr("fightWin", hero.name);
-                }
-                if (UIRootMgr.LobbyUI != null) UIRootMgr.LobbyUI.AppendTextNewLine(descStr);
-            };
-            if (npcId > 0 && battleType > 0)
-            {
-                BattleMgr.Instance.EnterPVE(battleType, npcId, PVESceneType.SectWithNpc, callBack);
-            }
-            else
-            {
-                TDebug.LogError(string.Format("错误的setBattle:[{0}]", battleNode.CacheString));
-                callBack(0);
-            }
-            CloseWindow(CloseActionType.OpenHide);
-        }
+        //if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SingleMap || MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)//秘境中
+        //{
+        //    Window_DungeonMap dungeonMap = UIRootMgr.Instance.GetOpenListWindow<Window_DungeonMap>(WinName.Window_DungeonMap);
+        //    if (dungeonMap != null && dungeonMap.OpenBattle(battleNode))
+        //    {
+        //        CloseWindow(CloseActionType.OpenHide);
+        //    }
+        //    else
+        //    {
+        //        TDebug.LogError(string.Format("错误的setBattle:[{0}]", battleNode.CacheString));
+        //    }
+        //}
+        //else if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SectMap)//门派地图中
+        //{
+        //    BattleType battleType = (BattleType)battleNode.TryGetInt(1);
+        //    System.Action<int> callBack = delegate(int result) //战斗回调
+        //    {
+        //        string descStr = "";
+        //        OldHero hero = OldHero.HeroFetcher.GetHeroByCopy(npcId);
+        //        if (result == 0)
+        //        {
+        //            descStr = LobbyDialogue.GetDescStr("fightFail", hero.name);
+        //        }
+        //        else
+        //        {
+        //            descStr = LobbyDialogue.GetDescStr("fightWin", hero.name);
+        //        }
+        //        if (UIRootMgr.LobbyUI != null) UIRootMgr.LobbyUI.AppendTextNewLine(descStr);
+        //    };
+        //    if (npcId > 0 && battleType > 0)
+        //    {
+        //        BattleMgr.Instance.EnterPVE(battleType, npcId, PVESceneType.SectWithNpc, callBack);
+        //    }
+        //    else
+        //    {
+        //        TDebug.LogError(string.Format("错误的setBattle:[{0}]", battleNode.CacheString));
+        //        callBack(0);
+        //    }
+        //    CloseWindow(CloseActionType.OpenHide);
+        //}
     }
 
     public void OpenObtainSpell(MindTreeNode obtainSpellNode)

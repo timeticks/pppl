@@ -94,8 +94,11 @@ public class GameConstUtils
     public static int id_item_universal_ball { get { return 105003001; } }    //万能球道具id
     public static int id_item_next_ball { get { return 105003002; } }    //跳过道具id
 
+    public static int id_tree_map_guide_step { get { return 202001001; } }    //游戏流程的思维导图id
 
-
+    public static List<int> id_guide_select_dialog_0 {
+        get { return new List<int>() { 302001001, 302001002, 302001003}; }
+    }
 
 
 

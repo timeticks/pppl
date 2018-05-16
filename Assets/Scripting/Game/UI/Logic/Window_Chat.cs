@@ -34,43 +34,44 @@ public class Window_Chat : WindowBase
     }
     private List<SelectSmallObj> mButtonItemList = new List<SelectSmallObj>();
 
-
     private ViewObj mViewObj;
     private List<int> mCurShowList;
     private int mCurShowIndex;
     private string mCurShowText;
+    private System.Action<int> mResultDel;  //列表中最后一个对话的选项
+    private bool mCanCloseWindow = false;
 
-
-    public void OpenWindow(List<int> showDialogList)
+    public void OpenWindow(List<int> showDialogList , System.Action<int> resultDel)
     {
         if (mViewObj == null) mViewObj = new ViewObj(mViewBase);
         base.OpenWin();
         mCurShowList = showDialogList;
+        mResultDel = resultDel;
         Init();
     }
 
     void Init()
     {
+        mCanCloseWindow = false;
         mViewObj.MaskBtn.SetOnClick(BtnEvt_Continue);
         mViewObj.ContinueTipsText.text = LangMgr.GetText("点击任意处继续");
         mCurShowIndex = 0;
-        ShowNext(mCurShowIndex);
+        ShowNext(0,mCurShowIndex);
     }
 
-    void ShowNext(int showIndex)
+    void ShowNext(int selectIdex , int showIndex)
     {
         mCurShowIndex = showIndex;
         Reset();
         if (mCurShowIndex < mCurShowList.Count)
         {
-            TDebug.LogInEditorF("显示一句：{0}", mCurShowIndex);
             mViewObj.DescText.text = "";
             mCurShowText = SelectDialog.GetDesc(mCurShowList[showIndex]);
             mViewObj.DescText.DOText(mCurShowText, mCurShowText.Length / 8f).SetEase(Ease.Linear).OnComplete(delegate() { ShowComplete(); });
         }
         else
         {
-            CloseWindow();
+            CloseWin(selectIdex);
         }
     }
 
@@ -109,7 +110,7 @@ public class Window_Chat : WindowBase
         TDebug.LogInEditorF("选择：{0}", selectIndex);
         mCurShowIndex++;
         Reset();
-        mViewObj.DescText.DOText("", 0.5f).OnComplete(delegate() { ShowNext(mCurShowIndex); });
+        mViewObj.DescText.DOText("", 0.5f).OnComplete(delegate() { ShowNext(selectIndex,mCurShowIndex); });
     }
 
     //点击继续
@@ -119,6 +120,14 @@ public class Window_Chat : WindowBase
             return;
         mCurShowIndex++;
         Reset();
-        mViewObj.DescText.DOText("", 0.5f).OnComplete(delegate() { ShowNext(mCurShowIndex); });
+        mViewObj.DescText.DOText("", 0.5f).OnComplete(delegate() { ShowNext(0,mCurShowIndex); });
+    }
+
+    void CloseWin(int btnSelectIndex)
+    {
+        mCanCloseWindow = true;
+        if (mResultDel != null) mResultDel(btnSelectIndex);
+        if (mCanCloseWindow)    //如果回调后，mCanCloseWindow被重置，则不关闭窗口
+            CloseWindow();
     }
 }

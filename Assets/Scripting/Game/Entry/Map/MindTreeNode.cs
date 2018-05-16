@@ -17,7 +17,7 @@ public class MindTreeNode
         {
             return null;
         }
-        int curTabCount = YamlParse.GetTabCount(strList[0]);
+        int curTabCount = YamlParse.GetTabSpaceCount(strList[0]);
         if (curTabCount > lastTabCount) //如果tab数量更多，则是子节点
         {
             string curStr = strList[0];
@@ -43,7 +43,7 @@ public class MindTreeNode
 
     public MindTreeNode(string str, bool isRoot, MindTreeNodeType parentType , string parentStr="")
     {
-        str = str.Replace("\r", "").Replace("\t", "");
+        str = YamlParse.RemoveTab(str);
         CacheString = str;
         if (isRoot)
         {
@@ -59,7 +59,7 @@ public class MindTreeNode
             }
             else
             {
-                TDebug.LogError(string.Format("秘境节点条件参数错误[{0}],父节点[{1}]", str, parentStr));
+                TDebug.LogError(string.Format("秘境节点条件参数错误，后面应该接条件节点[{0}],父节点[{1}]", str, parentStr));
             }
         }
         else
@@ -193,11 +193,14 @@ public enum MindTreeNodeType : byte
     getLevel,
     getItem,
     getSpell,
-    getSect,
     getAtt,
     getRandom,
     getEvent,
     setBattle,
+    ////////////
+    getMapLevel,
+    getGuideStep,
+
 
     setDesc,   //描述信息
     setObtain, //学习
@@ -205,12 +208,16 @@ public enum MindTreeNodeType : byte
     setItem,
     setEvent,
     setEnd,    //设置结局
-    setTalk,
     setNPC,
     setEnter,   //关闭某进入事件
     setMsg,
     setShop,
-    setDoor,
+    //////
+    setTalk,    //setTalk的后续节点，必须是condition节点。若没有按钮，condition=0
+    setGuideStep,
+    setSex,
+    setHairColor,
+    setMemory,
 
     condition,
 }
@@ -250,7 +257,8 @@ public static class MindTreeNodeTypeExtend
             case MindTreeNodeType.getItem:
             case MindTreeNodeType.getSpell:
             case MindTreeNodeType.getLevel:
-            case MindTreeNodeType.getSect:
+            case MindTreeNodeType.getMapLevel:
+            case MindTreeNodeType.getGuideStep:
             case MindTreeNodeType.getAtt:
             case MindTreeNodeType.getRandom:
             case MindTreeNodeType.getEvent:

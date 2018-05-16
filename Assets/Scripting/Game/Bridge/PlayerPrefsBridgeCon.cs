@@ -446,7 +446,38 @@ public partial class PlayerPrefsBridge
 
 
     #region 道具
-    
+
+    public int useItem(int itemIdx, int useNum ,bool isSave)
+    {
+        Item item = GetItemByIdx(itemIdx);
+        if (item == null || !item.canUse || item.num < useNum)
+        {
+            return -1;
+        }
+        switch (item.effectType)
+        {
+            case Item.ItemEffectType.AddIntimacy:
+            {
+                if (PlayerPrefsBridge.Instance.PartnerAcce.curPartener == null)
+                    return -1;
+                PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum += item.effectMisc[0];
+                if (isSave)
+                    savePartnerModule();
+                break;
+            }
+            case Item.ItemEffectType.AddRecall:
+            {
+                PlayerPrefsBridge.Instance.PlayerData.RecallUnlockNum += item.effectMisc[0];
+                if (isSave)
+                    savePlayerModule();
+                break;
+            }
+            default:
+                return -1;
+        }
+        return consumeItem(itemIdx, useNum,isSave, "use");
+    }
+
     //添加道具
     public int addItem(int itemIdx, int num, string action)
     {
@@ -470,7 +501,7 @@ public partial class PlayerPrefsBridge
         }
         return pos;
     }
-    public int consumeItem(int itemIdx, int num, string action)
+    public int consumeItem(int itemIdx, int num, bool isSave, string action)
     {
         if (itemIdx < 0) return -1;
 
@@ -501,7 +532,8 @@ public partial class PlayerPrefsBridge
                 //LoggerUtil.warn(getIdx(), getName(), "移除道具失败", "action:{0},idx:{1}", action, item.idx);
             }
         }
-
+        if (isSave)
+            saveItemModule();
         return item.num;
     }
 

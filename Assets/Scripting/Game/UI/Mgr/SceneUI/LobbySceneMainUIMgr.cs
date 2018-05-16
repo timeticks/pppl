@@ -92,11 +92,6 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ActivityBtn,     mViewObj.BtnActivity.transform);
 
         PlayerPrefsBridge.Instance.LoadPlayer();
-        //if (PVEMgr.Instance == null)
-        //{
-        //    gameObject.CheckAddComponent<PVEMgr>().Init(30001);
-        //}
-        //else PVEMgr.Instance.SwitchMap(30001);
         PlayerPrefs.DeleteAll();
 
         mViewObj.Panel_ChooseMap.Init();
@@ -104,7 +99,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         mViewObj.BtnInventory.SetOnAduioClick(BtnEvt_ItemInventory);
         mViewObj.BtnPlanet.SetOnAduioClick(BtnEvt_OpenPlanet);
         mViewObj.BtnStore.SetOnAduioClick(BtnEvt_OpenStore);
-
+        ShowMainUI();
         //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
         //{
         //    UIRootMgr.Instance.OpenWindow<Window_BallBattle>(WinName.Window_BallBattle).OpenWindow(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
@@ -172,7 +167,18 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     public override void ShowMainUI()//重新显示主界面 
     {
-        FreshLobbyInfo();    
+        FreshLobbyInfo();
+
+
+        //新手引导
+        if (MindTreeMapCtrl.Instance == null)
+        {
+            MindTreeMapCtrl mapCtrl =
+                new MindTreeMapCtrl(
+                    MindTreeMap.MindTreeMapFetcher.GetMindTreeMapNoCopy(GameConstUtils.id_tree_map_guide_step),
+                    MapData.MapType.NewerMap);
+        }
+        MindTreeMapCtrl.Instance.DoRootGuideStep(PlayerPrefsBridge.Instance.PlayerData.GuideStepIndex);
     }
 
 
@@ -238,8 +244,12 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     public void ShowDropInfo(GoodsToDrop[] DropGoods , string dropReason="")
     {
+        UIRootMgr.Instance.Window_UpTips.InitTips(dropReason, Color.green, true);
     }
-
+    public void ShowDropInfo(GoodsToDrop DropGoods, string dropReason = "")
+    {
+        UIRootMgr.Instance.Window_UpTips.InitTips(dropReason, Color.green, true);
+    }
     public void AppendTextNewLine(string str)
     {
     }
@@ -278,7 +288,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         if (GUILayout.Button("      进入对话"))
         {
             List<int> dialog = new List<int>() {301000001, 301000002, 301000003};
-            UIRootMgr.Instance.OpenWindow<Window_Chat>(WinName.Window_Chat, CloseUIEvent.None).OpenWindow(dialog);
+            UIRootMgr.Instance.OpenWindow<Window_Chat>(WinName.Window_Chat, CloseUIEvent.None).OpenWindow(null,null);
         }
         //if (GUILayout.Button("      进入战斗"))
         //{

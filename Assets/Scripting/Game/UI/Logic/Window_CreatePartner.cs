@@ -12,7 +12,9 @@ public class Window_CreatePartner : WindowBase {
         public Transform RootSelectList;
         public Text SelectDescText;
         public Text PartnerNameText;
-        public Button BtnPartnerImage;
+        public Button BtnPartnerImage; 
+        public Button BtnAddIntimacy;
+        public Button BtnAddRecall;
         public ViewObj(UIViewBase view)
         {
             if (TitleText != null) return;
@@ -23,6 +25,8 @@ public class Window_CreatePartner : WindowBase {
             SelectDescText = view.GetCommon<Text>("SelectDescText");
             PartnerNameText = view.GetCommon<Text>("PartnerNameText");
             BtnPartnerImage = view.GetCommon<Button>("BtnPartnerImage");
+            BtnAddIntimacy = view.GetCommon<Button>("BtnAddIntimacy");
+            BtnAddRecall = view.GetCommon<Button>("BtnAddRecall");
         }
     }
     public class SelectSmallObj : SmallViewObj
@@ -52,6 +56,8 @@ public class Window_CreatePartner : WindowBase {
         mChatNum = 0;
         mViewObj.BtnExit.SetOnAduioClick(BtnEvt_Exit);
         mViewObj.BtnPartnerImage.SetOnAduioClick(BtnEvt_PartnerDialogue);
+        mViewObj.BtnAddRecall.SetOnAduioClick(BtnEvt_AddRecall);
+        mViewObj.BtnAddIntimacy.SetOnAduioClick(BtnEvt_AddIntimacy);
         Fresh();
     }
 
@@ -223,6 +229,18 @@ public class Window_CreatePartner : WindowBase {
         }
         mChatNum++;
         mViewObj.SelectDescText.text = PartnerDialogue.GetPartnerDialogueStr(PlayerPrefsBridge.Instance.PartnerAcce.curPartener, TUtility.GetLocalDayHour(), mChatNum);
+    }
+
+    void BtnEvt_AddRecall()
+    {
+        UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None)
+            .OpenWindow(Item.ItemType.Recall);
+    }
+
+    void BtnEvt_AddIntimacy()
+    {
+        UIRootMgr.Instance.OpenWindow<Window_ItemInventory>(WinName.Window_ItemInventory, CloseUIEvent.None)
+            .OpenWindow(Item.ItemType.Intimacy);
     }
 
     void BtnEvt_Exit()

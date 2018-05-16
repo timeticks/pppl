@@ -123,6 +123,7 @@ public partial class PlayerPrefsBridge
 
     void CreateNewPlayer()
     {
+        TDebug.LogInEditorF("没有存档，初始化玩家的数据");
         mPlayerData = new GamePlayer();
         mPlayerData.Level = 1;
         mPlayerData.Hero = Hero.Fetcher.GetHeroCopy(1001);
@@ -131,6 +132,12 @@ public partial class PlayerPrefsBridge
         mPlayerData.BirthTime = AppTimer.CurTimeStampSecond;
         mSpellInventory = new InventoryList(InventoryList.InventoryType.Spells);
         mItemsInventory = new InventoryList(InventoryList.InventoryType.Items);
+        addItem(105001001, 100, "");
+        addItem(105001002, 100, "");
+        addItem(105001003, 100, "");
+        addItem(105001004, 100, "");
+        addItem(105002001, 100, "");
+        addItem(105002002, 100, "");
         addItem(105003001, 100, "");
         addItem(105003002, 100, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
@@ -182,12 +189,6 @@ public partial class PlayerPrefsBridge
                 FreshAchieveProgress(AchievementAccessor.ClientCountType.ConsumeDiamond, (int)(mPlayerData.Diamond - oldData));
                 break;
             }
-            case PlayerAttribute.Potential:
-            {
-                mPlayerData.Potential = msg.Attributes[0];
-                variation = mPlayerData.Potential;
-                break;
-            }
             case PlayerAttribute.Exp:
             {
                 mPlayerData.Exp = msg.Attributes[0];
@@ -219,11 +220,6 @@ public partial class PlayerPrefsBridge
                     variation = mPlayerData.Level;
                 }
                 AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.CurLevel, msg.Attributes[0].ToString()));
-                break;
-            }
-            case PlayerAttribute.IsSetName:
-            {
-                mPlayerData.IsSetName = msg.Attributes[0] == 1;
                 break;
             }
             case PlayerAttribute.IsFinishNewerMap:
@@ -921,7 +917,6 @@ public partial class PlayerPrefsBridge
         TDebug.Log("S2C_SnapshotSect");
         NetPacket.S2C_SnapshotSect msg = MessageBridge.Instance.S2C_SnapshotSect(ios);
         mPlayerData.MySect = msg.SectType;
-        if (LobbySceneMainUIMgr.Instance != null) LobbySceneMainUIMgr.Instance.FreshLobbyInfo();
     }
 
 

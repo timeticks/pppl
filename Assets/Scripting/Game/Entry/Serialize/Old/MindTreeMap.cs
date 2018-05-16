@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IMindTreeMapFetcher
 {
-    MindTreeMap GetMindTreeMapByCopy(int idx);
+    MindTreeMap GetMindTreeMapNoCopy(int idx);
 }
 public class MindTreeMap : DescObject
 {
@@ -19,26 +19,14 @@ public class MindTreeMap : DescObject
                 mFetcher = value;
         }
     }
-
-    private string mContent;
-
-    public string Content
-    {
-        get { return mContent; }
-    }
+    public string content;
 
      public MindTreeMap():base()
     {
         
     }
-    public MindTreeMap(MindTreeMap origin): base(origin)
-    {
-        this.mContent          = origin.mContent;
-       
-    }
     public override void Serialize(BinaryReader ios)
     {
         base.Serialize(ios);
-        this.mContent = NetUtils.ReadUTF(ios);
     }
 }

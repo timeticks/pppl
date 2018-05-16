@@ -124,7 +124,6 @@ public class Window_RoleMainInfo : WindowBase {
         mViewObj.ConText.text = string.Format("体魄{0}", hero.Con);
         mViewObj.TextStone.text = string.Format("仙玉  {0}", player.Diamond);
         mViewObj.TextGold.text = string.Format("灵石  {0}", player.Gold);
-        mViewObj.TextPotential.text = string.Format("潜能  {0}",player.Potential);
         float maxNum = 0;
         for (int i = 0, length = mMainProm.Length; i < length; i++)
         {

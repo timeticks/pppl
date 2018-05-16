@@ -159,13 +159,13 @@ public class Window_DungeonMap : WindowBase
         }
 
 
-        if (MyMapData == null || isStart)
-        {
-            MyMapData = new DungeonMapData(mMapIdx);
-            MindTreeMap treeData = MindTreeMap.MindTreeMapFetcher.GetMindTreeMapByCopy(MyMapData.MapId);
-            MyMapData.TreeData = new MindTreeMapCtrl(treeData, MyMapData.Type);
-            MindTreeMapCtrl.CheckLegal(MyMapData.TreeData);
-        }
+        //if (MyMapData == null || isStart)
+        //{
+        //    MyMapData = new DungeonMapData(mMapIdx);
+        //    MindTreeMap treeData = MindTreeMap.MindTreeMapFetcher.GetMindTreeMapByCopy(MyMapData.MapId);
+        //    MyMapData.TreeData = new MindTreeMapCtrl(treeData, MyMapData.Type);
+        //    MindTreeMapCtrl.CheckLegal(MyMapData.TreeData);
+        //}
         
 
         //生成地图格子
@@ -335,22 +335,22 @@ public class Window_DungeonMap : WindowBase
         }
         else
         {
-            FreshByRoleXy();
-            if (isStart || lastXy.m_X != toXy.m_X || lastXy.m_Y != toXy.m_Y)
-            {
-                if (!isStart)
-                {
-                    //PlayerPrefsBridge.Instance.SetMapSave(global::DungeonMapAccessor.MapSaveType.RolePos, 0,  MyMapData.GetNodeIndex(toXy.m_X, toXy.m_Y));
-                    SaveUtils.SetIntInPlayer(PrefsSaveType.RolePos.ToString(), MyMapData.GetNodeIndex(toXy.m_X, toXy.m_Y));
-                }
-                int toIndex = MyMapData.GetNodeIndex(toXy);
-                MindTreeNode enterNode = MindTreeMapCtrl.Instance.GetModEnter(toIndex);
-                if (enterNode != null)
-                {
-                    TDebug.Log("移动，触发进入事件");
-                    MindTreeMapCtrl.Instance.StartDoList(enterNode.ChildNode);
-                }
-            }
+            //FreshByRoleXy();
+            //if (isStart || lastXy.m_X != toXy.m_X || lastXy.m_Y != toXy.m_Y)
+            //{
+            //    if (!isStart)
+            //    {
+            //        //PlayerPrefsBridge.Instance.SetMapSave(global::DungeonMapAccessor.MapSaveType.RolePos, 0,  MyMapData.GetNodeIndex(toXy.m_X, toXy.m_Y));
+            //        SaveUtils.SetIntInPlayer(PrefsSaveType.RolePos.ToString(), MyMapData.GetNodeIndex(toXy.m_X, toXy.m_Y));
+            //    }
+            //    int toIndex = MyMapData.GetNodeIndex(toXy);
+            //    MindTreeNode enterNode = MindTreeMapCtrl.Instance.GetModEnter(toIndex);
+            //    if (enterNode != null)
+            //    {
+            //        TDebug.Log("移动，触发进入事件");
+            //        MindTreeMapCtrl.Instance.StartDoList(enterNode.ChildNode);
+            //    }
+            //}
                
             return true;
         }
@@ -481,30 +481,30 @@ public class Window_DungeonMap : WindowBase
 
     public void SendMapEnd(MapEndType endType, MindTreeNode node)
     {
-        if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)
-        {
-            TDebug.Log("通过新手秘境");
-            ServPacketHander del = delegate(BinaryReader ios)  //服务器会主动推奖励信息
-            {
-                LobbySceneMainUIMgr.Instance.AppendTextNewLine(LobbyDialogue.GetDescStr("newer_finishMap"));
-                GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEventReward, null);
-                NetPacket.S2C_MapEventReward msg = MessageBridge.Instance.S2C_MapEventReward(ios);
-                UIRootMgr.LobbyUI.ShowDropInfo(msg.GoodsList);
-            };
-            GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEventReward, del);
-        }
+        //if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)
+        //{
+        //    TDebug.Log("通过新手秘境");
+        //    ServPacketHander del = delegate(BinaryReader ios)  //服务器会主动推奖励信息
+        //    {
+        //        LobbySceneMainUIMgr.Instance.AppendTextNewLine(LobbyDialogue.GetDescStr("newer_finishMap"));
+        //        GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEventReward, null);
+        //        NetPacket.S2C_MapEventReward msg = MessageBridge.Instance.S2C_MapEventReward(ios);
+        //        UIRootMgr.LobbyUI.ShowDropInfo(msg.GoodsList);
+        //    };
+        //    GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEventReward, del);
+        //}
 
-        if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SingleMap || MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)
-        {
-            int endId = node == null ? 0 : node.TryGetInt(0);
-            UIRootMgr.Instance.IsLoading = true;
-            GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEnd, S2C_MapEnd);
-            GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_MapEnd(endId , endType));
-        }
-        else
-        {
-            TDebug.LogError(string.Format("非秘境地图触发了:[{0}]", node == null ? "无节点信息" : node.CacheString));
-        }
+        //if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.SingleMap || MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)
+        //{
+        //    int endId = node == null ? 0 : node.TryGetInt(0);
+        //    UIRootMgr.Instance.IsLoading = true;
+        //    GameClient.Instance.RegisterNetCodeHandler(NetCode_S.MapEnd, S2C_MapEnd);
+        //    GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_MapEnd(endId , endType));
+        //}
+        //else
+        //{
+        //    TDebug.LogError(string.Format("非秘境地图触发了:[{0}]", node == null ? "无节点信息" : node.CacheString));
+        //}
     }
 
     void S2C_MapEnd(BinaryReader ios)
@@ -513,11 +513,6 @@ public class Window_DungeonMap : WindowBase
    
     void MapEnd(MapEndType endType)
     {
-        if (MindTreeMapCtrl.Instance.MyMapType == MapData.MapType.NewerMap)
-        {
-            PlayerPrefsBridge.Instance.GuideData.JustPassNewerMap = true;
-        }
-        
         if (endType == MapEndType.TriggerEnd)//触发了结局
         {
             //UIRootMgr.Instance.MessageBox.ShowInfo_OnlyOk(CloseWindow, string.Format("秘境结束,触发了[{0}]结局", mapId),

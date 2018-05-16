@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetcher, 
                          ISelectDialogFetcher, IRecipeFetcher, IAuxSkillFetcher, ILobbyDialogueFetcher,ITravelFetcher,ITravelEventFetcher,ITravelSmallEventFetcher,
-                         ISpellObtainFetcher, ISectFetcher, IMindTreeMapFetcher, ILootFetcher, IPetFetcher, IMapEventFetcher, ICaveFetcher, ISpellLevelUpFetcher,
+                         ISpellObtainFetcher, ISectFetcher, ILootFetcher, IPetFetcher, IMapEventFetcher, ICaveFetcher, ISpellLevelUpFetcher,
                          IPetLevelUpFetcher, IErrorStatusFetcher,IGameConstFetcher,IPropLevelUpFetcher,ICommodityFetcher,IShopFetcher,IPrestigeLevelFetcher,
                          IPrestigeTaskFetcher,ITowerFetcher,IAchievementFetcher,IAchieveRewardFetcher,IBookSpellFetcher,IHeadIconFetcher,
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
-    IQualityTableFetcher,IPartnerDialogueFetcher,IPartnerFetcher,IBallFetcher
+    IQualityTableFetcher, IPartnerDialogueFetcher, IPartnerFetcher, IMindTreeMapFetcher, IBallFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -30,7 +30,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<string, LobbyDialogue> mLobbyDialogueCached               = new Dictionary<string, LobbyDialogue>(3);
     public Dictionary<Sect.SectType, Sect>   mSectCached                        = new Dictionary<Sect.SectType, Sect>(3);
     public Dictionary<int, SpellObtain>      mSpellObtainCached                 = new Dictionary<int, SpellObtain>(12);
-    public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
     public Dictionary<int, Pet>             mPetCached                          = new Dictionary<int,Pet>(12);
     public Dictionary<int, MapEvent>        mMapEventCached                     = new Dictionary<int, MapEvent>(12);
     public Dictionary<int, Cave>            mCaveCached                         = new Dictionary<int, Cave>(12);
@@ -64,6 +63,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, Loot>            mLootCached                         = new Dictionary<int, Loot>(12);
     public Dictionary<int, SelectDialog>    mSelectDialogCached                 = new Dictionary<int, SelectDialog>(12);
     public Dictionary<int, Ball>            mBallCached                         = new Dictionary<int, Ball>(12);
+    public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
 
     public static ConfigHelper Instance
     {
@@ -242,7 +242,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             Dictionary<string, SelectDialog> pool = LitJson.JsonMapper.ToObject<Dictionary<string, SelectDialog>>(text);
             foreach (var temp in pool)
             {
-                Debug.Log(temp.Value.idx);
                 mSelectDialogCached.Add(temp.Value.idx, temp.Value);
             }
             TDebug.Log(string.Format("初始SelectDialog成功:{0}项", mSelectDialogCached.Count));
@@ -255,7 +254,16 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 mBallCached.Add(temp.Value.idx, temp.Value);
             }
             TDebug.Log(string.Format("初始Ball成功:{0}项", mBallCached.Count));
-        } 
+        }
+        else if (dataName == DataName.MindTreeMap)
+        {
+            Dictionary<string, MindTreeMap> pool = LitJson.JsonMapper.ToObject<Dictionary<string, MindTreeMap>>(text);
+            foreach (var temp in pool)
+            {
+                mMindTreeMapCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始MindTreeMap成功:{0}项", mMindTreeMapCached.Count));
+        }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
         //    int length = ios.ReadInt16();
@@ -295,6 +303,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         Loot.LootFetcher                            = this;
         SelectDialog.DialogFetcher                  = this;
         Ball.Fetcher                                = this;
+        MindTreeMap.MindTreeMapFetcher              = this;
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -305,7 +314,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         //TravelSmallEvent.TravelSmallEventFetcher  = this;
         //SpellObtain.SpellObtainFetcher           = this;
         //Sect.SectFetcher                        = this;
-        //MindTreeMap.MindTreeMapFetcher            = this;
+
         //Pet.PetFetcher                           = this;
         //MapEvent.MapEventFetcher                 = this;
         //Cave.CaveFetcher                         = this;
@@ -764,12 +773,12 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    MindTreeMap IMindTreeMapFetcher.GetMindTreeMapByCopy(int id)
+    MindTreeMap IMindTreeMapFetcher.GetMindTreeMapNoCopy(int id)
     {
         MindTreeMap origin = null;
         if (mMindTreeMapCached.TryGetValue(id, out origin))
         {
-            return new MindTreeMap(origin);
+            return origin;
         }
         TDebug.LogError(string.Format("MindTreeMap没有此id:{0}", id));
         return null;

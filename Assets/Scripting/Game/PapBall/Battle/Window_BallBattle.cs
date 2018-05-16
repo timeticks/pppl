@@ -471,7 +471,7 @@ public class Window_BallBattle : WindowBase {
     }
     void UseUniversalBall(int consumeNum)
     {
-        PlayerPrefsBridge.Instance.consumeItem(GameConstUtils.id_item_universal_ball,consumeNum,"");
+        PlayerPrefsBridge.Instance.consumeItem(GameConstUtils.id_item_universal_ball, consumeNum, false, "");
         GunCtrl.DisableCurWaitBall();
         GunCtrl.CreateWaitBall(GameConstUtils.id_universal_ball , true);
         PlayerPrefsBridge.Instance.saveMapAccessor();
@@ -494,7 +494,7 @@ public class Window_BallBattle : WindowBase {
     }
     void UseNextBall(int consumeNum)
     {
-        PlayerPrefsBridge.Instance.consumeItem(GameConstUtils.id_item_next_ball, consumeNum, "");
+        PlayerPrefsBridge.Instance.consumeItem(GameConstUtils.id_item_next_ball, consumeNum, false, "");
         GunCtrl.DisableCurWaitBall();
         GunCtrl.CreateWaitBall(-1, false);
         PlayerPrefsBridge.Instance.saveMapAccessor();

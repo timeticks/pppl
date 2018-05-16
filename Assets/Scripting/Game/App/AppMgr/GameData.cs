@@ -23,6 +23,7 @@ public enum DataName : short
     Loot,
     SelectDialog,
     Ball,
+    MindTreeMap,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a7c992aa3170ad644a6ced8965ea9c03
-timeCreated: 1526021219
+timeCreated: 1526388746
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -966,7 +966,7 @@ TextureImporter:
       name: SP_35
       rect:
         serializedVersion: 2
-        x: 494
+        x: 508
         y: 448
         width: 10
         height: 10
@@ -1031,7 +1031,7 @@ TextureImporter:
       name: SP_40
       rect:
         serializedVersion: 2
-        x: 480
+        x: 494
         y: 446
         width: 12
         height: 12
@@ -1044,8 +1044,8 @@ TextureImporter:
       name: SP_41
       rect:
         serializedVersion: 2
-        x: 260
-        y: 442
+        x: 480
+        y: 446
         width: 12
         height: 12
       alignment: 0
@@ -1058,7 +1058,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 260
-        y: 456
+        y: 442
         width: 12
         height: 12
       alignment: 0
@@ -1071,7 +1071,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 260
-        y: 470
+        y: 456
         width: 12
         height: 12
       alignment: 0
@@ -1084,7 +1084,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 260
-        y: 484
+        y: 470
         width: 12
         height: 12
       alignment: 0
@@ -1094,6 +1094,19 @@ TextureImporter:
       tessellationDetail: -1
     - serializedVersion: 2
       name: SP_45
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 484
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 5, y: 5, z: 5, w: 5}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SP_46
       rect:
         serializedVersion: 2
         x: 260
