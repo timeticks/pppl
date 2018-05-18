@@ -46,7 +46,8 @@ public class LobbyDialogue :BaseObject
         }
         else
         {
-            return string.Format(string.Format("nul:{0}", key), st);
+            return string.Format(string.Format("{0}", key), st);
+            //return string.Format(string.Format("nul:{0}", key), st);
         }
     }
 

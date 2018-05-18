@@ -270,7 +270,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     void BtnEvt_OpenPlanet()
     {
-        //UIRootMgr.Instance.OpenWindow<Window_CreatePartner>(WinName.Window_CreatePartner).OpenWindow();
+        UIRootMgr.Instance.OpenWindow<Window_NatureLevelUp>(WinName.Window_NatureLevelUp).OpenWindow();
     }
 
     public void AppendLobbyTips(string tips)

@@ -14,7 +14,7 @@ public class Window_CreatePartner : WindowBase {
         public Text PartnerNameText;
         public Button BtnPartnerImage; 
         public Button BtnAddIntimacy;
-        public Button BtnAddRecall;
+        public NumScrollTool IntimacyScrollTool;
         public ViewObj(UIViewBase view)
         {
             if (TitleText != null) return;
@@ -26,7 +26,7 @@ public class Window_CreatePartner : WindowBase {
             PartnerNameText = view.GetCommon<Text>("PartnerNameText");
             BtnPartnerImage = view.GetCommon<Button>("BtnPartnerImage");
             BtnAddIntimacy = view.GetCommon<Button>("BtnAddIntimacy");
-            BtnAddRecall = view.GetCommon<Button>("BtnAddRecall");
+            IntimacyScrollTool = view.GetCommon<NumScrollTool>("IntimacyScrollTool");
         }
     }
     public class SelectSmallObj : SmallViewObj
@@ -56,12 +56,11 @@ public class Window_CreatePartner : WindowBase {
         mChatNum = 0;
         mViewObj.BtnExit.SetOnAduioClick(BtnEvt_Exit);
         mViewObj.BtnPartnerImage.SetOnAduioClick(BtnEvt_PartnerDialogue);
-        mViewObj.BtnAddRecall.SetOnAduioClick(BtnEvt_AddRecall);
         mViewObj.BtnAddIntimacy.SetOnAduioClick(BtnEvt_AddIntimacy);
         Fresh();
     }
 
-    void Fresh()
+    public void Fresh()
     {
         string sexStr = "??";
         if ((int)PlayerPrefsBridge.Instance.PartnerAcce.selectStepIndex >= (int)PartnerData.SelectStep.Sex)
@@ -157,6 +156,17 @@ public class Window_CreatePartner : WindowBase {
             int tempIndex = i + 1;
             mSelectItemList[i].NameText.text = string.Format(selectItemList[i]);
             mSelectItemList[i].BgBtn.SetOnAduioClick(delegate() { BtnEvt_SelectItem(tempIndex); });
+        }
+
+        if (PlayerPrefsBridge.Instance.PartnerAcce.curPartener != null)
+        {
+            IntimacyLevelUp intimacy = IntimacyLevelUp.Fetcher.GetIntimacyLevelUpCopy(PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyLevel, true);
+            if (intimacy != null)
+            {
+                mViewObj.IntimacyScrollTool.m_NameText.text = intimacy.name;
+                mViewObj.IntimacyScrollTool.m_NumText.text = string.Format("{0}/{1}",
+                    PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum, intimacy.num);
+            }
         }
     }
 

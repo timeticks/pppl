@@ -79,4 +79,17 @@ public static class EnumExtensionUtils
                 return "unknown";
         }
     }
+
+    public static string GetDescEx(this NatureType enu)
+    {
+        switch (enu)
+        {
+            case NatureType.ScoreLoot:
+                return "desc_nature_score_loot";
+            case NatureType.MapEndLoot:
+                return "desc_nature_map_end_loot";
+            default:
+                return "unknown";
+        }
+    }
 }

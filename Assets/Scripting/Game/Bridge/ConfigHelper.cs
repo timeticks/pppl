@@ -11,7 +11,8 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
-    IQualityTableFetcher, IPartnerDialogueFetcher, IPartnerFetcher, IMindTreeMapFetcher, IBallFetcher
+    IQualityTableFetcher, IPartnerDialogueFetcher, IPartnerFetcher, IMindTreeMapFetcher, IBallFetcher, INatureLevelUpFetcher,
+    IIntimacyLevelUpFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -64,6 +65,8 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<int, SelectDialog>    mSelectDialogCached                 = new Dictionary<int, SelectDialog>(12);
     public Dictionary<int, Ball>            mBallCached                         = new Dictionary<int, Ball>(12);
     public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
+    public Dictionary<NatureType, Dictionary<int, NatureLevelUp>> mNatureLevelUpCached = new Dictionary<NatureType, Dictionary<int, NatureLevelUp>>(3);
+    public Dictionary<int, IntimacyLevelUp>     mIntimacyLevelUpCached          = new Dictionary<int,IntimacyLevelUp>(3);
 
     public static ConfigHelper Instance
     {
@@ -264,6 +267,26 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始MindTreeMap成功:{0}项", mMindTreeMapCached.Count));
         }
+        else if (dataName == DataName.NatureLevelUp)
+        {
+            Dictionary<string, NatureLevelUp> pool = LitJson.JsonMapper.ToObject<Dictionary<string, NatureLevelUp>>(text);
+            foreach (var temp in pool)
+            {
+                if (!mNatureLevelUpCached.ContainsKey(temp.Value.natureType))
+                    mNatureLevelUpCached[temp.Value.natureType] = new Dictionary<int, NatureLevelUp>();
+                mNatureLevelUpCached[temp.Value.natureType].Add(temp.Value.level, temp.Value);
+            }
+            TDebug.Log(string.Format("初始NatureLevelUp成功:{0}项", mNatureLevelUpCached.Count));
+        }
+        else if (dataName == DataName.IntimacyLevelUp)
+        {
+            Dictionary<string, IntimacyLevelUp> pool = LitJson.JsonMapper.ToObject<Dictionary<string, IntimacyLevelUp>>(text);
+            foreach (var temp in pool)
+            {
+                mIntimacyLevelUpCached.Add(temp.Value.level, temp.Value);
+            }
+            TDebug.Log(string.Format("初始IntimacyLevelUp成功:{0}项", mIntimacyLevelUpCached.Count));
+        }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
         //    int length = ios.ReadInt16();
@@ -304,6 +327,8 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         SelectDialog.DialogFetcher                  = this;
         Ball.Fetcher                                = this;
         MindTreeMap.MindTreeMapFetcher              = this;
+        NatureLevelUp.Fetcher                       = this;
+        IntimacyLevelUp.Fetcher                     = this;
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -544,7 +569,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         {
             return origin.Clone();
         }
-        TDebug.LogError(string.Format("LobbyDialogue没有此key:{0}", key));
+        TDebug.LogWarning(string.Format("LobbyDialogue没有此key:{0}", key));
         return null;
     }
 
@@ -567,7 +592,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     PartnerDialogue IPartnerDialogueFetcher.GetPartnerDialogueCopy(PartnerData partnerData, int dayHour,int chatNum , bool isCopy = true)
     {
         Partner partner = Partner.Fetcher.GetPartnerCopy(partnerData.idx);
-        string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.GetIntimacyLevel());
+        string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.intimacyLevel);
         List<PartnerDialogue> dialogueList;
         int happyMemoryTy = (int) partnerData.happyMemory;
         mCurPartnerDialogueList.Clear();
@@ -638,6 +663,45 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
 
         return null;
     }
+
+
+    NatureLevelUp INatureLevelUpFetcher.GetNatureLevelUpCopy(NatureType natureType, int level, bool isCopy)
+    {
+        if (mNatureLevelUpCached.ContainsKey(natureType) && mNatureLevelUpCached[natureType].ContainsKey(level))
+        {
+            return isCopy ? mNatureLevelUpCached[natureType][level].Clone() : mNatureLevelUpCached[natureType][level];
+        }
+        TDebug.LogError(string.Format("NatureLevelUp没有此natureType:{0}|level:{1}", natureType, level));
+
+        return null;
+    }
+    int INatureLevelUpFetcher.GetNatureLevelUpMax(NatureType natureType)
+    {
+        if (mNatureLevelUpCached.ContainsKey(natureType))
+        {
+            return mNatureLevelUpCached[natureType].Count-1; //包含了0级，所以减一
+        }
+        TDebug.LogError(string.Format("NatureLevelUp没有此key:{0}", natureType));
+
+        return 0;
+    }
+
+    IntimacyLevelUp IIntimacyLevelUpFetcher.GetIntimacyLevelUpCopy(int level, bool isCopy)
+    {
+        IntimacyLevelUp origin = null;
+        if (mIntimacyLevelUpCached.TryGetValue(level, out origin))
+        {
+            return isCopy ? origin.Clone() : origin;
+        }
+        TDebug.LogError(string.Format("IntimacyLevelUp没有此level:{0}", level));
+
+        return null;
+    }
+    int IIntimacyLevelUpFetcher.GetIntimacyLevelUpMax()
+    {
+        return mIntimacyLevelUpCached.Count;
+    }
+
 
     #region ============Old=================
     

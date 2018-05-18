@@ -32,6 +32,7 @@ public class BallMap : BaseObject
     public string desc;
     public string music;
     public int level;
+    public int unlockRecall;//解锁需要记忆碎片数
     public int diffiStart;  //起始难度
     public int diffiCoeff;  //难度系数
     public int ballRadius;

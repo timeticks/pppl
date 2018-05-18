@@ -118,6 +118,13 @@ public static class ClassExtensionUtils
     {
         return (num * 100f).ToString(format);
     }
+    /// <summary>
+    /// 将0.111转为11.1%，根据format保留小数
+    /// </summary>
+    public static string ToString_Pct(this int num, string format = "f2")
+    {
+        return (num/100f).ToString(format)+"%";
+    }
 
     /// <summary>
     /// 将0.1转为100

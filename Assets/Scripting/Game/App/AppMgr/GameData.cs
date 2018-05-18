@@ -24,6 +24,8 @@ public enum DataName : short
     SelectDialog,
     Ball,
     MindTreeMap,
+    NatureLevelUp,
+    IntimacyLevelUp,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,

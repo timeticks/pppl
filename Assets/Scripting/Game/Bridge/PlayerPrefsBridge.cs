@@ -127,7 +127,7 @@ public partial class PlayerPrefsBridge
         mPlayerData = new GamePlayer();
         mPlayerData.Level = 1;
         mPlayerData.Hero = Hero.Fetcher.GetHeroCopy(1001);
-        mPlayerData.name = "菜鸟";
+        mPlayerData.Name = "菜鸟";
         mPlayerData.PlayerUid = 10000 + 1;
         mPlayerData.BirthTime = AppTimer.CurTimeStampSecond;
         mSpellInventory = new InventoryList(InventoryList.InventoryType.Spells);
@@ -140,6 +140,7 @@ public partial class PlayerPrefsBridge
         addItem(105002002, 100, "");
         addItem(105003001, 100, "");
         addItem(105003002, 100, "");
+        addItem(105004001, 100, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
         saveGame();
@@ -158,7 +159,7 @@ public partial class PlayerPrefsBridge
             TDebug.LogError("S2C_SnapshotPlayerName错误，玩家名为空");
             return;
         }
-        mPlayerData.name = msg.Name;
+        mPlayerData.Name = msg.Name;
     }
 
 

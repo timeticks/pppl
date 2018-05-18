@@ -6,7 +6,7 @@ public partial class PlayerPrefsBridge
 {
     public string getName()
     {
-        return PlayerData.name;
+        return PlayerData.Name;
     }
 
     public int getIdx()
@@ -35,6 +35,19 @@ public partial class PlayerPrefsBridge
     public GamePlayer getPlayer()
     {
         return mPlayerData;
+    }
+
+    public void natureLevelUp(NatureType natureTy,bool isSave)
+    {
+        int natureLevel = PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(natureTy);
+        int maxLevel = NatureLevelUp.Fetcher.GetNatureLevelUpMax(natureTy);
+        if (maxLevel <= natureLevel)
+        {
+            TDebug.LogErrorFormat("nature已到最大等级:{0}", natureTy);
+            return;
+        }
+        PlayerPrefsBridge.Instance.PlayerData.NatureDict[(int)natureTy]++;
+        savePlayerModule();
     }
 
     #region 货币及等级
@@ -461,6 +474,14 @@ public partial class PlayerPrefsBridge
                 if (PlayerPrefsBridge.Instance.PartnerAcce.curPartener == null)
                     return -1;
                 PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum += item.effectMisc[0];
+                IntimacyLevelUp intimacyLevelUp = IntimacyLevelUp.Fetcher.GetIntimacyLevelUpCopy(PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyLevel,true);
+                //好感度升级
+                if (PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum >= intimacyLevelUp.num
+                    &&  PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyLevel < IntimacyLevelUp.Fetcher.GetIntimacyLevelUpMax())
+                {
+                    PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyLevel ++;
+                    PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum -= intimacyLevelUp.num;
+                }                
                 if (isSave)
                     savePartnerModule();
                 break;

@@ -319,7 +319,7 @@ public class RecordActionStr
             case BattleDescType.loser: 
             case BattleDescType.winner:
                 string roleName = val.ToString();
-                if (roleName == PlayerPrefsBridge.Instance.PlayerData.name)
+                if (roleName == PlayerPrefsBridge.Instance.PlayerData.Name)
                 {
                     //TDebug.Log("这里先强制将特殊名字设为玩家自身");
                     return "你";

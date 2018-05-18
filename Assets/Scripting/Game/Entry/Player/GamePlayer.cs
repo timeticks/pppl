@@ -5,7 +5,7 @@ using System.Security.Policy;
 
 public class GamePlayerBase
 {
-    public string name;
+    public string Name;
     public Eint BirthTime = 0;          //修炼时间
     public Eint PlayerUid = 0;          //唯一id
 
@@ -17,8 +17,8 @@ public class GamePlayerBase
     public Eint RecallPiece = 0;    //记忆碎片数量
 
     public Eint GuideStepIndex=6;     //游戏进度
-    public Eint UnlockMapLevel=6;     //当前解锁到的地图
-    public Eint RecallUnlockNum=0;    //下一个地图的解锁进度
+    public Eint UnlockMapLevel=3;     //当前解锁到的地图
+    public Eint RecallUnlockNum=10;    //下一个地图的解锁进度
 
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
 
@@ -33,9 +33,12 @@ public class GamePlayerBase
     public bool IsFinishNewerMap;
     public long FinishGuideStep;
 
-    public Dictionary<AttrType, int> AddProm = new Dictionary<AttrType, int>();
+    public Dictionary<AttrType, int> AddProm = new Dictionary<AttrType, int>() {  };
     public Elong VipTime = 0;      //vip的到期时间
     public Eint PlayerIdx = 0;
+
+    public Dictionary<int, int> NatureDict = new Dictionary<int, int>(); //能力NatureType
+
 
 
 }
@@ -82,6 +85,13 @@ public sealed class GamePlayer : GamePlayerBase
             else
                 return Exp;
         }
+    }
+
+    public int GetNatureLevel(NatureType natureTy)
+    {
+        if (!NatureDict.ContainsKey((int)natureTy))
+            NatureDict.Add((int)natureTy, 0);
+        return NatureDict[(int)natureTy];
     }
 
     public int GetPromTypeNum(AttrType type)
@@ -171,4 +181,3 @@ public enum WealthType : byte
     Exp,
     Max
 }
-

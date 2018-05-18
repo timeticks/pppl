@@ -125,7 +125,7 @@ public class Window_DungeonMap : WindowBase
         mViewObj.InventoryBtn.gameObject.SetActive(!isNewerMap);
         mViewObj.EventBtn.gameObject.SetActive(!isNewerMap);
         mViewObj.ExitBtn.gameObject.SetActive(!isNewerMap);
-        mViewObj.RoleNameText.text = PlayerPrefsBridge.Instance.PlayerData.name;
+        mViewObj.RoleNameText.text = PlayerPrefsBridge.Instance.PlayerData.Name;
         mViewObj.RoleLevelStateText.text = isNewerMap ? "凡人" : HeroLevelUp.GetStateName(PlayerPrefsBridge.Instance.PlayerData.Level);
         mViewObj.MapNameText.text = mapData.name;
         mViewObj.RoleLevelText.text = "等级：" + PlayerPrefsBridge.Instance.PlayerData.Level;

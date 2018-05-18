@@ -784,7 +784,8 @@ namespace LitJson
             if (obj is IDictionary) {
                 writer.WriteObjectStart ();
                 foreach (DictionaryEntry entry in (IDictionary) obj) {
-                    writer.WritePropertyName ((string) entry.Key);
+                    //writer.WritePropertyName ((string) entry.Key);
+                    writer.WritePropertyName(entry.Key.ToString()); //@YLR Ö±½ÓtoString
                     WriteValue (entry.Value, writer, writer_is_private,
                                 depth + 1);
                 }

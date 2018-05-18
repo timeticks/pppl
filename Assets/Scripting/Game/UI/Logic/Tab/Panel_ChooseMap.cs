@@ -77,10 +77,16 @@ public class Panel_ChooseMap :MonoBehaviour {
             {
                 mStarMapItemList[i].StarParticle.gameObject.SetActive(true);
                 if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel >= i + 2
-                    || i+1 == mapList.Count)
+                    || i+1 <= mapList.Count)
                 {
                     int nextStarIndex = i + 1;
-                    if (i + 1 == mapList.Count) nextStarIndex = 0;
+                    float lineLengthPct = 1f; //连线长度，1为完全连接
+                    if (i + 1 == mapList.Count) 
+                        nextStarIndex = 0; 
+                    else if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel == i + 1)
+                    {
+                        lineLengthPct = Mathf.Min(1f, PlayerPrefsBridge.Instance.PlayerData.RecallUnlockNum/(float)mapList[i].unlockRecall);
+                    }
 
                     float distance = Vector3.Distance(mStarMapItemList[i].MyTrans.localPosition, mStarMapItemList[nextStarIndex].MyTrans.localPosition);
                     Vector3 lookDir = mStarMapItemList[nextStarIndex].MyTrans.localPosition - mStarMapItemList[i].MyTrans.localPosition;
@@ -88,10 +94,14 @@ public class Panel_ChooseMap :MonoBehaviour {
                     mStarMapItemList[i].LineParticle.gameObject.SetActive(true);
                     TDebug.LogInEditorF("连线：{0}   {1}   {2}", i, distance, lookDir.ToString());
                     ParticleSystem.MainModule main = mStarMapItemList[i].LineParticle.main;
-                    main.startLifetime = new ParticleSystem.MinMaxCurve(distance / 40f + 0.5f);//根据距离，设置其存活长度
+                    main.startLifetime = new ParticleSystem.MinMaxCurve(distance / 40f * lineLengthPct + 0.5f);//根据距离，设置其存活长度
                     //var emitParams = new ParticleSystem.EmitParams();
                     //mStarMapItemList[i].LineParticle.Emit(emitParams, 0);
                     mStarMapItemList[i].LineParticle.Play();
+                }
+                else if (i + 1 < mapList.Count) //正在解锁
+                {
+
                 }
                 else
                 {

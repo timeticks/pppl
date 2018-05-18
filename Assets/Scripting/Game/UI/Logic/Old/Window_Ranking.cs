@@ -46,7 +46,7 @@ public class Window_Ranking : WindowBase {
             {
                 item = new NetRankBotting.RankItem();
                 GamePlayer player = PlayerPrefsBridge.Instance.PlayerData;
-                item.playerName = player.name;
+                item.playerName = player.Name;
                 item.sectType = player.MySect;
                 item.level = player.Level;
                 item.playerIcon = player.HeadIconIdx;

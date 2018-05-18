@@ -188,10 +188,12 @@
     <None Include="Assets\Build\GameData\Hero.txt" />
     <None Include="Assets\Build\GameData\HeroLevelUp.txt" />
     <None Include="Assets\Build\GameData\IllegalText.txt" />
+    <None Include="Assets\Build\GameData\IntimacyLevelUp.txt" />
     <None Include="Assets\Build\GameData\Item.txt" />
     <None Include="Assets\Build\GameData\LobbyDialogue.txt" />
     <None Include="Assets\Build\GameData\Loot.txt" />
     <None Include="Assets\Build\GameData\MindTreeMap.txt" />
+    <None Include="Assets\Build\GameData\NatureLevelUp.txt" />
     <None Include="Assets\Build\GameData\Partner.txt" />
     <None Include="Assets\Build\GameData\PartnerDialogue.txt" />
     <None Include="Assets\Build\GameData\Produce.txt" />

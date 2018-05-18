@@ -335,5 +335,13 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         {
             TDebug.LogInEditorF("使用失败：{0}", item.idx);
         }
+
+        if (mShowType == Item.ItemType.Intimacy)
+        {
+            Window_CreatePartner win = UIRootMgr.Instance.GetOpenListWindow<Window_CreatePartner>(WinName.Window_CreatePartner);
+            if (win != null)
+                win.Fresh();
+        }
+        //if(UIRootMgr.Instance.GetOpenListWindow<Window_CreatePartner>(WinName.Window_CreatePartner))
     }
 }

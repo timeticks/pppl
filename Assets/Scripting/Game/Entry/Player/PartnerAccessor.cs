@@ -36,6 +36,7 @@ public class PartnerAccessor
         curPartener.hairColor = selectHairColor;
         curPartener.skinColor = selectSkinColor;
         curPartener.intimacyNum = 0;
+        curPartener.intimacyLevel = 1;
         curPartener.happyMemory = selectHappyMemory;
         curPartener.idx = selectPartnerIdx;
     }
@@ -50,21 +51,10 @@ public class PartnerData
     
     public int idx;
     public SkinColor skinColor;
-    public HairColor hairColor;
-    public HappyMemory happyMemory;
-    public int intimacyNum;        //好感度
-
-    //得到好感度等级
-    public int GetIntimacyLevel()
-    {
-        int[] intimacyArray = GameConstUtils.array_intimacy_level;
-        for (int i = intimacyArray.Length - 1; i >= 0; i--)
-        {
-            if (intimacyArray[i] <= intimacyNum)
-                return i;
-        }
-        return 0;
-    }
+    public HairColor hairColor;     
+    public HappyMemory happyMemory; 
+    public Eint intimacyLevel=0;       //好感等级
+    public Eint intimacyNum=0;         //好感度
 
 
     //选择步骤
