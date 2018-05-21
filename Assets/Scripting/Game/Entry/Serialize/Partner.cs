@@ -22,6 +22,7 @@ public class Partner : BaseObject
     }
 
     public string desc;
+    public string icon;
     public PartnerData.Sex sex = PartnerData.Sex.Male ;
     public PartnerData.CharacType characType;
 

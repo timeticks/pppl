@@ -146,13 +146,13 @@ public class Loot :DescObject {
 
     #region 计算Loot掉落
 
-    List<GoodsToDrop> simpleDropLoots()
+    List<GoodsToDrop> simpleDropLoots(float addCoeffi)
     {
         List<GoodsToDrop> goodsToDropList = new List<GoodsToDrop>();
         GoodsToDrop goodsToDrop = null;
         for (int i = 0, length = lootMisc.Length; i < length; i++)
         {
-            if (!GameUtils.isTrue(lootProp[i]))
+            if (!GameUtils.isTrue((int)(lootProp[i] * addCoeffi)))
                 continue;
             goodsToDrop = new GoodsToDrop();
             goodsToDrop.goodsIdx = lootMisc[i];
@@ -163,25 +163,25 @@ public class Loot :DescObject {
         return goodsToDropList;
     }
 
-    List<GoodsToDrop> bigDropLoots()
+    List<GoodsToDrop> bigDropLoots(float addCoeffi)
     {
         int randomPos = GameUtils.GetRandomIndex(lootProp);
         Loot lootDrop = Loot.LootFetcher.GetLootByCopy(lootMisc[randomPos]);
         if (lootDrop != null)
-            return lootDrop.simpleDropLoots();
+            return lootDrop.simpleDropLoots(addCoeffi);
         return new List<GoodsToDrop>();
     }
 
-    public List<GoodsToDrop> onDropLoots() //直接根据loot的类型，将最终掉落的物品赋给goodsToDropList
+    public List<GoodsToDrop> onDropLoots(float addCoeffi) //直接根据loot的类型，将最终掉落的物品赋给goodsToDropList
     {
         List<GoodsToDrop> goodsToDropList = new List<GoodsToDrop>();
         if(groupType == LootGroup.Simple)
         {
-            return simpleDropLoots();
+            return simpleDropLoots(addCoeffi);
         }
         else if (groupType == LootGroup.Group)
         {
-            return bigDropLoots();
+            return bigDropLoots(addCoeffi);
         }
         return new List<GoodsToDrop>();
     }

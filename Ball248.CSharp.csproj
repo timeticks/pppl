@@ -260,6 +260,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\PartnerDialogue.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Produce.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\QualityTable.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Recharge.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\SelectDialog.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Skill.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Setting\AppModeType.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapDetail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapEndShow.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_NatureLevelUp.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_Store.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\BaseMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\LoadingCircleCtrl.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\Window_Guide.cs" />
@@ -493,6 +495,7 @@
     <None Include="Assets\Build\GameData\PartnerDialogue.txt" />
     <None Include="Assets\Build\GameData\Produce.txt" />
     <None Include="Assets\Build\GameData\QualityTable.txt" />
+    <None Include="Assets\Build\GameData\Recharge.txt" />
     <None Include="Assets\Build\GameData\SelectDialog.txt" />
     <None Include="Assets\Build\GameData\ServerTipsText.txt" />
     <None Include="Assets\Build\GameData\Spell.txt" />

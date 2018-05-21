@@ -12,7 +12,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
     IQualityTableFetcher, IPartnerDialogueFetcher, IPartnerFetcher, IMindTreeMapFetcher, IBallFetcher, INatureLevelUpFetcher,
-    IIntimacyLevelUpFetcher
+    IIntimacyLevelUpFetcher,IRechargeFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -62,11 +62,12 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
     public Dictionary<string, List<PartnerDialogue>> mPartnerDialogueCached     = new Dictionary<string, List<PartnerDialogue>>(12);
     public Dictionary<int, Partner>         mPartnerCached                      = new Dictionary<int, Partner>(12);
     public Dictionary<int, Loot>            mLootCached                         = new Dictionary<int, Loot>(12);
-    public Dictionary<int, SelectDialog>    mSelectDialogCached                 = new Dictionary<int, SelectDialog>(12);
+    public Dictionary<string, SelectDialog>    mSelectDialogCached              = new Dictionary<string, SelectDialog>(12);
     public Dictionary<int, Ball>            mBallCached                         = new Dictionary<int, Ball>(12);
     public Dictionary<int, MindTreeMap>     mMindTreeMapCached                  = new Dictionary<int,MindTreeMap>(3);
     public Dictionary<NatureType, Dictionary<int, NatureLevelUp>> mNatureLevelUpCached = new Dictionary<NatureType, Dictionary<int, NatureLevelUp>>(3);
     public Dictionary<int, IntimacyLevelUp>     mIntimacyLevelUpCached          = new Dictionary<int,IntimacyLevelUp>(3);
+    public Dictionary<int, Recharge>            mRechargeCached                 = new Dictionary<int,Recharge>(3);
 
     public static ConfigHelper Instance
     {
@@ -190,8 +191,8 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 if (temp.Value.chatNumRange.Length == 0) temp.Value.chatNumRange = new int[2] { 0, int.MaxValue };
                 else if (temp.Value.chatNumRange.Length == 1) temp.Value.chatNumRange = new int[2] { temp.Value.chatNumRange[0], temp.Value.chatNumRange[0] };
 
-                if (temp.Value.memoryRange.Length == 0) temp.Value.memoryRange = new int[2] { 1, int.MaxValue };
-                else if (temp.Value.memoryRange.Length == 1) temp.Value.memoryRange = new int[2] { temp.Value.memoryRange[0], temp.Value.memoryRange[0] };
+                if (temp.Value.hobbyRange.Length == 0) temp.Value.hobbyRange = new int[2] { 1, int.MaxValue };
+                else if (temp.Value.hobbyRange.Length == 1) temp.Value.hobbyRange = new int[2] { temp.Value.hobbyRange[0], temp.Value.hobbyRange[0] };
 
                 if (temp.Value.timeRange.Length == 0) temp.Value.timeRange = new int[2] { 0, 24 };
                 else if (temp.Value.timeRange.Length == 1) temp.Value.timeRange = new int[2] { temp.Value.timeRange[0], temp.Value.timeRange[0] };
@@ -245,7 +246,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             Dictionary<string, SelectDialog> pool = LitJson.JsonMapper.ToObject<Dictionary<string, SelectDialog>>(text);
             foreach (var temp in pool)
             {
-                mSelectDialogCached.Add(temp.Value.idx, temp.Value);
+                mSelectDialogCached.Add(temp.Value.name, temp.Value);
             }
             TDebug.Log(string.Format("初始SelectDialog成功:{0}项", mSelectDialogCached.Count));
         }
@@ -286,6 +287,15 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 mIntimacyLevelUpCached.Add(temp.Value.level, temp.Value);
             }
             TDebug.Log(string.Format("初始IntimacyLevelUp成功:{0}项", mIntimacyLevelUpCached.Count));
+        }
+        else if (dataName == DataName.Recharge)
+        {
+            Dictionary<string, Recharge> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Recharge>>(text);
+            foreach (var temp in pool)
+            {
+                mRechargeCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始Recharge成功:{0}项", mRechargeCached.Count));
         }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
@@ -329,6 +339,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         MindTreeMap.MindTreeMapFetcher              = this;
         NatureLevelUp.Fetcher                       = this;
         IntimacyLevelUp.Fetcher                     = this;
+        Recharge.Fetcher                            = this;
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -465,14 +476,14 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return null;
     }
 
-    SelectDialog ISelectDialogFetcher.GetSelectDialogByCopy(int idx)
+    SelectDialog ISelectDialogFetcher.GetSelectDialogByCopy(string key)
     {
         SelectDialog origin = null;
-        if (mSelectDialogCached.TryGetValue(idx, out origin))
+        if (mSelectDialogCached.TryGetValue(key, out origin))
         {
             return origin.Clone();
         }
-        TDebug.LogError(string.Format("Dialog没有此Idx:{0}", idx));
+        TDebug.LogError(string.Format("Dialog没有此Idx:{0}", key));
         return null;
     }
 
@@ -594,7 +605,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         Partner partner = Partner.Fetcher.GetPartnerCopy(partnerData.idx);
         string key = PartnerDialogue.GetGroupKey((int)partner.sex, (int)partner.characType, partnerData.intimacyLevel);
         List<PartnerDialogue> dialogueList;
-        int happyMemoryTy = (int) partnerData.happyMemory;
+        int hobbyType = (int) partnerData.hobbyType;
         mCurPartnerDialogueList.Clear();
         mCurPartnerDialoguePctList.Clear();
         if (mPartnerDialogueCached.TryGetValue(key, out dialogueList))
@@ -604,7 +615,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                 //筛选时间、回忆、对话次数
                 if (temp.timeRange[0] > dayHour || temp.timeRange[1] < dayHour)
                     continue;
-                if (temp.memoryRange[0] > happyMemoryTy || temp.memoryRange[1] < happyMemoryTy)
+                if (temp.hobbyRange[0] > hobbyType || temp.hobbyRange[1] < hobbyType)
                     continue;
                 if (temp.chatNumRange[0] > chatNum || temp.chatNumRange[1] < chatNum)
                     continue;
@@ -702,6 +713,27 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return mIntimacyLevelUpCached.Count;
     }
 
+    Recharge IRechargeFetcher.GetRechargeCopy(int idx, bool isCopy)
+    {
+        Recharge origin = null;
+        if (mRechargeCached.TryGetValue(idx, out origin))
+        {
+            return isCopy ? origin.Clone() : origin;
+        }
+        TDebug.LogError(string.Format("Recharge没有此level:{0}", idx));
+
+        return null;
+    }
+
+    List<Recharge> IRechargeFetcher.GetRechargeCopyAll()
+    {
+        List<Recharge> rechargeList = new List<Recharge>();
+        foreach (var temp in mRechargeCached)
+        {
+            rechargeList.Add(temp.Value.Clone());
+        }
+        return rechargeList;
+    }
 
     #region ============Old=================
     

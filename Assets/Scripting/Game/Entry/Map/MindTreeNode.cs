@@ -200,7 +200,8 @@ public enum MindTreeNodeType : byte
     ////////////
     getMapLevel,
     getGuideStep,
-
+    getSex,
+    getCharac,
 
     setDesc,   //描述信息
     setObtain, //学习
@@ -217,7 +218,10 @@ public enum MindTreeNodeType : byte
     setGuideStep,
     setSex,
     setHairColor,
-    setMemory,
+    setCharac,  //同伴性格
+    setHobby,
+    setPartner,
+    setStarRotate,
 
     condition,
 }
@@ -259,6 +263,8 @@ public static class MindTreeNodeTypeExtend
             case MindTreeNodeType.getLevel:
             case MindTreeNodeType.getMapLevel:
             case MindTreeNodeType.getGuideStep:
+            case MindTreeNodeType.getSex:
+            case MindTreeNodeType.getCharac:
             case MindTreeNodeType.getAtt:
             case MindTreeNodeType.getRandom:
             case MindTreeNodeType.getEvent:
@@ -271,6 +277,12 @@ public static class MindTreeNodeTypeExtend
             case MindTreeNodeType.setEnter:
             case MindTreeNodeType.setMsg:
             case MindTreeNodeType.setPlace:
+            case MindTreeNodeType.setSex:
+            case MindTreeNodeType.setHobby:
+            case MindTreeNodeType.setHairColor:
+            case MindTreeNodeType.setCharac:
+            case MindTreeNodeType.setPartner:
+            case MindTreeNodeType.setStarRotate:
                 return MindTreeNodeBaseType.Set;
             case MindTreeNodeType.setTalk:   //setTalk与setBattle后面可能有选项
             case MindTreeNodeType.setBattle:   

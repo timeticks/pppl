@@ -16,9 +16,8 @@ public class GamePlayerBase
     public Eint Diamond = 0;    //充值货币
     public Eint RecallPiece = 0;    //记忆碎片数量
 
-    public Eint GuideStepIndex=6;     //游戏进度
-    public Eint UnlockMapLevel=3;     //当前解锁到的地图
-    public Eint RecallUnlockNum=10;    //下一个地图的解锁进度
+    public Eint GuideStepIndex=0;     //游戏进度
+    public Eint UnlockMapLevel=0;     //当前已解锁的地图
 
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
 
@@ -92,6 +91,14 @@ public sealed class GamePlayer : GamePlayerBase
         if (!NatureDict.ContainsKey((int)natureTy))
             NatureDict.Add((int)natureTy, 0);
         return NatureDict[(int)natureTy];
+    }
+
+    public NatureLevelUp GetNatureLevelUp(NatureType natureTy)
+    {
+        int natureLevel = PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(natureTy);
+        NatureLevelUp nature =
+            NatureLevelUp.Fetcher.GetNatureLevelUpCopy(natureTy, natureLevel, false);   //掉落加成
+        return nature;
     }
 
     public int GetPromTypeNum(AttrType type)

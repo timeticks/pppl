@@ -26,6 +26,7 @@ public enum DataName : short
     MindTreeMap,
     NatureLevelUp,
     IntimacyLevelUp,
+    Recharge,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,

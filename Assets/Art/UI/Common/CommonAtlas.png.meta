@@ -223,6 +223,10 @@ TextureImporter:
     21300432: btn_inventory
     21300434: btn_sanyecao
     21300436: icon_circleLine2
+    21300438: icon_circleGradient
+    21300440: tex_lock
+    21300442: tex_wenhao
+    21300444: btn_rotate
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -316,8 +320,8 @@ TextureImporter:
       name: 2012040115202937[1]
       rect:
         serializedVersion: 2
-        x: 718
-        y: 436
+        x: 520
+        y: 396
         width: 52
         height: 63
       alignment: 0
@@ -342,7 +346,7 @@ TextureImporter:
       name: BG_Panel_2
       rect:
         serializedVersion: 2
-        x: 897
+        x: 903
         y: 395
         width: 73
         height: 63
@@ -355,8 +359,8 @@ TextureImporter:
       name: BG_Panel_3
       rect:
         serializedVersion: 2
-        x: 520
-        y: 313
+        x: 839
+        y: 265
         width: 32
         height: 38
       alignment: 0
@@ -407,8 +411,8 @@ TextureImporter:
       name: BTN_5
       rect:
         serializedVersion: 2
-        x: 596
-        y: 315
+        x: 978
+        y: 384
         width: 38
         height: 36
       alignment: 0
@@ -420,8 +424,8 @@ TextureImporter:
       name: BTN_8
       rect:
         serializedVersion: 2
-        x: 855
-        y: 436
+        x: 704
+        y: 391
         width: 40
         height: 42
       alignment: 0
@@ -433,8 +437,8 @@ TextureImporter:
       name: Bg_back_1
       rect:
         serializedVersion: 2
-        x: 406
-        y: 133
+        x: 536
+        y: 137
         width: 128
         height: 128
       alignment: 0
@@ -446,8 +450,8 @@ TextureImporter:
       name: Bg_ditu_01
       rect:
         serializedVersion: 2
-        x: 554
-        y: 427
+        x: 716
+        y: 199
         width: 32
         height: 32
       alignment: 0
@@ -459,8 +463,8 @@ TextureImporter:
       name: Bg_ditu_02
       rect:
         serializedVersion: 2
-        x: 520
-        y: 427
+        x: 680
+        y: 233
         width: 32
         height: 32
       alignment: 0
@@ -511,8 +515,8 @@ TextureImporter:
       name: Bg_kuang_11
       rect:
         serializedVersion: 2
-        x: 784
-        y: 353
+        x: 750
+        y: 173
         width: 64
         height: 64
       alignment: 0
@@ -628,8 +632,8 @@ TextureImporter:
       name: Bg_xuetiaob_1
       rect:
         serializedVersion: 2
-        x: 855
-        y: 414
+        x: 638
+        y: 33
         width: 40
         height: 20
       alignment: 0
@@ -641,8 +645,8 @@ TextureImporter:
       name: Bg_xuetiaoh_1
       rect:
         serializedVersion: 2
-        x: 655
-        y: 425
+        x: 596
+        y: 33
         width: 40
         height: 20
       alignment: 0
@@ -654,8 +658,8 @@ TextureImporter:
       name: Bg_xuetiaol_1
       rect:
         serializedVersion: 2
-        x: 655
-        y: 447
+        x: 520
+        y: 374
         width: 40
         height: 20
       alignment: 0
@@ -706,8 +710,8 @@ TextureImporter:
       name: Btn_jia1
       rect:
         serializedVersion: 2
-        x: 718
-        y: 353
+        x: 773
+        y: 239
         width: 64
         height: 64
       alignment: 0
@@ -719,8 +723,8 @@ TextureImporter:
       name: Btn_mo2
       rect:
         serializedVersion: 2
-        x: 753
-        y: 319
+        x: 716
+        y: 233
         width: 32
         height: 32
       alignment: 0
@@ -732,8 +736,8 @@ TextureImporter:
       name: Btn_you_1
       rect:
         serializedVersion: 2
-        x: 652
-        y: 353
+        x: 777
+        y: 305
         width: 64
         height: 64
       alignment: 0
@@ -745,8 +749,8 @@ TextureImporter:
       name: Btn_zuo_1
       rect:
         serializedVersion: 2
-        x: 586
-        y: 353
+        x: 903
+        y: 329
         width: 64
         height: 64
       alignment: 0
@@ -784,8 +788,8 @@ TextureImporter:
       name: Ripple_0002
       rect:
         serializedVersion: 2
-        x: 390
-        y: 312
+        x: 574
+        y: 371
         width: 128
         height: 128
       alignment: 0
@@ -797,8 +801,8 @@ TextureImporter:
       name: SP_11
       rect:
         serializedVersion: 2
-        x: 870
-        y: 394
+        x: 878
+        y: 351
         width: 18
         height: 18
       alignment: 0
@@ -836,8 +840,8 @@ TextureImporter:
       name: SP_2
       rect:
         serializedVersion: 2
-        x: 536
-        y: 223
+        x: 520
+        y: 327
         width: 255
         height: 42
       alignment: 0
@@ -849,8 +853,8 @@ TextureImporter:
       name: SP_21
       rect:
         serializedVersion: 2
-        x: 623
-        y: 435
+        x: 716
+        y: 166
         width: 30
         height: 31
       alignment: 0
@@ -862,8 +866,8 @@ TextureImporter:
       name: SP_22
       rect:
         serializedVersion: 2
-        x: 613
-        y: 468
+        x: 843
+        y: 305
         width: 33
         height: 31
       alignment: 0
@@ -875,8 +879,8 @@ TextureImporter:
       name: SP_24
       rect:
         serializedVersion: 2
-        x: 554
-        y: 315
+        x: 978
+        y: 422
         width: 40
         height: 36
       alignment: 0
@@ -992,8 +996,8 @@ TextureImporter:
       name: SP_38
       rect:
         serializedVersion: 2
-        x: 697
-        y: 429
+        x: 725
+        y: 371
         width: 19
         height: 18
       alignment: 0
@@ -1122,8 +1126,8 @@ TextureImporter:
       name: SP_51
       rect:
         serializedVersion: 2
-        x: 588
-        y: 435
+        x: 843
+        y: 338
         width: 33
         height: 31
       alignment: 0
@@ -1135,8 +1139,8 @@ TextureImporter:
       name: SP_6
       rect:
         serializedVersion: 2
-        x: 855
-        y: 480
+        x: 671
+        y: 12
         width: 43
         height: 19
       alignment: 0
@@ -1148,8 +1152,8 @@ TextureImporter:
       name: SP_8
       rect:
         serializedVersion: 2
-        x: 850
-        y: 394
+        x: 746
+        y: 415
         width: 18
         height: 18
       alignment: 0
@@ -1161,8 +1165,8 @@ TextureImporter:
       name: SP_TiLi
       rect:
         serializedVersion: 2
-        x: 706
-        y: 318
+        x: 1007
+        y: 314
         width: 11
         height: 33
       alignment: 0
@@ -1174,8 +1178,8 @@ TextureImporter:
       name: SP_TiLi2
       rect:
         serializedVersion: 2
-        x: 693
-        y: 318
+        x: 1008
+        y: 349
         width: 11
         height: 33
       alignment: 0
@@ -1187,8 +1191,8 @@ TextureImporter:
       name: SP_TiLi_BG
       rect:
         serializedVersion: 2
-        x: 674
-        y: 315
+        x: 746
+        y: 377
         width: 17
         height: 36
       alignment: 0
@@ -1226,8 +1230,8 @@ TextureImporter:
       name: btn_inventory
       rect:
         serializedVersion: 2
-        x: 773
-        y: 419
+        x: 596
+        y: 55
         width: 80
         height: 80
       alignment: 0
@@ -1240,7 +1244,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 680
-        y: 469
+        y: 169
         width: 30
         height: 30
       alignment: 0
@@ -1252,10 +1256,23 @@ TextureImporter:
       name: btn_plus
       rect:
         serializedVersion: 2
-        x: 648
-        y: 469
+        x: 680
+        y: 201
         width: 30
         height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: btn_rotate
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 246
+        width: 128
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1278,8 +1295,8 @@ TextureImporter:
       name: btn_setting
       rect:
         serializedVersion: 2
-        x: 636
-        y: 315
+        x: 969
+        y: 313
         width: 36
         height: 36
       alignment: 0
@@ -1317,8 +1334,21 @@ TextureImporter:
       name: icon_circle
       rect:
         serializedVersion: 2
-        x: 276
-        y: 124
+        x: 773
+        y: 371
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: icon_circleGradient
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 133
         width: 128
         height: 128
       alignment: 0
@@ -1330,7 +1360,7 @@ TextureImporter:
       name: icon_circleLine
       rect:
         serializedVersion: 2
-        x: 260
+        x: 390
         y: 312
         width: 128
         height: 128
@@ -1343,7 +1373,7 @@ TextureImporter:
       name: icon_circleLine2
       rect:
         serializedVersion: 2
-        x: 146
+        x: 276
         y: 124
         width: 128
         height: 128
@@ -1369,8 +1399,8 @@ TextureImporter:
       name: icon_planet
       rect:
         serializedVersion: 2
-        x: 574
-        y: 468
+        x: 969
+        y: 351
         width: 37
         height: 31
       alignment: 0
@@ -1382,8 +1412,8 @@ TextureImporter:
       name: icon_star
       rect:
         serializedVersion: 2
-        x: 520
-        y: 353
+        x: 704
+        y: 435
         width: 64
         height: 64
       alignment: 0
@@ -1421,10 +1451,36 @@ TextureImporter:
       name: stars
       rect:
         serializedVersion: 2
-        x: 719
-        y: 319
+        x: 839
+        y: 231
         width: 32
         height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: tex_lock
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 312
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: tex_wenhao
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 124
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1434,8 +1490,8 @@ TextureImporter:
       name: water_ball03
       rect:
         serializedVersion: 2
-        x: 697
-        y: 449
+        x: 704
+        y: 371
         width: 19
         height: 18
       alignment: 0

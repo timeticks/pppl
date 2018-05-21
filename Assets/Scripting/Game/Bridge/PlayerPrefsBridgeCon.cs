@@ -330,14 +330,14 @@ public partial class PlayerPrefsBridge
         return 0;
     }
 
-    public List<GoodsToDrop> onLoot(int lootIdx, string action = "")
+    public List<GoodsToDrop> onLoot(int lootIdx,float addCoeffi, string action = "")
     {
         Loot loot = Loot.LootFetcher.GetLootByCopy(lootIdx);
         if (loot == null)
         {
             return new List<GoodsToDrop>();
         }
-        List<GoodsToDrop> goodsList = loot.onDropLoots();
+        List<GoodsToDrop> goodsList = loot.onDropLoots(addCoeffi);
         onLootAndSave(goodsList,action);
         return goodsList;
     }
@@ -471,7 +471,7 @@ public partial class PlayerPrefsBridge
         {
             case Item.ItemEffectType.AddIntimacy:
             {
-                if (PlayerPrefsBridge.Instance.PartnerAcce.curPartener == null)
+                if (!PlayerPrefsBridge.Instance.PartnerAcce.HavePartner())
                     return -1;
                 PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyNum += item.effectMisc[0];
                 IntimacyLevelUp intimacyLevelUp = IntimacyLevelUp.Fetcher.GetIntimacyLevelUpCopy(PlayerPrefsBridge.Instance.PartnerAcce.curPartener.intimacyLevel,true);
@@ -488,9 +488,6 @@ public partial class PlayerPrefsBridge
             }
             case Item.ItemEffectType.AddRecall:
             {
-                PlayerPrefsBridge.Instance.PlayerData.RecallUnlockNum += item.effectMisc[0];
-                if (isSave)
-                    savePlayerModule();
                 break;
             }
             default:
@@ -522,6 +519,19 @@ public partial class PlayerPrefsBridge
         }
         return pos;
     }
+
+    public bool checkItem(int itemIdx, int num, bool showTips)
+    {
+        int itemNum = PlayerPrefsBridge.Instance.GetItemNum(itemIdx);
+        if (itemNum < num)
+        {
+            if (showTips)
+                UIRootMgr.Instance.Window_UpTips.InitTips(LangMgr.GetText("物品不足"), Color.red);
+            return false;
+        }
+        return true;
+    }
+
     public int consumeItem(int itemIdx, int num, bool isSave, string action)
     {
         if (itemIdx < 0) return -1;

@@ -95,6 +95,7 @@ public class GameConstUtils
     public static int id_item_next_ball { get { return 105003002; } }    //跳过道具id
 
     public static int id_item_nature { get { return 105004001; } }    //宝石道具
+    public static int id_item_recall { get { return 105001001; } }    //星星碎片道具
 
     public static int id_tree_map_guide_step { get { return 202001001; } }    //游戏流程的思维导图id
 

@@ -124,19 +124,15 @@ public class MindTreeMapCtrl
             case MindTreeNodeType.setTalk:  
             {
                 Window_Chat setTalkWin = UIRootMgr.Instance.OpenWindow<Window_Chat>(WinName.Window_Chat);
-                List<int> idList = new List<int>();
+                List<string> idList = new List<string>();
                 for (int i = 0; i < node.Values.Count; i++) //获取对话列表
                 {
-                    idList.Add(node.TryGetInt(i));
+                    idList.Add(node.TryGetString(i));
                 }
                 System.Action<int> del = delegate(int result)
                 {
                     bool haveTalk = CheckLegal_HaveTalkAnyBranch(node.ChildNode);
-                    MindTreeNode childNode = DoNextByResult(node, result);
-                    if (childNode != null)
-                    {
-                        DoNode(childNode);
-                    }
+                    DoNextByResult(node, result);
                 };
                 setTalkWin.OpenWindow(idList, del);
                 break;
@@ -298,11 +294,36 @@ public class MindTreeMapCtrl
                 PlayerPrefsBridge.Instance.savePartnerModule();
                 break;
             }
+            case MindTreeNodeType.setCharac:
+            {
+                int itemValue = node.TryGetInt(0);
+                PlayerPrefsBridge.Instance.PartnerAcce.selectCharacType = (PartnerData.CharacType)(itemValue);
+                PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
             case MindTreeNodeType.setHairColor:
             {
                 int itemValue = node.TryGetInt(0);
-                PlayerPrefsBridge.Instance.PartnerAcce.selectSex = (PartnerData.Sex)(itemValue);
+                PlayerPrefsBridge.Instance.PartnerAcce.selectHairColor = (PartnerData.HairColor)(itemValue);
                 PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
+            case MindTreeNodeType.setHobby:
+            {
+                int itemValue = node.TryGetInt(0);
+                PlayerPrefsBridge.Instance.PartnerAcce.selectHobbyType = (PartnerData.HobbyType)(itemValue);
+                PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
+            case MindTreeNodeType.setPartner:
+            {
+                PlayerPrefsBridge.Instance.PartnerAcce.InitCurPartnerBySelect();
+                PlayerPrefsBridge.Instance.savePartnerModule();
+                break;
+            }
+            case MindTreeNodeType.setStarRotate:
+            {
+                LobbySceneMainUIMgr.Instance.ChangeStarRotate();
                 break;
             }
             case MindTreeNodeType.setGuideStep:
@@ -368,6 +389,20 @@ public class MindTreeMapCtrl
                 int tempMisc = node.TryGetInt(0);
                 if (PlayerPrefsBridge.Instance.PlayerData.UnlockMapLevel >= tempMisc) { callBack(1); }
                 else { callBack(0); }
+                break;
+            }
+            case MindTreeNodeType.getSex: 
+            {
+                int tempMisc = (int)PlayerPrefsBridge.Instance.PartnerAcce.selectSex;
+                if ((int)PlayerPrefsBridge.Instance.PartnerAcce.selectSex == tempMisc) { callBack(tempMisc); }
+                else { callBack(tempMisc); }
+                break;
+            }
+            case MindTreeNodeType.getCharac:
+            {
+                int tempMisc = (int)PlayerPrefsBridge.Instance.PartnerAcce.selectCharacType;
+                if ((int)PlayerPrefsBridge.Instance.PartnerAcce.selectCharacType == tempMisc) { callBack(tempMisc); }
+                else { callBack(tempMisc); }
                 break;
             }
             case MindTreeNodeType.getLevel:

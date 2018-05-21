@@ -35,13 +35,13 @@ public class Window_Chat : WindowBase
     private List<SelectSmallObj> mButtonItemList = new List<SelectSmallObj>();
 
     private ViewObj mViewObj;
-    private List<int> mCurShowList;
+    private List<string> mCurShowList;
     private int mCurShowIndex;
     private string mCurShowText;
     private System.Action<int> mResultDel;  //列表中最后一个对话的选项
     private bool mCanCloseWindow = false;
 
-    public void OpenWindow(List<int> showDialogList , System.Action<int> resultDel)
+    public void OpenWindow(List<string> showDialogList , System.Action<int> resultDel)
     {
         if (mViewObj == null) mViewObj = new ViewObj(mViewBase);
         base.OpenWin();
@@ -67,7 +67,8 @@ public class Window_Chat : WindowBase
         {
             mViewObj.DescText.text = "";
             mCurShowText = SelectDialog.GetDesc(mCurShowList[showIndex]);
-            mViewObj.DescText.DOText(mCurShowText, mCurShowText.Length / 8f).SetEase(Ease.Linear).OnComplete(delegate() { ShowComplete(); });
+            //TODO:播放文字速度
+            mViewObj.DescText.DOText(mCurShowText, mCurShowText.Length / 80f).SetEase(Ease.Linear).OnComplete(delegate() { ShowComplete(); });
         }
         else
         {
@@ -126,7 +127,10 @@ public class Window_Chat : WindowBase
     void CloseWin(int btnSelectIndex)
     {
         mCanCloseWindow = true;
-        if (mResultDel != null) mResultDel(btnSelectIndex);
+        TDebug.LogInEditorF("is null:{0}", mResultDel == null);
+        System.Action<int> del = mResultDel;
+        mResultDel = null;
+        if (del != null) del(btnSelectIndex);
         if (mCanCloseWindow)    //如果回调后，mCanCloseWindow被重置，则不关闭窗口
             CloseWindow();
     }

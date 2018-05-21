@@ -26,7 +26,7 @@ public class PartnerDialogue : BaseObject
     public int[] intimacyRange;
     public int[] sexRange;
     public int[] characRange;
-    public int[] memoryRange;
+    public int[] hobbyRange;
     public int[] chatNumRange;
     public int weight;
 

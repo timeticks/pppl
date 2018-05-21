@@ -9,7 +9,9 @@ public class PartnerAccessor
     public PartnerData.HairColor selectHairColor = PartnerData.HairColor.None;
     public PartnerData.SkinColor selectSkinColor = PartnerData.SkinColor.None;
     public PartnerData.CharacType selectCharacType = PartnerData.CharacType.None;
-    public PartnerData.HappyMemory selectHappyMemory = PartnerData.HappyMemory.None;
+    public PartnerData.HobbyType selectHobbyType = PartnerData.HobbyType.None;
+
+
     public int selectPartnerIdx;
 
     public PartnerData curPartener;
@@ -28,17 +30,31 @@ public class PartnerAccessor
         return 0;
     }
 
+    public bool HavePartner()
+    {
+        if (curPartener == null || curPartener.idx == 0)
+            return false;
+        return true;
+    }
+
     //根据已选择的同伴信息，生成同伴
     public void InitCurPartnerBySelect()
     {
         curPartener = new PartnerData();
         curPartener.createTime = AppTimer.CurTimeStampSecond;
+        curPartener.startFindTime = PlayerPrefsBridge.Instance.PlayerData.BirthTime;
         curPartener.hairColor = selectHairColor;
         curPartener.skinColor = selectSkinColor;
+        curPartener.hobbyType = selectHobbyType;
+
         curPartener.intimacyNum = 0;
         curPartener.intimacyLevel = 1;
-        curPartener.happyMemory = selectHappyMemory;
-        curPartener.idx = selectPartnerIdx;
+
+        //characType和sexType，可以通过idx找到
+        Partner partner = Partner.Fetcher.GetPartnerRandomCopy(selectSex,
+            selectCharacType);
+        curPartener.partnerName = partner.name;
+        curPartener.idx = partner.idx;
     }
 
 }
@@ -47,12 +63,16 @@ public class PartnerAccessor
 
 public class PartnerData
 {
-    public int createTime;      //创建时间
-    
+    //characType和sex，可以通过idx找到
     public int idx;
+    public int startFindTime;   //开始寻找时间
+    public int createTime;      //创建时间
+    public string partnerName;
+    
     public SkinColor skinColor;
-    public HairColor hairColor;     
-    public HappyMemory happyMemory; 
+    public HairColor hairColor;
+    public HobbyType hobbyType;     
+
     public Eint intimacyLevel=0;       //好感等级
     public Eint intimacyNum=0;         //好感度
 
@@ -111,6 +131,17 @@ public class PartnerData
         None,
         SeeStar,
         BuyFoot,
+        Max
+    }
+
+    public enum HobbyType   //爱好   旅游|运动|看书|画画|音乐
+    {
+        None,
+        Traval,
+        Sport,
+        Book,
+        Draw,
+        Music,
         Max
     }
 }

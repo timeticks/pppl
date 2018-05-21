@@ -67,6 +67,14 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     void Start()
     {
+        if (PlayerPrefsBridge.Instance.PartnerAcce.HavePartner())
+        {
+            Panel_ChooseMap.IsRatated = true;
+        }
+        else
+        {
+            Panel_ChooseMap.IsRatated = false;
+        }
         UIRootMgr.LobbyUI.Init();
         UIRootMgr.Instance.MyUICam.enabled = true;
     }
@@ -91,11 +99,8 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ShopBtn,         mViewObj.BtnShop.transform);
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ActivityBtn,     mViewObj.BtnActivity.transform);
 
-        PlayerPrefsBridge.Instance.LoadPlayer();
         PlayerPrefs.DeleteAll();
 
-        mViewObj.Panel_ChooseMap.Init();
-        mViewObj.Panel_LobbyPartner.Init();
         mViewObj.BtnInventory.SetOnAduioClick(BtnEvt_ItemInventory);
         mViewObj.BtnPlanet.SetOnAduioClick(BtnEvt_OpenPlanet);
         mViewObj.BtnStore.SetOnAduioClick(BtnEvt_OpenStore);
@@ -161,14 +166,30 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             if (UIRootMgr.Instance.OpenWinList[i].SetCurrentWin)
                 haveWindow = true;
         }
-        mViewObj.LobbyUI.alpha = haveWindow ? 0 : 1;
-        mViewObj.LobbyUI.interactable = !haveWindow;
+        mViewObj.LobbyUI.gameObject.SetActive(!haveWindow);
+        //mViewObj.LobbyUI.alpha = haveWindow ? 0 : 1;
+        //mViewObj.LobbyUI.interactable = !haveWindow;
+        //if (UIRootMgr.Instance.GetOpenListWindow(WinName.Window_BallBattle) != null) //特效关闭
+        //{
+        //    mViewObj.Panel_ChooseMap.gameObject.SetActive(false);
+        //}
+        //else
+        //{
+        //    if (!mViewObj.Panel_ChooseMap.gameObject.activeSelf)
+        //    {
+        //        Init();
+        //        mViewObj.Panel_ChooseMap.gameObject.SetActive(true);
+        //    }
+        //}
     }
 
     public override void ShowMainUI()//重新显示主界面 
     {
         FreshLobbyInfo();
 
+        mViewObj.Panel_ChooseMap.Init();
+        mViewObj.Panel_ChooseMap.StarRotate(false, Panel_ChooseMap.IsRatated);
+        mViewObj.Panel_LobbyPartner.Init();
 
         //新手引导
         if (MindTreeMapCtrl.Instance == null)
@@ -179,6 +200,11 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
                     MapData.MapType.NewerMap);
         }
         MindTreeMapCtrl.Instance.DoRootGuideStep(PlayerPrefsBridge.Instance.PlayerData.GuideStepIndex);
+    }
+
+    public void ChangeStarRotate()
+    {
+        mViewObj.Panel_ChooseMap.StarRotate(true, !Panel_ChooseMap.IsRatated);
     }
 
 
@@ -264,7 +290,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
     {
         SaveUtils.SetIntInPlayer(ModuleType.module_shop.ToString(), BadgeStatus.Normal.ToInt());
 
-        UIRootMgr.Instance.OpenWindow<WindowBig_Store>(WinName.WindowBig_Store).OpenWindow();
+        UIRootMgr.Instance.OpenWindow<Window_Store>(WinName.Window_Store).OpenWindow();
         //UIRootMgr.Instance.Window_UpTips.InitTips(LangMgr.GetText("暂未开放"), Color.red);
     }
 

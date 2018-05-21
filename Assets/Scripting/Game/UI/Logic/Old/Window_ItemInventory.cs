@@ -21,6 +21,8 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
         public UIScroller Scroller;
         public GameObject RightBg;
         public Button MaskBtn;
+        public Text TitleText;
+        public Button BtnExit;
         public ViewObj(UIViewBase view)
         {
             if (ItemRoot == null) ItemRoot = view.GetCommon<Transform>("ItemRoot");
@@ -36,6 +38,8 @@ public class Window_ItemInventory : WindowBase, IScrollWindow
             if (ScrollView == null) ScrollView = view.GetCommon<ScrollRect>("ScrollView");
             if (RightBg == null) RightBg = view.GetCommon<GameObject>("RightBg");
             if (MaskBtn == null) MaskBtn = view.GetCommon<Button>("MaskBtn");
+            if (TitleText == null) TitleText = view.GetCommon<Text>("TitleText");
+            if (BtnExit == null) BtnExit = view.GetCommon<Button>("BtnExit");
         }
         public void ResetSiteScroll()
         {

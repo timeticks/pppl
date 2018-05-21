@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface ISelectDialogFetcher
 {
-    SelectDialog GetSelectDialogByCopy(int idx);
+    SelectDialog GetSelectDialogByCopy(string key);
 }
 
 public class SelectDialog : DescObject
@@ -43,16 +43,16 @@ public class SelectDialog : DescObject
         base.Serialize(ios);
     }
 
-    public static string[] GetButtons(int dialogIdx)
+    public static string[] GetButtons(string dialogName)
     {
-        SelectDialog selectDialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogIdx);
+        SelectDialog selectDialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogName);
         if (selectDialog == null)
             return new string[0];
         return selectDialog.button;
     }
-    public static string GetDesc(int dialogIdx)
+    public static string GetDesc(string dialogName)
     {
-        SelectDialog selectDialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogIdx);
+        SelectDialog selectDialog = SelectDialog.DialogFetcher.GetSelectDialogByCopy(dialogName);
         if (selectDialog == null)
             return "nul";
         return selectDialog.desc.RemoveN();

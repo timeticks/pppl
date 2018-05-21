@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+using DG.Tweening;
 
 public class BallBaseCtrl : MonoBehaviour {
 
@@ -163,6 +163,14 @@ public class BallBaseCtrl : MonoBehaviour {
             TUtility.SetParent(exploEffect.transform, MyTrans.parent);//如果会消除，则特效不跟随球体走
             exploEffect.transform.position = (otherCol.transform.position + MyTrans.position) / 2;
             exploEffect.gameObject.SetActive(true);
+
+            //掉落光点
+            DestroySelf lootItem = GameAssetsPool.Instance.GetEffect("FE_LootItem");
+            lootItem.gameObject.SetActive(true);
+            TUtility.SetParent(lootItem.transform, Window_BallBattle.Instance.transform);//如果会消除，则特效不跟随球体走
+            lootItem.transform.DOMove(Window_BallBattle.Instance.mViewObj.ScoreText.transform.position, 0.7f)
+                .OnComplete(
+                    delegate() { lootItem.Destroy(); });
         }
     }
 

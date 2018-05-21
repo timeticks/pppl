@@ -132,17 +132,25 @@ public partial class PlayerPrefsBridge
         mPlayerData.BirthTime = AppTimer.CurTimeStampSecond;
         mSpellInventory = new InventoryList(InventoryList.InventoryType.Spells);
         mItemsInventory = new InventoryList(InventoryList.InventoryType.Items);
-        addItem(105001001, 100, "");
-        addItem(105001002, 100, "");
-        addItem(105001003, 100, "");
-        addItem(105001004, 100, "");
-        addItem(105002001, 100, "");
-        addItem(105002002, 100, "");
-        addItem(105003001, 100, "");
-        addItem(105003002, 100, "");
-        addItem(105004001, 100, "");
+        addItem(105001001, 10001, "");
+        addItem(105001002, 10001, "");
+        addItem(105001003, 10001, "");
+        addItem(105001004, 10001, "");
+        addItem(105002001, 10001, "");
+        addItem(105002002, 10001, "");
+        addItem(105003001, 10001, "");
+        addItem(105003002, 10001, "");
+        addItem(105004001, 10001, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
+
+        mPlayerData.UnlockMapLevel = 6;
+        mPlayerData.GuideStepIndex = 6;
+        mPartnerAccessor.selectSex = PartnerData.Sex.Female;
+        mPartnerAccessor.selectCharacType = PartnerData.CharacType.Cute;
+        mPartnerAccessor.selectHairColor = PartnerData.HairColor.Gold;
+        mPartnerAccessor.selectHobbyType = PartnerData.HobbyType.Book;
+
         saveGame();
     }
 

@@ -45,9 +45,9 @@ public class Window_BallBattle : WindowBase {
             TBtnUniversalBall = view.GetCommon<TextButton>("TBtnUniversalBall");
             TBtnNextBall = view.GetCommon<TextButton>("TBtnNextBall");        }
     }
-    private ViewObj mViewObj;
+    public ViewObj mViewObj;
     public GunBaseCtrl GunCtrl { get { return mViewObj.GunPanel; } }
-
+    public int MusicEnergy;     //音乐播放能量
     internal List<BallBaseCtrl> BallList = new List<BallBaseCtrl>();
     internal List<BallBaseCtrl> BallDisableList = new List<BallBaseCtrl>();
     
@@ -57,6 +57,7 @@ public class Window_BallBattle : WindowBase {
         if (mViewBase == null) mViewBase = gameObject.GetComponent<WindowView>();
         if (mViewObj == null) mViewObj = new ViewObj(mViewBase);
         Instance = this;
+        MusicEnergy = 0;
         Init(mapIdx);
 
         mViewObj.TBtnExit.TextBtn.text = LangMgr.GetText("btn_exit");
@@ -306,11 +307,13 @@ public class Window_BallBattle : WindowBase {
             int lootId = ballMap.scoreLoot[Mathf.Min(addScore, ballMap.scoreLoot.Length - 1)];
             if (lootId > 0)
             {
-                List<GoodsToDrop> goodsList = PlayerPrefsBridge.Instance.onLoot(lootId);
+                NatureLevelUp nature =PlayerPrefsBridge.Instance.PlayerData.GetNatureLevelUp(NatureType.ScoreLoot);   //掉落加成
+                float addCoeffi = nature.natureMisc/10000f;
+                List<GoodsToDrop> goodsList = PlayerPrefsBridge.Instance.onLoot(lootId, addCoeffi);
                 string lootString = GoodsToDrop.getListString(goodsList);
-                TDebug.LogInEditorF("进行掉落:{0}\n{1}", lootId, lootString);
+                TDebug.LogInEditorF("进行掉落[倍数{0}]:{1}\n{2}", addCoeffi,lootId, lootString);
                 goodsList.AddRange(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
-
+                
                 PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList = GoodsToDrop.combineList(goodsList);
                 string lootAllString = GoodsToDrop.getListString(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
                 mViewObj.LootText.text = lootAllString;
