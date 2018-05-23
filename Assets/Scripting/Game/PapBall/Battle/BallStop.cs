@@ -31,7 +31,7 @@ public class BallStop : MonoBehaviour
     //当飞出的球碰到物体后
     void OnTriggerEnter2D(Collider2D col)
     {
-        TDebug.Log(transform.parent.name + "  " + mBallCtrl.MyBallType.ToString());
+        TDebug.LogInEditor(transform.parent.name + "  " + mBallCtrl.MyBallType.ToString());
 
         if (mBallCtrl.MyBallType == BallType.ForceAddBall)
         {

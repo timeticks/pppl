@@ -35,7 +35,7 @@ public class GunBaseCtrl : MonoBehaviour {
 
         for (int i = 0; i < nextList.Count; i++)
         {
-            if (nextList[i] < 0) nextList[i] = PlayerPrefsBridge.Instance.GetNextRandBall();
+            if (nextList[i] < 0) nextList[i] = PlayerPrefsBridge.Instance.BallMapAcce.GetNextRandBall();
             CreateWaitBall(nextList[i], i);
         }
 	    

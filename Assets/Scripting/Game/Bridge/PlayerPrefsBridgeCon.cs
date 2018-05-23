@@ -802,6 +802,7 @@ public partial class PlayerPrefsBridge
 
     public void InitNewMap(int mapIdx)
     {
+        BallMap map = BallMap.Fetcher.GetBallMapCopy(mapIdx);
         BallMapAcce.CurMapIdx = mapIdx;
         BallMapAcce.DestoryBallAmount = 0;
         BallMapAcce.FireBallAmount = 0;
@@ -810,7 +811,8 @@ public partial class PlayerPrefsBridge
         BallMapAcce.NextBallList = new List<int>();;
         BallMapAcce.CenterAnchorRotate = 0;
         BallMapAcce.BallDict = new Dictionary<string, int>();
-        BallMapAcce.MutilAddBallDown = 5;
+        BallMapAcce.MutilBallDown = map.multiTimeDown[1];
+        BallMapAcce.LastMutilBallDown = BallMapAcce.MutilBallDown;
         BallMapAcce.CurRound = 0;
         BallMapAcce.MapMaxSize = 29;
         BallMapAcce.goodsDropList = new List<GoodsToDrop>();
@@ -843,12 +845,6 @@ public partial class PlayerPrefsBridge
     }
 
 
-    private static System.Random mBallRand = new System.Random();
-    public int GetNextRandBall()
-    {
-        BallMap map = BallMap.Fetcher.GetBallMapCopy(BallMapAcce.CurMapIdx, false);
-        return map.ballList[mBallRand.Next(0, map.ballList.Length)];
-    }
 
     public void AddBall(int posIndex, int num)
     {

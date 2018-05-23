@@ -40,5 +40,8 @@ public enum NatureType
     None,
     ScoreLoot,
     MapEndLoot,
+    UniversalBall,
+    NextBall,
+    Frozen,
     Max,
 }

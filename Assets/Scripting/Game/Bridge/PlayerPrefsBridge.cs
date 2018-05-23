@@ -140,6 +140,7 @@ public partial class PlayerPrefsBridge
         addItem(105002002, 10001, "");
         addItem(105003001, 10001, "");
         addItem(105003002, 10001, "");
+        addItem(105003003, 10001, "");
         addItem(105004001, 10001, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);

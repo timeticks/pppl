@@ -41,9 +41,23 @@ public class BallMap : BaseObject
     public Eint[] scoreLoot;
     public Eint[] endLoot;
 
+    public Eint[] diffiUpScore;  //分数
+    public Eint[] diffiBallNum;  //难度与球种类数量
+    public Eint[] diffiMultiNum;  //难度与多球加入数量
+    public Eint[] multiTimeDown;  //倒计时
+
     public BallMap Clone()
     {
         return this.MemberwiseClone() as BallMap;
+    }
+
+    public bool CheckLegal()
+    {
+        if (diffiUpScore.Length != diffiBallNum.Length || diffiUpScore.Length != diffiMultiNum.Length)
+        {
+            Debug.LogError("错误");
+        }
+        return true;
     }
 
 }

@@ -93,6 +93,7 @@ public class GameConstUtils
     public static int id_universal_ball { get { return 405001001; } }    //万能球id
     public static int id_item_universal_ball { get { return 105003001; } }    //万能球道具id
     public static int id_item_next_ball { get { return 105003002; } }    //跳过道具id
+    public static int id_item_frozen_ball { get { return 105003003; } }    //冻结道具id
 
     public static int id_item_nature { get { return 105004001; } }    //宝石道具
     public static int id_item_recall { get { return 105001001; } }    //星星碎片道具

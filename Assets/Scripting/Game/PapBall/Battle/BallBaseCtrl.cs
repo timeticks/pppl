@@ -135,11 +135,11 @@ public class BallBaseCtrl : MonoBehaviour {
             boundDir = lastMoveDir;
         else
             boundDir = lastMoveDir - Vector3.Dot(hitDir.normalized, lastMoveDir.normalized) * hitDir.normalized * 2;   //反射方向
-        TDebug.LogInEditorF("方向 hitDir:{0}   lastMoveDir:{1}   boundDir:{2}   dot:{3}", hitDir, lastMoveDir * 10, boundDir, dot);
+        //TDebug.LogInEditorF("方向 hitDir:{0}   lastMoveDir:{1}   boundDir:{2}   dot:{3}", hitDir, lastMoveDir * 10, boundDir, dot);
 
         //得到与col的相对位置
         //HexagonPosType posType = HexagonGridMgr.CurHexagon.GetHexagonPosType(Vector2.zero, offsetPos);
-        TDebug.LogFormat("xy:{0}" , xyPos.ToString());
+        //TDebug.LogFormat("xy:{0}" , xyPos.ToString());
         ParentWin.AddBall(this, xyPos);
         PlayerPrefsBridge.Instance.BallMapAcce.FireBallAmount++;
 
@@ -155,7 +155,7 @@ public class BallBaseCtrl : MonoBehaviour {
         MyBallType = BallType.IdleBall;
         ParentWin.GunCtrl.CreateWaitBall(-1, false);
         PlayerPrefsBridge.Instance.saveMapAccessor();
-
+        ParentWin.ResetFrozen();
         if (isDestroyEqual)
         {
             //爆炸特效
