@@ -279,7 +279,7 @@ public class GoodsToDrop
             {
                 long goodsKey = tempGoods.getKey();
                 if (goodsMap.ContainsKey(goodsKey))
-                    tempGoods.amount += goodsMap[goodsKey].amount;
+					goodsMap[goodsKey].amount += tempGoods.amount;
                 else
                     goodsMap.Add(goodsKey, tempGoods);
             }

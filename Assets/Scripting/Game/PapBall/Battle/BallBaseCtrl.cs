@@ -116,7 +116,6 @@ public class BallBaseCtrl : MonoBehaviour {
         if ((otherBallCtrl == null || otherBallCtrl.MyData == null || otherBallCtrl.MyData.IsDisable) && !otherCol.gameObject.CompareTag(GameConstUtils.TAG_CENTER_ANCHOR))
             return;
 
-        UIRootMgr.Instance.TopMasking = false;
 
         mViewObj.MyCollider.isTrigger = true;
         Vector3 lastMoveDir = MoveDir;
@@ -146,6 +145,8 @@ public class BallBaseCtrl : MonoBehaviour {
         bool isDestroyEqual = false;
         if (MyBallType == BallType.RunByGunBall)
         {
+			UIRootMgr.Instance.TopMasking = false;
+
             isDestroyEqual = ParentWin.DestroyEqualNum(MyData, new Vector2(boundDir.x, boundDir.y));
             if (!isDestroyEqual)
                 ParentWin.FreshMutilDown(true);

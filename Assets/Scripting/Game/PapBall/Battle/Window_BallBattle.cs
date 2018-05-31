@@ -335,6 +335,7 @@ public class Window_BallBattle : WindowBase {
 
         NatureLevelUp nature = PlayerPrefsBridge.Instance.PlayerData.GetNatureLevelUp(NatureType.ScoreLoot);   //掉落加成
         float addCoeffi = nature.natureMisc / 10000f;
+		addCoeffi = 10f;
         for (int i = 0; i < bList.Count; i++)//设置刚体跳跃速度
         {
             bList[i].IsDisable = true;
@@ -372,9 +373,7 @@ public class Window_BallBattle : WindowBase {
                         });
                         text.gameObject.SetActive(true);
                     }
-                    
                 }
-
             }
             else
             {
@@ -415,15 +414,16 @@ public class Window_BallBattle : WindowBase {
 
     public void FreshMutilDown(bool isReduceDown)
     {
+		int timeDown = PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown;
         if (isReduceDown)
         {
             PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown--;
             PlayerPrefsBridge.Instance.saveMapAccessor();
-        }
-        int timeDown = PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown;
-        if (timeDown == 0)
-        {
-            MultiAddBall(PlayerPrefsBridge.Instance.BallMapAcce.GetMutilNum());
+			timeDown = PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown;
+			if (timeDown == 0)
+			{
+				MultiAddBall(PlayerPrefsBridge.Instance.BallMapAcce.GetMutilNum());
+			}
         }
         mViewObj.MultiAddText.text = LangMgr.GetText("desc_multi_down", timeDown.ToString());
     }
@@ -683,7 +683,7 @@ public class Window_BallBattle : WindowBase {
             //进行发射
             ball.StartRun(dir , BallType.ForceAddBall);
             PlayerPrefsBridge.Instance.BallMapAcce.MutilBallAmount++;
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
+			yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
         }
         BallMap map = BallMap.Fetcher.GetBallMapCopy(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
         PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown =map.multiTimeDown[0] 
@@ -692,6 +692,7 @@ public class Window_BallBattle : WindowBase {
         PlayerPrefsBridge.Instance.BallMapAcce.LastMutilBallDown = PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown;
         FreshMutilDown(false);
         PlayerPrefsBridge.Instance.saveMapAccessor();
+		yield return new WaitForSeconds (0.3f);
         UIRootMgr.Instance.TopMasking = false;
     }
 

@@ -14,6 +14,7 @@ public class Panel_ChooseMap :MonoBehaviour {
         public GameObject EnterBtnAni;
         public NumScrollTool RecallScrollTool;
         public Button BtnRotate;
+		public Transform ItemParentRoot;
         public ViewObj(UIViewBase view)
         {
             if (Part_StarMapItem != null) return;
@@ -23,7 +24,8 @@ public class Panel_ChooseMap :MonoBehaviour {
             TBtnEnter = view.GetCommon<TextButton>("TBtnEnter");
             RecallScrollTool = view.GetCommon<NumScrollTool>("RecallScrollTool");
             EnterBtnAni = view.GetCommon<GameObject>("EnterBtnAni");
-            BtnRotate = view.GetCommon<Button>("BtnRotate");
+			BtnRotate = view.GetCommon<Button>("BtnRotate");            
+			ItemParentRoot = view.GetCommon<Transform>("ItemParentRoot");
         }
     }
 
@@ -237,15 +239,24 @@ public class Panel_ChooseMap :MonoBehaviour {
 
     public void StarRotate(Vector3 rot)
     {
-        mViewObj.ItemRoot.rotation = Quaternion.Euler(mViewObj.ItemRoot.rotation.eulerAngles + rot);
+		mViewObj.ItemParentRoot.rotation = Quaternion.Euler(mViewObj.ItemParentRoot.rotation.eulerAngles + rot);
     }
-    public void StarRotate(bool doAni , bool isToRotated)
+	public void ParentRotateReset(bool isStop)
+	{
+		if(isStop)
+			mViewObj.ItemParentRoot.DOKill (false);
+		else
+			mViewObj.ItemParentRoot.DOLocalRotate(Vector3.zero, 6f, RotateMode.Fast);
+	}
+
+
+	public void StarRotate(bool doAni , bool isToRotated , bool isBeyond360=true)
     {
         float useTime = doAni ? 3 : 0f;
         if (isToRotated)
         {
             mViewObj.ItemRoot.DOLocalMove(Vector3.zero, useTime);
-            mViewObj.ItemRoot.DOLocalRotate(Vector3.zero, useTime, RotateMode.FastBeyond360);
+			mViewObj.ItemRoot.DOLocalRotate(Vector3.zero, useTime, isBeyond360?RotateMode.FastBeyond360:RotateMode.Fast);
         }
         else
         {
@@ -253,7 +264,7 @@ public class Panel_ChooseMap :MonoBehaviour {
             //mViewObj.ItemRoot.DOLocalRotate(new Vector3(5f, 67.5f, 4.1f), 3); 
             //mViewObj.ItemRoot.DOLocalMove(new Vector3(-678, 32, 46), useTime);
             mViewObj.ItemRoot.DOLocalMove(Vector3.zero, useTime);
-            mViewObj.ItemRoot.DOLocalRotate(new Vector3(9.7f, 79f, -33f), useTime, RotateMode.FastBeyond360);
+			mViewObj.ItemRoot.DOLocalRotate(new Vector3(9.7f, 79f, -33f), useTime, isBeyond360?RotateMode.FastBeyond360:RotateMode.Fast);
         }
         IsRatated = isToRotated;
     }

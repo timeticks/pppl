@@ -61,6 +61,7 @@ public class GunBaseCtrl : MonoBehaviour {
                     //mLastDir = hit.point - mTrans.position;
                     mLastDir = Input.mousePosition - gunScreenPos;
                     float angle = -Mathf.Atan(mLastDir.x / mLastDir.y) * Mathf.Rad2Deg;
+					angle = Mathf.Clamp (angle, -86, 86);
                     mViewObj.GunRoot.localRotation = Quaternion.Euler(new Vector3(0, 0, angle));
                 }
             }

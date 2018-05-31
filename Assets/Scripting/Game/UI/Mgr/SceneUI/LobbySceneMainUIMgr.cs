@@ -102,6 +102,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ShopBtn,         mViewObj.BtnShop.transform);
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ActivityBtn,     mViewObj.BtnActivity.transform);
 
+		mViewObj.DragBtn.triggers.Clear();
         EventTrigger.Entry myTrigger = new EventTrigger.Entry();
         myTrigger.eventID = EventTriggerType.Drag;
         myTrigger.callback.AddListener(BtnEvt_DragStarRot);
@@ -109,6 +110,11 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         myTrigger = new EventTrigger.Entry();
         myTrigger.eventID = EventTriggerType.BeginDrag;
         myTrigger.callback.AddListener(BtnEvt_DragStarRotStart);
+		mViewObj.DragBtn.triggers.Add(myTrigger);
+		myTrigger = new EventTrigger.Entry();
+		myTrigger.eventID = EventTriggerType.EndDrag;
+		myTrigger.callback.AddListener(BtnEvt_DragStarRotEnd);
+		mViewObj.DragBtn.triggers.Add(myTrigger);
 
         TDebug.LogWarning("这里调用了PlayerPrefs.DeleteAll()");
         PlayerPrefs.DeleteAll();
@@ -136,15 +142,20 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
     private Vector3 mLastMousePos;
     public void BtnEvt_DragStarRot(BaseEventData data)
     {
-        //Vector3 offsetVector = Input.mousePosition - mLastMousePos;
-        //offsetVector = offsetVector/60f;
-        //mLastMousePos = Input.mousePosition;
-        //mViewObj.Panel_ChooseMap.StarRotate(new Vector3(offsetVector.y, offsetVector.x , 0));
+        Vector3 offsetVector = Input.mousePosition - mLastMousePos;
+        offsetVector = offsetVector/60f;
+        mLastMousePos = Input.mousePosition;
+        mViewObj.Panel_ChooseMap.StarRotate(new Vector3(offsetVector.y, -offsetVector.x , 0));
     }
     public void BtnEvt_DragStarRotStart(BaseEventData data)
     {
-        //mLastMousePos = Input.mousePosition;
+		mViewObj.Panel_ChooseMap.ParentRotateReset(true);
+        mLastMousePos = Input.mousePosition;
     }
+	public void BtnEvt_DragStarRotEnd(BaseEventData data)
+	{
+		mViewObj.Panel_ChooseMap.ParentRotateReset(false);
+	}
 
     public void OpenSubBtnPanel(SubBtnType ty)
     {

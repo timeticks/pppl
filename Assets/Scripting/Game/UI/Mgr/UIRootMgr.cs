@@ -129,7 +129,7 @@ public class UIRootMgr : MainUIMgrContainer, IAssetUser
         get { return MyViewObj.TopMask.gameObject.activeSelf; }
         set
         {
-            Debug.Log("TopMasking:"+value.ToString()); 
+//            Debug.Log("TopMasking:"+value.ToString()); 
             mIsYieldTopMasking = false;
             MyViewObj.TopMask.gameObject.SetActive(value);
         }
