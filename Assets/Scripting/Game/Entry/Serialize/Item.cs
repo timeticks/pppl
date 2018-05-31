@@ -85,5 +85,10 @@ public class Item : ItemBase
         return false;
     }
 
+    public static string GetName(int itemIdx)
+    {
+        Item item = Item.Fetcher.GetItemCopy(itemIdx);
+        return item == null ? LangMgr.GetText("未知") : item.name;
+    }
 
 }

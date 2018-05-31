@@ -43,5 +43,6 @@ public enum NatureType
     UniversalBall,
     NextBall,
     Frozen,
+    DelayMulti,
     Max,
 }

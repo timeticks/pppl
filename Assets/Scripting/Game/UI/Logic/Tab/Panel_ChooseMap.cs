@@ -234,6 +234,11 @@ public class Panel_ChooseMap :MonoBehaviour {
             PlayerPrefs.Save();
         }
     }
+
+    public void StarRotate(Vector3 rot)
+    {
+        mViewObj.ItemRoot.rotation = Quaternion.Euler(mViewObj.ItemRoot.rotation.eulerAngles + rot);
+    }
     public void StarRotate(bool doAni , bool isToRotated)
     {
         float useTime = doAni ? 3 : 0f;
@@ -246,8 +251,9 @@ public class Panel_ChooseMap :MonoBehaviour {
         {
             //mViewObj.ItemRoot.DOLocalMove(new Vector3(-609, 38, 36), 3);
             //mViewObj.ItemRoot.DOLocalRotate(new Vector3(5f, 67.5f, 4.1f), 3); 
-            mViewObj.ItemRoot.DOLocalMove(new Vector3(-678, 32, 46), useTime);
-            mViewObj.ItemRoot.DOLocalRotate(new Vector3(9.7f, 79f, -393f), useTime, RotateMode.FastBeyond360);
+            //mViewObj.ItemRoot.DOLocalMove(new Vector3(-678, 32, 46), useTime);
+            mViewObj.ItemRoot.DOLocalMove(Vector3.zero, useTime);
+            mViewObj.ItemRoot.DOLocalRotate(new Vector3(9.7f, 79f, -33f), useTime, RotateMode.FastBeyond360);
         }
         IsRatated = isToRotated;
     }

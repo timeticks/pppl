@@ -26,6 +26,7 @@ public class BallMapAccessor
     public Eint UseUniversalBallNum=0;  //使用万能球的个数
     public Eint UseNextBallNum=0;       //使用跳过球的个数
     public Eint UseFrozenNum = 0;       //使用冰冻的个数
+    public Eint UseDelayNum = 0;        //使用延迟的个数
 
 
     public int GetCurDifficultIndex()

@@ -111,7 +111,7 @@ public class GunBaseCtrl : MonoBehaviour {
         BallBaseCtrl ballCtrl = mParentWin.GetNewBall(ballIdx);
         ballCtrl.MyTrans.SetParent(mViewObj.WaitNextRoot);
         ballCtrl.MyTrans.rotation = Quaternion.identity;
-
+        ballCtrl.gameObject.SetActive(true);
         SetBallPosByIndex(ballCtrl, ballIndex);
 
         WaitBallList.Insert(ballIndex,ballCtrl);

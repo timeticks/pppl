@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class BallBaseCtrl : MonoBehaviour {
 
-    public BallType MyBallType;
+    public BallType MyBallType = BallType.IdleBall;
 
     internal float mMoveSpeed = 300;
     internal BallNodeData MyData;
@@ -171,6 +171,9 @@ public class BallBaseCtrl : MonoBehaviour {
             lootItem.transform.DOMove(Window_BallBattle.Instance.mViewObj.ScoreText.transform.position, 0.7f)
                 .OnComplete(
                     delegate() { lootItem.Destroy(); });
+
+            //查看是否没有球了，若是则重置地图
+            ParentWin.CheckMapEmpty();
         }
     }
 
@@ -187,14 +190,7 @@ public class BallBaseCtrl : MonoBehaviour {
 
     #region 相邻测试
     bool needDeleteNear = false;
-    void OnGUI()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))  //测试相邻
-        {
-            Debug.LogError("测试相邻");
-            needDeleteNear = true;
-        }
-    }
+   
     void DeleteNearTest()
     {
         if (needDeleteNear)

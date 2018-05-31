@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.EventSystems;
 public class LobbySceneMainUIMgr : BaseMainUIMgr
 {
     public static LobbySceneMainUIMgr Instance { get; private set; }
@@ -19,6 +20,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public Button BtnPlanet;
         public Button BtnInventory;
         public Button BtnStore;
+        public EventTrigger DragBtn;
         public ViewObj(UIViewBase view)
         {
             if (LobbyTop != null) return;
@@ -31,6 +33,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             BtnPlanet = view.GetCommon<Button>("BtnPlanet");
             BtnInventory = view.GetCommon<Button>("BtnInventory");
             BtnStore = view.GetCommon<Button>("BtnStore");
+            DragBtn = view.GetCommon<EventTrigger>("DragBtn");
         }
     }
 
@@ -99,6 +102,15 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ShopBtn,         mViewObj.BtnShop.transform);
         //GuideMgr.Instance.SetUI(GuidePointUI.Lobby_ActivityBtn,     mViewObj.BtnActivity.transform);
 
+        EventTrigger.Entry myTrigger = new EventTrigger.Entry();
+        myTrigger.eventID = EventTriggerType.Drag;
+        myTrigger.callback.AddListener(BtnEvt_DragStarRot);
+        mViewObj.DragBtn.triggers.Add(myTrigger);
+        myTrigger = new EventTrigger.Entry();
+        myTrigger.eventID = EventTriggerType.BeginDrag;
+        myTrigger.callback.AddListener(BtnEvt_DragStarRotStart);
+
+        TDebug.LogWarning("这里调用了PlayerPrefs.DeleteAll()");
         PlayerPrefs.DeleteAll();
 
         mViewObj.BtnInventory.SetOnAduioClick(BtnEvt_ItemInventory);
@@ -121,7 +133,18 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
 
     }
 
-
+    private Vector3 mLastMousePos;
+    public void BtnEvt_DragStarRot(BaseEventData data)
+    {
+        //Vector3 offsetVector = Input.mousePosition - mLastMousePos;
+        //offsetVector = offsetVector/60f;
+        //mLastMousePos = Input.mousePosition;
+        //mViewObj.Panel_ChooseMap.StarRotate(new Vector3(offsetVector.y, offsetVector.x , 0));
+    }
+    public void BtnEvt_DragStarRotStart(BaseEventData data)
+    {
+        //mLastMousePos = Input.mousePosition;
+    }
 
     public void OpenSubBtnPanel(SubBtnType ty)
     {

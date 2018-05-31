@@ -45,6 +45,7 @@ public class BallMap : BaseObject
     public Eint[] diffiBallNum;  //难度与球种类数量
     public Eint[] diffiMultiNum;  //难度与多球加入数量
     public Eint[] multiTimeDown;  //倒计时
+    public int startBallNum;        //初始时的星球圈数
 
     public BallMap Clone()
     {

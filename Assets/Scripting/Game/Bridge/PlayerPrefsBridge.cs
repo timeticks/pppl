@@ -141,12 +141,13 @@ public partial class PlayerPrefsBridge
         addItem(105003001, 10001, "");
         addItem(105003002, 10001, "");
         addItem(105003003, 10001, "");
+        addItem(105003004, 10001, "");
         addItem(105004001, 10001, "");
         mEquipsInventory = new InventoryList(InventoryList.InventoryType.Equips);
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
 
         mPlayerData.UnlockMapLevel = 6;
-        mPlayerData.GuideStepIndex = 6;
+        mPlayerData.GuideStepIndex = 7;
         mPartnerAccessor.selectSex = PartnerData.Sex.Female;
         mPartnerAccessor.selectCharacType = PartnerData.CharacType.Cute;
         mPartnerAccessor.selectHairColor = PartnerData.HairColor.Gold;

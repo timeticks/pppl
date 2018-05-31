@@ -11,6 +11,7 @@ public class Window_BallBattle : WindowBase {
     public class ViewObj
     {
         public RectTransform CenterAnchor;
+        public Transform CenterBall;
         public Transform FreeRoot;
         public GunBaseCtrl GunPanel;
         public GameObject Part_Ball;
@@ -31,10 +32,14 @@ public class Window_BallBattle : WindowBase {
         public Text NextBallNumText;
         public Text FrozenBallNumText;
         public GameObject FrozenRoot;
+        public TextButton TBtnDelay;
+        public Text DelayNumText;
+        public GameObject Part_LootTips;
         public ViewObj(UIViewBase view)
         {
             if (CenterAnchor != null) return;
             CenterAnchor = view.GetCommon<RectTransform>("CenterAnchor");
+            CenterBall = view.GetCommon<RectTransform>("CenterBall");
             FreeRoot = view.GetCommon<Transform>("FreeRoot");
             GunPanel = view.GetCommon<GameObject>("GunPanel").CheckAddComponent<GunBaseCtrl>();
             Part_Ball = view.GetCommon<GameObject>("Part_BattleBall");
@@ -54,6 +59,9 @@ public class Window_BallBattle : WindowBase {
             NextBallNumText = view.GetCommon<Text>("NextBallNumText");
             FrozenBallNumText = view.GetCommon<Text>("FrozenBallNumText");
             FrozenRoot = view.GetCommon<GameObject>("FrozenRoot");
+            DelayNumText = view.GetCommon<Text>("DelayNumText");
+            TBtnDelay = view.GetCommon<TextButton>("TBtnDelay");
+            Part_LootTips = view.GetCommon<GameObject>("Part_LootTips");
         }
     }
     public ViewObj mViewObj;
@@ -61,8 +69,9 @@ public class Window_BallBattle : WindowBase {
     public int MusicEnergy;     //音乐播放能量
     internal List<BallBaseCtrl> BallList = new List<BallBaseCtrl>();
     internal List<BallBaseCtrl> BallDisableList = new List<BallBaseCtrl>();
-    
+    private List<Text> mLootTextList = new List<Text>();
 
+    
     public void OpenWindow(int mapIdx)
     {
         if (mViewBase == null) mViewBase = gameObject.GetComponent<WindowView>();
@@ -76,6 +85,7 @@ public class Window_BallBattle : WindowBase {
         mViewObj.TBtnUniversalBall.SetOnAduioClick(BtnEvt_UniversalBall);
         mViewObj.TBtnNextBall.SetOnAduioClick(BtnEvt_NextBall);
         mViewObj.TBtnFrozenBall.SetOnAduioClick(BtnEvt_Frozen);
+        mViewObj.TBtnDelay.SetOnAduioClick(BtnEvt_Delay);
 
         Fresh();
         base.OpenWin();
@@ -89,7 +99,7 @@ public class Window_BallBattle : WindowBase {
 
         mViewObj.CurAddText.gameObject.SetActive(false);
         mViewObj.LootText.text = "";
-        mViewObj.CenterAnchor.sizeDelta = Vector2.one*(2*HexaMapData.DefaultRadius*MapData.BallScaleRatio());
+        mViewObj.CenterBall.localScale = Vector2.one * MapData.BallScaleRatio();
         //添加枪按下按起响应
         EventTrigger.Entry myTrigger = new EventTrigger.Entry();
         myTrigger.eventID = EventTriggerType.PointerDown;
@@ -118,6 +128,11 @@ public class Window_BallBattle : WindowBase {
         FreshItemUse(mViewObj.FrozenBallNumText, PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(NatureType.Frozen),
             PlayerPrefsBridge.Instance.GetItemNum(GameConstUtils.id_item_frozen_ball),
             PlayerPrefsBridge.Instance.BallMapAcce.UseFrozenNum);
+
+        mViewObj.TBtnDelay.TextBtn.text = LangMgr.GetText("延缓");
+        FreshItemUse(mViewObj.DelayNumText, PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(NatureType.DelayMulti),
+            PlayerPrefsBridge.Instance.GetItemNum(GameConstUtils.id_item_delay_ball),
+            PlayerPrefsBridge.Instance.BallMapAcce.UseDelayNum);
     }
 
     void FreshItemUse(Text text , int freeNum , int itemNum , int useNum)
@@ -147,7 +162,7 @@ public class Window_BallBattle : WindowBase {
             mViewObj.GunPanel.Init(this, new List<int>() {-1, -1, -1});
 
             //初始化中心点周围
-            List<XyCoordRef> rangeList = HexaMathf.GetInRange(2, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
+            List<XyCoordRef> rangeList = HexaMathf.GetInRange(ballMap.startBallNum, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
             for (int i = 0; i < rangeList.Count; i++)
             {
                 AddBall(GetNewBall(-1), rangeList[i]);
@@ -176,6 +191,8 @@ public class Window_BallBattle : WindowBase {
         for (int i = 0; i < BallList.Count; i++)
         {
             BallList[i].transform.rotation = Quaternion.identity;
+            if (!BallList[i].IsInLegalPos())
+                DisableBall(BallList[i]);
         }
     }
     void Update()
@@ -220,12 +237,11 @@ public class Window_BallBattle : WindowBase {
         {
             ball = BallDisableList[0];
             BallDisableList.RemoveAt(0);
-            ball.gameObject.SetActive(true);
         }
         else
         {
             GameObject g = Instantiate(mViewObj.Part_Ball) as GameObject;
-            ball = g.GetComponent<BallBaseCtrl>();
+            ball = g.CheckAddComponent<BallBaseCtrl>();
         }
         if (ballIdx < 0)
             ballIdx = PlayerPrefsBridge.Instance.BallMapAcce.GetNextRandBall();
@@ -246,7 +262,8 @@ public class Window_BallBattle : WindowBase {
         ballCtrl.MyTrans.SetParent(mViewObj.CenterAnchor);
         ballCtrl.MyTrans.localPosition = MapData.GetNodeLocalPos(pos.m_X, pos.m_Y);
         ballCtrl.MyTrans.localScale = Vector3.one*MapData.BallScaleRatio();
-        ballCtrl.MyData = new BallNodeData(pos, ballCtrl.MyData.BallIdx ,MapData);
+        ballCtrl.gameObject.SetActive(true);
+        ballCtrl.MyData = new BallNodeData(pos, ballCtrl.MyData.BallIdx, MapData);
         //ballCtrl.SetBallIcon(pos.ToString());
         ballCtrl.MyData.BallCtrl = ballCtrl;
         MapData.SetNode(pos.m_X, pos.m_Y, ballCtrl.MyData);
@@ -255,6 +272,7 @@ public class Window_BallBattle : WindowBase {
         PlayerPrefsBridge.Instance.AddBall(MapData.GetNodeIndex(pos.m_X, pos.m_Y), ballCtrl.MyData.BallIdx);
     }
 
+    //从地图信息中移除小球
     public void RemoveBallInMap(BallBaseCtrl ballCtrl)
     {
         if (ballCtrl.MyData != null && ballCtrl.MyData.Pos != null)
@@ -272,6 +290,7 @@ public class Window_BallBattle : WindowBase {
             ballCtrl.MyData = null;
             BallList.Remove(ballCtrl);
             BallDisableList.Add(ballCtrl);
+            ballCtrl.gameObject.SetActive(false);
         }
     }
 
@@ -309,7 +328,7 @@ public class Window_BallBattle : WindowBase {
         bList.AddRange(linklessList);
 
         int destroyNum = 0;
-        float forceRatio = Mathf.Min(2.5f, Mathf.Pow(bList.Count - 1, 0.3f)); //力度大小，
+        float forceRatio = Mathf.Min(2f, Mathf.Pow(bList.Count - 1, 0.2f)); //力度大小，
         for (int i = 0; i < bList.Count; i++)//设置刚体跳跃速度
         {
             bList[i].IsDisable = true;
@@ -321,8 +340,20 @@ public class Window_BallBattle : WindowBase {
                 Vector2 hitDir = bList[i].BallCtrl.MyTrans.position - nodeData.BallCtrl.MyTrans.position;
                 if (bList[i].BallCtrl == nodeData.BallCtrl) hitDir = gunBallJumpDir;
                 hitDir.y = Mathf.Abs(hitDir.y);
-                hitDir = hitDir.normalized * Random.Range(75f, 80f) * forceRatio;
+                hitDir = hitDir.normalized * Random.Range(60f, 70f) * forceRatio;
                 bList[i].BallCtrl.SetRigibodyAndVelocity(false, true, hitDir);
+
+                if (GameUtils.isTrue(2000))
+                {
+                    TDebug.LogInEditorF("这里进行掉落");
+                    Text text = GetLootText();
+                    text.transform.position = bList[i].BallCtrl.transform.position;
+                    text.transform.DOLocalMove(text.transform.localPosition + new Vector3(0, 50, 0), 0.7f).OnComplete(delegate()
+                    {
+                        text.gameObject.SetActive(false);
+                    });
+                    text.gameObject.SetActive(true);
+                }
             }
             else
             {
@@ -524,6 +555,7 @@ public class Window_BallBattle : WindowBase {
         PlayerPrefsBridge.Instance.saveMapAccessor();
         PlayerPrefsBridge.Instance.saveItemModule();
         Fresh();
+        UIRootMgr.Instance.Window_UpTips.InitTips(string.Format("使用{0}成功", Item.GetName(GameConstUtils.id_item_universal_ball)), Color.white);
     }
 
     void BtnEvt_NextBall()  //跳过当前发射的球
@@ -549,6 +581,7 @@ public class Window_BallBattle : WindowBase {
         PlayerPrefsBridge.Instance.saveMapAccessor();
         PlayerPrefsBridge.Instance.saveItemModule();
         Fresh();
+        UIRootMgr.Instance.Window_UpTips.InitTips(string.Format("使用{0}成功", Item.GetName(GameConstUtils.id_item_next_ball)), Color.white);
     }
 
     public void BtnEvt_Frozen()
@@ -572,12 +605,38 @@ public class Window_BallBattle : WindowBase {
         PlayerPrefsBridge.Instance.BallMapAcce.UseFrozenNum++;
         PlayerPrefsBridge.Instance.saveMapAccessor();
         PlayerPrefsBridge.Instance.saveItemModule();
+        UIRootMgr.Instance.Window_UpTips.InitTips(string.Format("使用{0}成功", Item.GetName(GameConstUtils.id_item_frozen_ball)), Color.white);
         Fresh();
     }
 
     public void ResetFrozen()
     {
         mViewObj.FrozenRoot.SetActive(false);
+    }
+
+    void BtnEvt_Delay()
+    {
+        int consumeNum = PlayerPrefsBridge.Instance.BallMapAcce.UseDelayNum + 1 - PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(NatureType.DelayMulti);
+        if (!PlayerPrefsBridge.Instance.checkItem(GameConstUtils.id_item_delay_ball, consumeNum, true))
+        {
+            return;
+        }
+        System.Action okDel = delegate() { UseDelay(consumeNum); };
+        if (consumeNum > 0)
+            UIRootMgr.Instance.MessageBox.ShowInfo_HaveCancel(LangMgr.GetText("是否消耗{0}个道具，延缓一回合多球加入时间？", consumeNum), okDel);
+        else
+            okDel();
+    }
+    void UseDelay(int consumeNum)
+    {
+        PlayerPrefsBridge.Instance.consumeItem(GameConstUtils.id_item_delay_ball, consumeNum, false, "");
+        PlayerPrefsBridge.Instance.BallMapAcce.UseDelayNum++;
+        PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown++;
+        PlayerPrefsBridge.Instance.saveMapAccessor();
+        PlayerPrefsBridge.Instance.saveItemModule();
+        UIRootMgr.Instance.Window_UpTips.InitTips(string.Format("使用{0}成功",Item.GetName(GameConstUtils.id_item_delay_ball)), Color.white);
+        Fresh();
+        FreshMutilDown(false);
     }
 
     #endregion
@@ -601,7 +660,7 @@ public class Window_BallBattle : WindowBase {
             ball.transform.SetParent(mViewObj.FreeRoot);
             ball.transform.rotation = Quaternion.identity;
             ball.transform.localScale = Vector3.one*MapData.BallScaleRatio();
-
+            ball.gameObject.SetActive(true);
             //随机出其位置，其速度朝向中心点
             float randAngle = Random.Range(-45f, 225f);
             Vector3 randPos = new Vector3(Mathf.Cos(randAngle) , Mathf.Sin(randAngle) , 0);
@@ -615,10 +674,11 @@ public class Window_BallBattle : WindowBase {
             yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
         }
         BallMap map = BallMap.Fetcher.GetBallMapCopy(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
-        PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown =
-            (int) Mathf.Repeat(PlayerPrefsBridge.Instance.BallMapAcce.LastMutilBallDown - map.multiTimeDown[0] - 1,
+        PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown =map.multiTimeDown[0] 
+            + (int) Mathf.Repeat(PlayerPrefsBridge.Instance.BallMapAcce.LastMutilBallDown - map.multiTimeDown[0] - 1,
                 map.multiTimeDown[1] - map.multiTimeDown[0]);
         PlayerPrefsBridge.Instance.BallMapAcce.LastMutilBallDown = PlayerPrefsBridge.Instance.BallMapAcce.MutilBallDown;
+        FreshMutilDown(false);
         PlayerPrefsBridge.Instance.saveMapAccessor();
         UIRootMgr.Instance.TopMasking = false;
     }
@@ -655,6 +715,61 @@ public class Window_BallBattle : WindowBase {
         //Tweener tweener = DOTween.To(() => numText.color, x => numText.color = x, endColor, 1f).OnComplete(
         //   delegate() { numText.gameObject.SetActive(false); });
         //tweener.PlayForward();
+    }
+
+    //检查是否没有小球了
+    public void CheckMapEmpty()
+    {
+        for (int i = 0; i < MapData.Width; i++)
+        {
+            for (int j = 0; j < MapData.Height; j++)
+            {
+                BallNodeData tempNode = MapData.GetNode(i, j);
+                if (tempNode != null && tempNode.BallCtrl != null)
+                {
+                    return;
+                }
+            }
+        }
+        UIRootMgr.Instance.TopMasking = true;
+        float forWait = 0f;   //仅是为了等待时间
+        Tweener tweener = DOTween.To(() => forWait, x => { forWait = x; }, 1f, 0.5f).OnComplete(delegate()
+        {
+            ResetMapWhenEmpty();
+        });
+    }
+    public void ResetMapWhenEmpty()
+    {
+        UIRootMgr.Instance.TopMasking = true;
+        //初始化中心点周围
+        BallMap ballMap = BallMap.Fetcher.GetBallMapCopy(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
+        List<XyCoordRef> rangeList = HexaMathf.GetInRange(ballMap.startBallNum, MapData.CenterXy.m_X, MapData.CenterXy.m_Y);
+        for (int i = 0; i < rangeList.Count; i++)
+        {
+            if (MapData.GetNode(rangeList[i].m_X, rangeList[i].m_Y) == null)
+                AddBall(GetNewBall(-1), rangeList[i]);
+            else
+                TDebug.LogErrorFormat("{0}不为空，不能添加", rangeList[i].ToString());
+        }
+        PlayerPrefsBridge.Instance.saveMapAccessor();
+        mViewObj.CenterAnchor.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        mViewObj.CenterAnchor.DOScale(1f, 1.2f);
+        mViewObj.CenterAnchor.DOLocalRotate(Vector3.zero, 0f);
+        mViewObj.CenterAnchor.DOLocalRotate(new Vector3(0, 0, 360.1f), 1.5f, RotateMode.FastBeyond360).OnComplete(
+            delegate() { UIRootMgr.Instance.TopMasking = false; }
+            );
+    }
+
+
+    Text GetLootText()
+    {
+        for (int i = 0; i < mLootTextList.Count; i++)
+        {
+            if (!mLootTextList[i].gameObject.activeSelf)
+                return mLootTextList[i];
+        }
+        GameObject go = Instantiate(mViewObj.Part_LootTips, mViewObj.FreeRoot);
+        return go.GetComponent<Text>();
     }
 
 }
