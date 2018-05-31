@@ -259,6 +259,11 @@ public class GoodsToDrop
         return lootStr.ToString();
     }
 
+    /// <summary>
+    /// 将GoodsToDrop中，能合并的进行数量合并
+    /// </summary>
+    /// <param name="goodsToDropList"></param>
+    /// <returns></returns>
     public static List<GoodsToDrop> combineList(List<GoodsToDrop> goodsToDropList)
     {
         Dictionary<long, GoodsToDrop> goodsMap = new Dictionary<long, GoodsToDrop>();

@@ -112,10 +112,11 @@ public class Window_BallBattle : WindowBase {
 
     }
 
-    void Fresh()
+    private void Fresh()
     {
         mViewObj.TBtnUniversalBall.TextBtn.text = LangMgr.GetText("万能");
-        FreshItemUse(mViewObj.UniversalBallNumText, PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(NatureType.UniversalBall),
+        FreshItemUse(mViewObj.UniversalBallNumText,
+            PlayerPrefsBridge.Instance.PlayerData.GetNatureLevel(NatureType.UniversalBall),
             PlayerPrefsBridge.Instance.GetItemNum(GameConstUtils.id_item_universal_ball),
             PlayerPrefsBridge.Instance.BallMapAcce.UseUniversalBallNum);
 
@@ -329,6 +330,11 @@ public class Window_BallBattle : WindowBase {
 
         int destroyNum = 0;
         float forceRatio = Mathf.Min(2f, Mathf.Pow(bList.Count - 1, 0.2f)); //力度大小，
+        int listCount = bList.Count;
+        bool isLoot = false;
+
+        NatureLevelUp nature = PlayerPrefsBridge.Instance.PlayerData.GetNatureLevelUp(NatureType.ScoreLoot);   //掉落加成
+        float addCoeffi = nature.natureMisc / 10000f;
         for (int i = 0; i < bList.Count; i++)//设置刚体跳跃速度
         {
             bList[i].IsDisable = true;
@@ -343,25 +349,47 @@ public class Window_BallBattle : WindowBase {
                 hitDir = hitDir.normalized * Random.Range(60f, 70f) * forceRatio;
                 bList[i].BallCtrl.SetRigibodyAndVelocity(false, true, hitDir);
 
-                if (GameUtils.isTrue(2000))
+                //掉落
+                BallMap ballMap = BallMap.Fetcher.GetBallMapCopy(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
+                int lootId = ballMap.scoreLoot[Mathf.Min(listCount, ballMap.scoreLoot.Length - 1)];
+                if (lootId > 0)
                 {
-                    TDebug.LogInEditorF("这里进行掉落");
-                    Text text = GetLootText();
-                    text.transform.position = bList[i].BallCtrl.transform.position;
-                    text.transform.DOLocalMove(text.transform.localPosition + new Vector3(0, 50, 0), 0.7f).OnComplete(delegate()
+                    List<GoodsToDrop> goodsList = PlayerPrefsBridge.Instance.onLoot(lootId, addCoeffi);
+                    if (goodsList.Count > 0)
                     {
-                        text.gameObject.SetActive(false);
-                    });
-                    text.gameObject.SetActive(true);
+                        isLoot = true;
+                        string lootString = GoodsToDrop.getListString(goodsList);
+                        TDebug.LogInEditorF("进行掉落[倍数{0}]:{1}\n{2}", addCoeffi, lootId, lootString);
+                        goodsList.AddRange(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
+                        PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList = GoodsToDrop.combineList(goodsList);
+
+                        Text text = GetLootText();
+                        text.text = lootString;
+                        text.transform.position = bList[i].BallCtrl.transform.position;
+                        text.transform.DOLocalMove(text.transform.localPosition + new Vector3(0, 50, 0), 0.7f).OnComplete(delegate()
+                        {
+                            text.gameObject.SetActive(false);
+                        });
+                        text.gameObject.SetActive(true);
+                    }
+                    
                 }
+
             }
             else
             {
                 TDebug.LogErrorFormat("此节点ballCtrl为空:{0}", bList[i].Pos.ToString());
             }
         }
+        if (isLoot)
+        {
+            PlayerPrefsBridge.Instance.saveMapAccessor();
+        }
+
         AddAndFreshScore(destroyNum);
 
+        string lootAllString = GoodsToDrop.getListString(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
+        mViewObj.LootText.text = lootAllString;
         return true;
     }
 
@@ -375,22 +403,6 @@ public class Window_BallBattle : WindowBase {
         TDebug.LogInEditorF("得到分数：{0}", addScore);
         if (addScore != 0)
         {
-            //掉落
-            BallMap ballMap = BallMap.Fetcher.GetBallMapCopy(PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx);
-            int lootId = ballMap.scoreLoot[Mathf.Min(addScore, ballMap.scoreLoot.Length - 1)];
-            if (lootId > 0)
-            {
-                NatureLevelUp nature =PlayerPrefsBridge.Instance.PlayerData.GetNatureLevelUp(NatureType.ScoreLoot);   //掉落加成
-                float addCoeffi = nature.natureMisc/10000f;
-                List<GoodsToDrop> goodsList = PlayerPrefsBridge.Instance.onLoot(lootId, addCoeffi);
-                string lootString = GoodsToDrop.getListString(goodsList);
-                TDebug.LogInEditorF("进行掉落[倍数{0}]:{1}\n{2}", addCoeffi,lootId, lootString);
-                goodsList.AddRange(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
-                
-                PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList = GoodsToDrop.combineList(goodsList);
-                string lootAllString = GoodsToDrop.getListString(PlayerPrefsBridge.Instance.BallMapAcce.goodsDropList);
-                mViewObj.LootText.text = lootAllString;
-            }
             if (mAddScoreCor != null) StopCoroutine(mAddScoreCor);
             mAddScoreCor = AddScoreCor(addScore);
             StartCoroutine(mAddScoreCor);
