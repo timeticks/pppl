@@ -114,6 +114,7 @@
   <ItemGroup>
     <None Include="Assets\Build\GameData\Ball.txt" />
     <None Include="Assets\Build\GameData\BallMap.txt" />
+    <None Include="Assets\Build\GameData\Commodity.txt" />
     <None Include="Assets\Build\GameData\DropGrade.txt" />
     <None Include="Assets\Build\GameData\DropQualityRate.txt" />
     <None Include="Assets\Build\GameData\Equip.txt" />

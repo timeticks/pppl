@@ -69,11 +69,6 @@ public class Window_RoleMainInfo : WindowBase {
         mViewObj.RoleTitleText.text = "称号: 【无名小辈】";
 
         string sectName = "无";
-        if (player.MySect != Sect.SectType.None)
-        {
-            Sect sect =Sect.SectFetcher.GetSectByCopy(player.MySect);
-            if (sect != null) sectName = sect.name;
-        }
         long curTime = AppTimer.CurTimeStampMsSecond;
         long birthTime = PlayerPrefsBridge.Instance.PlayerData.BirthTime;
         long LoginTime = (curTime - birthTime) / 1000 / 24 / 60 / 60;

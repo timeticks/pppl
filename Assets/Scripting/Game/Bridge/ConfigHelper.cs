@@ -6,13 +6,13 @@ using UnityEngine;
 public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetcher, 
                          ISelectDialogFetcher, IRecipeFetcher, IAuxSkillFetcher, ILobbyDialogueFetcher,ITravelFetcher,ITravelEventFetcher,ITravelSmallEventFetcher,
                          ISpellObtainFetcher, ISectFetcher, ILootFetcher, IPetFetcher, IMapEventFetcher, ICaveFetcher, ISpellLevelUpFetcher,
-                         IPetLevelUpFetcher, IErrorStatusFetcher,IGameConstFetcher,IPropLevelUpFetcher,ICommodityFetcher,IShopFetcher,IPrestigeLevelFetcher,
+                         IPetLevelUpFetcher, IErrorStatusFetcher,IGameConstFetcher,IPropLevelUpFetcher,IShopFetcher,IPrestigeLevelFetcher,
                          IPrestigeTaskFetcher,ITowerFetcher,IAchievementFetcher,IAchieveRewardFetcher,IBookSpellFetcher,IHeadIconFetcher,
                         
     IHeroFetcher,IBuffFetcher,IAttrTableFetcher,IAttrProbFetcher,IDropQualityRateFetcher,IMonsterRateFetcher,
     IDropGradeFetcher,IBallMapFetcher,ISkillFetcher, IItemFetcher, IEquipFetcher,IMonsterPrefixFetcher,IMonsterLevelUpFetcher,
     IQualityTableFetcher, IPartnerDialogueFetcher, IPartnerFetcher, IMindTreeMapFetcher, IBallFetcher, INatureLevelUpFetcher,
-    IIntimacyLevelUpFetcher,IRechargeFetcher
+    IIntimacyLevelUpFetcher, IRechargeFetcher, ICommodityFetcher
 {
     private static readonly  ConfigHelper mInstance = new ConfigHelper();
 
@@ -214,7 +214,7 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
                                 mPartnerDialogueCached[groupKey].Add(temp.Value);
                             else
                             {
-                                TDebug.LogInEditorF("PartnerDialogue中新的GroupKey:{0}|sex:{1}|chara:{2}|inti:{3}", groupKey,i,j,k);
+                                //TDebug.LogInEditorF("PartnerDialogue中新的GroupKey:{0}|sex:{1}|chara:{2}|inti:{3}", groupKey,i,j,k);
                                 mPartnerDialogueCached[groupKey] = new List<PartnerDialogue>() {temp.Value};
                             }
                         }
@@ -297,6 +297,15 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             }
             TDebug.Log(string.Format("初始Recharge成功:{0}项", mRechargeCached.Count));
         }
+        else if (dataName == DataName.Commodity)
+        {
+            Dictionary<string, Commodity> pool = LitJson.JsonMapper.ToObject<Dictionary<string, Commodity>>(text);
+            foreach (var temp in pool)
+            {
+                mCommodityCached.Add(temp.Value.idx, temp.Value);
+            }
+            TDebug.Log(string.Format("初始Commodity成功:{0}项", mCommodityCached.Count));
+        }
         //if (assets == TUtils.MDEncode("Hero"))
         //{
         //    int length = ios.ReadInt16();
@@ -340,6 +349,8 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         NatureLevelUp.Fetcher                       = this;
         IntimacyLevelUp.Fetcher                     = this;
         Recharge.Fetcher                            = this;
+        Commodity.CommodityFetcher                  = this;
+
         //PVEDialogue.PVEDialogueFetcher           = this;
         //MapData.MapDataFetcher                  = this;
         //Dialog.DialogFetcher                    = this;
@@ -735,6 +746,29 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
         return rechargeList;
     }
 
+
+    Commodity ICommodityFetcher.GetCommodityByCopy(int idx, bool isCopy)
+    {
+        Commodity origin = null;
+        if (mCommodityCached.TryGetValue(idx, out origin))
+        {
+            return isCopy ? origin.Clone() : origin;
+        }
+        TDebug.LogError(string.Format("Commodity没有此Idx:{0}", idx));
+        return null;
+    }
+
+    List<Commodity> ICommodityFetcher.GetCommodityListNoCopy(int storeTy)
+    {
+        List<Commodity> comList = new List<Commodity>();
+        foreach (var temp in mCommodityCached)
+        {
+            if (temp.Value.storeType == storeTy)
+                comList.Add(temp.Value);
+        }
+        return comList;
+    }
+
     #region ============Old=================
     
     
@@ -1025,17 +1059,6 @@ public class ConfigHelper :  ILevelUpFetcher,  IPVEDialogueFetcher, IMapDataFetc
             return new Shop(origin);
         }
         TDebug.LogError(string.Format("Shop没有此Idx:{0}", idx));
-        return null;
-    }
-
-    Commodity ICommodityFetcher.GetCommodityByCopy(int idx)
-    {
-        Commodity origin = null;
-        if (mCommodityCached.TryGetValue(idx, out origin))
-        {
-            return new Commodity(origin);
-        }
-        TDebug.LogError(string.Format("Commodity没有此Idx:{0}", idx));
         return null;
     }
 

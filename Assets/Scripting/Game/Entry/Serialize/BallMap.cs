@@ -39,7 +39,6 @@ public class BallMap : BaseObject
     public int[] pos;
     public Eint[] ballList;    //此地图的小球类型列表
     public Eint[] scoreLoot;
-    public Eint[] endLoot;
 
     public Eint[] diffiUpScore;  //分数
     public Eint[] diffiBallNum;  //难度与球种类数量

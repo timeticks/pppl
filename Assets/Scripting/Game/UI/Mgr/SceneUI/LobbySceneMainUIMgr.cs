@@ -20,6 +20,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         public Button BtnPlanet;
         public Button BtnInventory;
         public Button BtnStore;
+        public Button BtnRecharge;
         public EventTrigger DragBtn;
         public ViewObj(UIViewBase view)
         {
@@ -33,6 +34,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
             BtnPlanet = view.GetCommon<Button>("BtnPlanet");
             BtnInventory = view.GetCommon<Button>("BtnInventory");
             BtnStore = view.GetCommon<Button>("BtnStore");
+            BtnRecharge = view.GetCommon<Button>("BtnRecharge");
             DragBtn = view.GetCommon<EventTrigger>("DragBtn");
         }
     }
@@ -122,6 +124,7 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         mViewObj.BtnInventory.SetOnAduioClick(BtnEvt_ItemInventory);
         mViewObj.BtnPlanet.SetOnAduioClick(BtnEvt_OpenPlanet);
         mViewObj.BtnStore.SetOnAduioClick(BtnEvt_OpenStore);
+        mViewObj.BtnRecharge.SetOnAduioClick(BtnEvt_OpenRecharge);
         ShowMainUI();
         //if (PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx > 0)   //正在战斗中
         //{
@@ -256,6 +259,10 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
         {
             FreshLobbyInfo();
         }
+        if (Time.frameCount*30 == 0)
+        {
+            FreshTopRoleInfo();
+        }
         //显示获得物品的tips,解锁的成就，战斗中不显示
         mCurShowTipsTime += Time.deltaTime;
         if (Window_BattleTowSide.Instance == null)
@@ -331,6 +338,10 @@ public class LobbySceneMainUIMgr : BaseMainUIMgr
     void BtnEvt_OpenPlanet()
     {
         UIRootMgr.Instance.OpenWindow<Window_NatureLevelUp>(WinName.Window_NatureLevelUp).OpenWindow();
+    }
+    void BtnEvt_OpenRecharge()
+    {
+        UIRootMgr.Instance.OpenWindow<Window_Recharge>(WinName.Window_Recharge).OpenWindow();
     }
 
     public void AppendLobbyTips(string tips)

@@ -230,33 +230,7 @@ public class Window_RecipeDetial : WindowBase {
         }
         else
         {
-            if (mSelectStateBtn != null) mSelectStateBtn.CloseRecipeItemList();//关闭上一个展开的下拉列表
-            mSelectStateBtn = obj;
-            List<Recipe> showList = Recipe.GetLevelRecipes(mSkillType, obj.LevelDamand, PlayerPrefsBridge.Instance.PlayerData.MySect);
-            for (int i = mRecipeItemList.Count; i < showList.Count; i++)
-            {
-                GameObject g = Instantiate(obj.Part_ItemRecipeBtn);
-                TUtility.SetParent(g.transform, obj.RootRecipeBtn.transform, false);
-                RecipeItemObj item = new RecipeItemObj(g.GetComponent<UIViewBase>());              
-                mRecipeItemList.Add(item);
-            }
-            ////重赋值
-            obj.ListRecipeItem.Clear();
-            for (int i = 0, length = mRecipeItemList.Count; i < length; i++)
-            {
-                TUtility.SetParent(mRecipeItemList[i].gameobject.transform, obj.RootRecipeBtn.transform, false);
-                obj.ListRecipeItem.Add(mRecipeItemList[i]);
-            }
-            ///初始化
-            for (int i = 0,length= showList.Count; i <length; i++)
-            {
-                
-            }
-            for (int i = showList.Count; i < obj.ListRecipeItem.Count; i++)
-            {
-                obj.ListRecipeItem[i].gameobject.SetActive(false);
-            }
-            obj.OpenRecipeItemList();
+            
         }
     }
     //点击具体配方

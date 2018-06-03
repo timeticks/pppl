@@ -224,7 +224,7 @@ public partial class PlayerPrefsBridge
 
 
     //消费钻石
-    public int consumeDiamond(int num, string action)
+    public int consumeDiamond(int num, bool isSave, string action)
     {
         if (num > int.MaxValue || num < 0)
         {
@@ -246,7 +246,12 @@ public partial class PlayerPrefsBridge
         //key = MessageFormat.format("{0}{1,number,#}", RedisIndexProperties.REDIS_PLAYER_ACHIEVE_ATOM_USE_DIAMOND, uid);
         //int totalUseDiamond = RedisDatabaseAccessor.getInstance().atomPlayerIncrBy(key, num);
         //onFreshAchieve(ConType.UseDiamond, 0, totalUseDiamond);
-
+        if (isSave)
+            savePlayerModule();
+        if (LobbySceneMainUIMgr.Instance != null)
+        {
+            LobbySceneMainUIMgr.Instance.FreshTopRoleInfo();
+        }
         TDebug.Log("consumeDiamond:" + num);
         return PlayerData.Diamond;
     }
@@ -265,9 +270,6 @@ public partial class PlayerPrefsBridge
         PlayerData.Diamond += num;
 
         TDebug.Log("addDiamond:" + num);
-        //String key = MessageFormat.format("{0}{1,number,#}", RedisIndexProperties.REDIS_PLAYER_ATOM_DIAMOND, uid);
-        //int remainDiamond = RedisDatabaseAccessor.getInstance().atomPlayerIncrBy(key, num);
-        //sendMessage(SnapshotMessageHelper.getSnapshotPlayerAttributeMessage(PlayerAttribute.Diamond, remainDiamond));
         return diamond;
     }
 
@@ -320,9 +322,33 @@ public partial class PlayerPrefsBridge
 
 
 
-    public int consumeLootType(LootItemType lootType, int id)
+    public int onConsume(LootItemType lootType, int id, int num,string action)
     {
-        return 0;
+        switch (lootType)
+        {
+            case LootItemType.Money:
+            {
+                WealthType wealthTy = (WealthType)id;
+                switch (wealthTy)
+                {
+                    case WealthType.Diamond:
+                    {
+                        return consumeDiamond(num , true, action);
+                    }
+                }
+                break;
+            }
+            case LootItemType.Item:
+            {
+                return consumeItem(id, num, true, action);
+            }
+            default:
+            {
+                TDebug.LogErrorFormat("未处理的掉落：{0}|{1}|{2}", lootType, id, num);
+                break;
+            }
+        }
+        return -1;
     }
 
     public int addLootType(LootItemType lootType, int id, int num)
@@ -608,62 +634,62 @@ public partial class PlayerPrefsBridge
 
     public bool onEquippedSpell(int equipPos, int inventoryPos)
     {
-        GamePlayer player = getPlayer();
-        if (equipPos < 0 || equipPos >= player.SpellList.Length)
-        {
-            //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,装备槽信息错误", "equipPos:{0}", equipPos);
-            return false;
-        }
-        if (inventoryPos == -1) //卸下
-        {
-            int oldInventoryPos = player.SpellList[equipPos];
-            Spell spell = GetInventorySpellByPos(oldInventoryPos);
-            if (spell == null)
-            {
-                //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,此位置没有技能", "pos:{0}", equipPos);
-                return false;
-            }
+        //GamePlayer player = getPlayer();
+        //if (equipPos < 0 || equipPos >= player.SpellList.Length)
+        //{
+        //    //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,装备槽信息错误", "equipPos:{0}", equipPos);
+        //    return false;
+        //}
+        //if (inventoryPos == -1) //卸下
+        //{
+        //    int oldInventoryPos = player.SpellList[equipPos];
+        //    Spell spell = GetInventorySpellByPos(oldInventoryPos);
+        //    if (spell == null)
+        //    {
+        //        //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,此位置没有技能", "pos:{0}", equipPos);
+        //        return false;
+        //    }
 
-            spell.curIsEquip = false;
-            player.SpellList[equipPos] = -1;
-        }
-        else
-        { //装上
-            Spell spell = GetInventorySpellByPos(inventoryPos);
-            if (spell == null)
-            {
-                //LoggerUtil.warn(getIdx(), getName(), "待装备技能为空", "pos:{0}", inventoryPos);
-                return false;
-            }
-            if (spell.curIsEquip)
-            {
-                //LoggerUtil.warn(getIdx(), getName(), "需要装备的技能已经装备上了", "pos:{0}", inventoryPos);
-                return false;
-            }
-            if (!spell.canEquip(equipPos))
-            {
-                //LoggerUtil.warn(getIdx(), getName(), "装备位置与技能类型不符合", "pos:{0}|type:{1}", equipPos, spell.type);
-                return false;
-            }
-            if (spell.Level > player.Level)
-            {
-                //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,等级不够", "action:{0,number,#},玩家等级:{1,number,#},技能等级:{2,number,#}", LogAction.STUDY_SPELL, player.level, spell.level);
-                return false;
-            }
-            if (player.SpellList[equipPos] >= 0)//先卸下，再装备
-            {
-                int oldEquipInventoryPos = player.SpellList[equipPos];
-                Spell oldSpell = GetInventorySpellByPos(oldEquipInventoryPos);
-                if (oldSpell != null)
-                {
-                    oldSpell.curIsEquip = false;
-                }
-            }
-            spell.curIsEquip = true;
-            player.SpellList[equipPos] = inventoryPos;
-            //saveSpellsModule();
-            //savePlayerModule();
-        }
+        //    spell.curIsEquip = false;
+        //    player.SpellList[equipPos] = -1;
+        //}
+        //else
+        //{ //装上
+        //    Spell spell = GetInventorySpellByPos(inventoryPos);
+        //    if (spell == null)
+        //    {
+        //        //LoggerUtil.warn(getIdx(), getName(), "待装备技能为空", "pos:{0}", inventoryPos);
+        //        return false;
+        //    }
+        //    if (spell.curIsEquip)
+        //    {
+        //        //LoggerUtil.warn(getIdx(), getName(), "需要装备的技能已经装备上了", "pos:{0}", inventoryPos);
+        //        return false;
+        //    }
+        //    if (!spell.canEquip(equipPos))
+        //    {
+        //        //LoggerUtil.warn(getIdx(), getName(), "装备位置与技能类型不符合", "pos:{0}|type:{1}", equipPos, spell.type);
+        //        return false;
+        //    }
+        //    if (spell.Level > player.Level)
+        //    {
+        //        //LoggerUtil.warn(getIdx(), getName(), "装备技能失败,等级不够", "action:{0,number,#},玩家等级:{1,number,#},技能等级:{2,number,#}", LogAction.STUDY_SPELL, player.level, spell.level);
+        //        return false;
+        //    }
+        //    if (player.SpellList[equipPos] >= 0)//先卸下，再装备
+        //    {
+        //        int oldEquipInventoryPos = player.SpellList[equipPos];
+        //        Spell oldSpell = GetInventorySpellByPos(oldEquipInventoryPos);
+        //        if (oldSpell != null)
+        //        {
+        //            oldSpell.curIsEquip = false;
+        //        }
+        //    }
+        //    spell.curIsEquip = true;
+        //    player.SpellList[equipPos] = inventoryPos;
+        //    //saveSpellsModule();
+        //    //savePlayerModule();
+        //}
         return true;
     }
     
@@ -684,110 +710,111 @@ public partial class PlayerPrefsBridge
 
     public Equip removeEquip(int pos, string action)
     {
-        if (pos < 0) return null;
-        for (int i = 0; i < PlayerData.EquipList.Length; i++)
-        {
-            if (PlayerData.EquipList[i] == pos)
-            {
-                LoggerUtil.warn(getIdx(), getName(), "已穿戴的装备不能移除", "action:{0},inventoryPos:{1}", action, pos);
-                return null;
-            }
-        }
-        Equip removeEquip = GetInventoryEquipByPos(pos  , false);
+        //if (pos < 0) return null;
+        //for (int i = 0; i < PlayerData.EquipList.Length; i++)
+        //{
+        //    if (PlayerData.EquipList[i] == pos)
+        //    {
+        //        LoggerUtil.warn(getIdx(), getName(), "已穿戴的装备不能移除", "action:{0},inventoryPos:{1}", action, pos);
+        //        return null;
+        //    }
+        //}
+        //Equip removeEquip = GetInventoryEquipByPos(pos  , false);
 
-        if (removeEquip != null && RemovEquipByPos(pos) ==null)
-        {
-            LoggerUtil.warn(getIdx(), getName(), "装备移除失败", "action:{0},inventoryPos:{1}", action, pos);
-            return null;
-        }
+        //if (removeEquip != null && RemovEquipByPos(pos) ==null)
+        //{
+        //    LoggerUtil.warn(getIdx(), getName(), "装备移除失败", "action:{0},inventoryPos:{1}", action, pos);
+        //    return null;
+        //}
 
-        return removeEquip;
+        //return removeEquip;
+        return null;
     }
 
 
     public bool onSellEquip(List<int> posList)
     {
-        int sellGold = 0;
-        GamePlayer player = getPlayer();
-        for (int i = 0; i < player.EquipList.Length; i++)
-        {
-            for (int j = posList.Count - 1; j >= 0; j--)
-            {
-                if (player.EquipList[i] == posList[j])
-                {
-                    posList.Remove(j);
-                    LoggerUtil.warn(getIdx(), getName(), "已穿戴的装备不能移除", "action:{0},inventoryPos:{1}", posList);
-                }
-            }
-        }
-        List<Equip> equipList = new List<Equip>();
-        for (int i = 0; i < posList.Count; i++)
-        {
-            Equip equip = removeEquip(posList[i], LogAction.SELL_EQUIP);
-            if(equip!=null)
-                equipList.Add(equip);
-        }
-        if (equipList != null)
-        {
-            Equip equip;
-            for (int i = 0, length2 = equipList.Count; i < length2; i++)
-            {
-                equip = equipList[i];
-                if (equip != null) sellGold += equip.sell;
-            }
-            addGold(sellGold, LogAction.SELL_EQUIP);
-            //sendMessage(LobbyMessageHelper.getSellEquipMessage(equipList.size(), sellGold));
-            return true;
-        }
-        else
-        {
-            LoggerUtil.warn(getIdx(), getName(), "出售装备失败", "length:{1}", posList.Count);
-            return false;
-            //sendMessage(MessageHelper.getWarringMessage(ServerMessageType.SellEquip, ServerStatusCode.GLOBAL_WARN_CODE_WAN_JIA_SHU_JU_YI_CHANG));
-        }
+        //int sellGold = 0;
+        //GamePlayer player = getPlayer();
+        //for (int i = 0; i < player.EquipList.Length; i++)
+        //{
+        //    for (int j = posList.Count - 1; j >= 0; j--)
+        //    {
+        //        if (player.EquipList[i] == posList[j])
+        //        {
+        //            posList.Remove(j);
+        //            LoggerUtil.warn(getIdx(), getName(), "已穿戴的装备不能移除", "action:{0},inventoryPos:{1}", posList);
+        //        }
+        //    }
+        //}
+        //List<Equip> equipList = new List<Equip>();
+        //for (int i = 0; i < posList.Count; i++)
+        //{
+        //    Equip equip = removeEquip(posList[i], LogAction.SELL_EQUIP);
+        //    if(equip!=null)
+        //        equipList.Add(equip);
+        //}
+        //if (equipList != null)
+        //{
+        //    Equip equip;
+        //    for (int i = 0, length2 = equipList.Count; i < length2; i++)
+        //    {
+        //        equip = equipList[i];
+        //        if (equip != null) sellGold += equip.sell;
+        //    }
+        //    addGold(sellGold, LogAction.SELL_EQUIP);
+        //    //sendMessage(LobbyMessageHelper.getSellEquipMessage(equipList.size(), sellGold));
+        return true;
+        //}
+        //else
+        //{
+        //    LoggerUtil.warn(getIdx(), getName(), "出售装备失败", "length:{1}", posList.Count);
+        //    return false;
+        //    //sendMessage(MessageHelper.getWarringMessage(ServerMessageType.SellEquip, ServerStatusCode.GLOBAL_WARN_CODE_WAN_JIA_SHU_JU_YI_CHANG));
+        //}
     }
 
 
     public bool onEquippedEquip(int equipPos, int inventoryPos)
     {
-        GamePlayer player = mPlayerData;
-        if (equipPos < 0 || equipPos >= player.EquipList.Length)
-            return false;
+        //GamePlayer player = mPlayerData;
+        //if (equipPos < 0 || equipPos >= player.EquipList.Length)
+        //    return false;
 
-        if (inventoryPos == -1) //卸下
-        {
-            int oldInventoryPos = player.EquipList[equipPos];
-            Equip equip = GetInventoryEquipByPos(oldInventoryPos);
-            if (equip == null)
-                return false;
-            equip.curIsEquip = false;
-            player.EquipList[equipPos] = -1;
-        }
-        else  //装上
-        {
-            Equip equip = GetInventoryEquipByPos(inventoryPos);
-            if (equip == null || equip.curLevel > player.Level)
-            {
-                LoggerUtil.warn(getIdx(), getName(), "穿戴装备失败", "lv:{0},equipLv:{1}", player.Level, equip.curLevel);
-                return false;
-            }
-            if ((int)equip.type != equipPos)
-            {
-                LoggerUtil.warn(getIdx(), getName(), "穿戴装备失败,类型不匹配", "type:{0},equipPos:{1}", equip.type, equipPos);
-                return false;
-            }
-            if (player.EquipList[equipPos] >= 0)//先卸下，再装备
-            {
-                int oldEquipInventoryPos = player.EquipList[equipPos];
-                Equip oldEquip = GetInventoryEquipByPos(oldEquipInventoryPos);
-                if (oldEquip != null)
-                {
-                    oldEquip.curIsEquip = false;
-                }
-            }
-            equip.curIsEquip = true;
-            player.EquipList[equipPos] = inventoryPos;
-        }
+        //if (inventoryPos == -1) //卸下
+        //{
+        //    int oldInventoryPos = player.EquipList[equipPos];
+        //    Equip equip = GetInventoryEquipByPos(oldInventoryPos);
+        //    if (equip == null)
+        //        return false;
+        //    equip.curIsEquip = false;
+        //    player.EquipList[equipPos] = -1;
+        //}
+        //else  //装上
+        //{
+        //    Equip equip = GetInventoryEquipByPos(inventoryPos);
+        //    if (equip == null || equip.curLevel > player.Level)
+        //    {
+        //        LoggerUtil.warn(getIdx(), getName(), "穿戴装备失败", "lv:{0},equipLv:{1}", player.Level, equip.curLevel);
+        //        return false;
+        //    }
+        //    if ((int)equip.type != equipPos)
+        //    {
+        //        LoggerUtil.warn(getIdx(), getName(), "穿戴装备失败,类型不匹配", "type:{0},equipPos:{1}", equip.type, equipPos);
+        //        return false;
+        //    }
+        //    if (player.EquipList[equipPos] >= 0)//先卸下，再装备
+        //    {
+        //        //int oldEquipInventoryPos = player.EquipList[equipPos];
+        //        //Equip oldEquip = GetInventoryEquipByPos(oldEquipInventoryPos);
+        //        //if (oldEquip != null)
+        //        //{
+        //        //    oldEquip.curIsEquip = false;
+        //        //}
+        //    }
+        //    equip.curIsEquip = true;
+        //    player.EquipList[equipPos] = inventoryPos;
+        //}
         return true;
     }
 

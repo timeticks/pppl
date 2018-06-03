@@ -121,17 +121,7 @@ public class WindowBig_Store : WindowBase
         if (m_CurTab!=null && m_CurTab == toTab) { return; }
      //   CloseCurTabWindow();
         mViewObj.SelectTabBtn(toTab);
-        switch (toTab)
-        {
-            case ChildTab.Mall:
-                UIRootMgr.Instance.OpenWindow<Window_Shop>(WinName.Window_Shop, CloseUIEvent.None).OpenWindow(GameConstUtils.id_shopMall,Shop.ShopType.Mall);
-                break;
-            case ChildTab.Mark:
-                UIRootMgr.Instance.OpenWindow<Window_Shop>(WinName.Window_Shop, CloseUIEvent.None).OpenWindow(GameConstUtils.id_shopMark, Shop.ShopType.Mark);
-                break;
-            default:
-                break;
-        }
+        
         m_CurTab = toTab;
     }
 

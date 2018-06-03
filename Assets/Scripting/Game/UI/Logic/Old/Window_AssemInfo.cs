@@ -115,27 +115,6 @@ public class Window_AssemInfo : WindowBase
             obj.Btn.SetOnClick(delegate() { BtnEvt_Assem(ItemType.Equip, tempIndex); });
         }
 
-        Pet[] wearPet = PlayerPrefsBridge.Instance.GetPetBarInfo();
-        PetItemList = TAppUtility.Instance.AddViewInstantiate<AssemItemObj>(PetItemList, mViewObj.Part_ItemAssem, mViewObj.RootPetItem, wearPet.Length);      
-        for (int i = 0, length = wearPet.Length; i < length; i++)
-        {
-            AssemItemObj obj = PetItemList[i];
-            obj.IconType.sprite = commonSprite.GetSprite(TUtility.TryGetPetTypeString((Pet.PetTypeEnum)i));
-            int tempIndex = i;
-            obj.Btn.SetOnClick(delegate() { BtnEvt_Assem(ItemType.Pet, tempIndex); });
-            if (wearPet[i] != null)
-            {
-                obj.TextName.text = wearPet[i].ColorName;
-                obj.TextName.gameObject.SetActive(true);
-                obj.TextNull.gameObject.SetActive(false);             
-            }
-            else
-            {
-                obj.TextNull.text = PetType(i);
-                obj.TextName.gameObject.SetActive(false);
-                obj.TextNull.gameObject.SetActive(true);            
-            }
-        }
     }
 
     public void BtnEvt_Assem(ItemType itemType,int index,int Idx=0)

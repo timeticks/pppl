@@ -36,7 +36,6 @@ public class Window_VIP : WindowBase {
 
     void Init()
     {
-        mVIPTime = PlayerPrefsBridge.Instance.PlayerData.VipTime;
         mViewObj.BtnBuyVip.SetOnClick(delegate() { BtnEvt_BuyVIP(); });
         mViewObj.BtnGetAward.SetOnClick(delegate() { BtnEvt_GetAward(); });
         mViewObj.BtnMask.SetOnClick(delegate() { CloseWindow(); });
@@ -79,7 +78,6 @@ public class Window_VIP : WindowBase {
     public void S2C_BuyVIP(BinaryReader ios)
     {
         NetPacket.S2C_BuyVIP msg = MessageBridge.Instance.S2C_BuyVIP(ios);
-        mVIPTime = PlayerPrefsBridge.Instance.PlayerData.VipTime;
         UIRootMgr.Instance.IsLoading = false;      
     }
 

@@ -328,15 +328,15 @@ public class TUtility:TUtilityBase
         switch (quality)
         {
             case 0:
-                return string.Format("<color=#111111FF>{0}</color>", content);
+                return string.Format("<color=#EEEEEEFF>{0}</color>", content);
             case 1:
-                return string.Format("<color=#019B43FF>{0}</color>", content);
+                return string.Format("<color=#11CC44FF>{0}</color>", content);
             case 2:
-                return string.Format("<color=#0000FFFF>{0}</color>", content);
+                return string.Format("<color=#00BBFFFF>{0}</color>", content);
             case 3:
-                return string.Format("<color=#FF00FFFF>{0}</color>", content);
+                return string.Format("<color=#FF44CCFF>{0}</color>", content);
             case 4:
-                return string.Format("<color=#EF5F03FF>{0}</color>", content);
+                return string.Format("<color=#EF5F09FF>{0}</color>", content);
             case 5:
                 return string.Format("<color=#FF0000FF>{0}</color>", content);
             default:

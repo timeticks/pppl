@@ -10,35 +10,28 @@ public class GamePlayerBase
     public Eint PlayerUid = 0;          //唯一id
 
     public Eint Level = 1;
-
     public Elong Exp = 0;       //当前经验
     public Eint Gold = 0;       //普通货币
     public Eint Diamond = 0;    //充值货币
-    public Eint RecallPiece = 0;    //记忆碎片数量
 
     public Eint GuideStepIndex=0;     //游戏进度
     public Eint UnlockMapLevel=0;     //当前已解锁的地图
 
     public Dictionary<Eint, Eint> ProduceDict = new Dictionary<Eint, Eint>();
 
-    public Eint HeadIconIdx = 0;   //头像
-
-    public int[] SpellList = new int[(int)Spell.PosType.Max];   //如果为0则此槽没有装备招式
-    public int[] EquipList = new int[(int)Equip.EquipType.Max];   //存放法宝在包裹中的位置
-    public int[] PetList = new int[(int)Pet.PetTypeEnum.Max];   //存放宠物在背包中的位置
-
-    //old..............
-    public Sect.SectType MySect = Sect.SectType.None;
-    public bool IsFinishNewerMap;
-    public long FinishGuideStep;
-
-    public Dictionary<AttrType, int> AddProm = new Dictionary<AttrType, int>() {  };
-    public Elong VipTime = 0;      //vip的到期时间
     public Eint PlayerIdx = 0;
+    public Dictionary<Eint, Eint> NatureDict = new Dictionary<Eint, Eint>(); //能力NatureType
 
-    public Dictionary<int, int> NatureDict = new Dictionary<int, int>(); //能力NatureType
+    //统计记录
+    public Dictionary<Eint, Eint> BuyCommodityDict = new Dictionary<Eint, Eint>();  //已购买商品<商品id、已买数量>
+    public Dictionary<Eint, Eint> BuyRechargeDict = new Dictionary<Eint, Eint>();   //已充值   <充值id、已买数量>
+    public Eint BattleNum = 0;              //战斗次数
+    public Eint MaxScore = 0;               //最大分数
+    public Eint MaxScoreTime = 0;           //最大分数获得时间
 
-
+    public Eint AllScore = 0;               //所有的分数
+    public Dictionary<Eint, Eint> ChatStatis = new Dictionary<Eint, Eint>();    //聊天统计<时间/h，次数>
+    public Elong PartnerBirthTime = 0;      //同伴解锁时间
 
 }
 
@@ -54,36 +47,7 @@ public sealed class GamePlayer : GamePlayerBase
 
     public GamePlayer() 
     {
-        for (int i = 0; i < EquipList.Length; i++)
-        {
-            EquipList[i] = (int)Equip.EquipType.None;
-        }
-        for (int i = 0; i < SpellList.Length; i++)
-        {
-            SpellList[i] = (int)Spell.PosType.None;
-        }
-        for (int i = 0; i < PetList.Length; i++)
-        {
-            PetList[i] = (int)Pet.PetTypeEnum.None;
-        }
-    }
-
-    /// <summary>
-    /// 当前等级经验
-    /// </summary>
-    /// <returns></returns>
-    public long CurLevelExp
-    {
-        get 
-        {
-            if(Level>1)
-            {
-                HeroLevelUp lvUp = HeroLevelUp.LevelUpFetcher.GetLevelUpByCopy(Level-1);
-                return Exp - lvUp.exp;
-            }
-            else
-                return Exp;
-        }
+        
     }
 
     public int GetNatureLevel(NatureType natureTy)
@@ -107,69 +71,43 @@ public sealed class GamePlayer : GamePlayerBase
         return hero.GetAttr(type);
     }
 
-    public PrestigeLevel GetPrestige(PrestigeLevel.PrestigeType type)
+    public void AddRecharge(int rechargeIdx , bool isSave=true)
     {
-        if (PrestigeList.Length - 1 < (int)type)
-        {
-            TDebug.LogError(string.Format("玩家宗门声望数据异常，length：{0}", PrestigeList.Length));
-            return null;
-        }       
+        if (BuyRechargeDict.ContainsKey(rechargeIdx))
+            BuyRechargeDict[rechargeIdx]++;
         else
-            return PrestigeList[(int)type];
+            BuyRechargeDict.Add(rechargeIdx, 1);
+        if(isSave) PlayerPrefsBridge.Instance.savePlayerModule();
+    }
+    public void AddCommodity(int commondityIdx, int num, bool isSave = true)
+    {
+        if (BuyCommodityDict.ContainsKey(commondityIdx))
+            BuyCommodityDict[commondityIdx] += num;
+        else
+            BuyCommodityDict.Add(commondityIdx, num);
+        if (isSave) PlayerPrefsBridge.Instance.savePlayerModule();
+    }
+    public int GetCommodityRemain(int commodityIdx)
+    {
+        Commodity com = Commodity.CommodityFetcher.GetCommodityByCopy(commodityIdx, false);
+        if (com.limit > 0 && BuyCommodityDict.ContainsKey(commodityIdx))
+            return com.limit - BuyCommodityDict[commodityIdx];
+        return com.limit;
+    }
+    public int GetRechargeRemain(int rechargeIdx)
+    {
+        Recharge recharge = Recharge.Fetcher.GetRechargeCopy(rechargeIdx, false);
+        if (recharge.limit > 0 && BuyRechargeDict.ContainsKey(rechargeIdx))
+            return recharge.limit - BuyRechargeDict[rechargeIdx];
+        return recharge.limit;
     }
 
     public bool IsVip()
     {
-        if (VipTime >= AppTimer.CurTimeStampMsSecond)
-        {
-            return true;
-        }
         return false;
     }
 
 
-    #region 道具获取
-    //public void GetItem(List<Seraph.pb_Item> pbItemList)
-    //{
-    //    for (int i = 0; i < pbItemList.Count; i++)
-    //    {
-    //        GetItem(pbItemList[i]);
-    //    }
-    //}
-    //public void GetItem(Seraph.pb_Item pbItem)
-    //{
-    //    ItemType itemType = ItemBase.GetItemType(pbItem.ItemConfigId);
-    //    switch (itemType)
-    //    {
-    //        case ItemType.Money: m_Money += pbItem.ItemNum;
-    //            break;
-    //        case ItemType.Gold:
-    //            break;
-    //        case ItemType.PlayerExp: m_Exp += pbItem.ItemNum;
-    //            break;
-    //        case ItemType.Vitality: m_CurVitality += pbItem.ItemNum;
-    //            break;
-    //        case ItemType.Goods:
-    //            break;
-    //        case ItemType.Prop:
-                
-    //            break;
-    //    }
-    //}
-
-    #endregion
-
-    #region 测试
-    static System.Random rand = new System.Random();
-    public static GamePlayer GetTest()
-    {
-        GamePlayer d = new GamePlayer();
-
-        d.Diamond = rand.Next(10000, 100000);
-
-        return d;
-    }
-    #endregion
 }
 
 

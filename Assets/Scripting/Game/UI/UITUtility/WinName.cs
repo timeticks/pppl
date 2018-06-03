@@ -13,6 +13,7 @@ public enum WinName
     Window_CreatePartner,          //创建伙伴
     Window_NatureLevelUp,
     Window_Store,
+    Window_Recharge,
     ////////////////////////////////////////////////////////////////////旧//////////////////////////////////////////////////////////////////
     //放于WindowRoot层...需要设置对应值，以防在删除的时候造成对应值改变
     Window_Login           = 1000,

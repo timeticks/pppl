@@ -111,7 +111,6 @@ public class Window_Charge : WindowBase {
     public void S2C_BuyVIP(BinaryReader ios)
     {
         NetPacket.S2C_BuyVIP msg = MessageBridge.Instance.S2C_BuyVIP(ios);
-        mVIPTime = PlayerPrefsBridge.Instance.PlayerData.VipTime;
         UIRootMgr.Instance.IsLoading = false;
     }
 

@@ -187,11 +187,6 @@ public class Panel_PrestigeTaskList : MonoBehaviour {
                 return;
             }
         }
-        if (PlayerPrefsBridge.Instance.PlayerData.MySect == Sect.SectType.None && ty == PrestigeLevel.PrestigeType.Self
-            && UIRootMgr.Instance.MessageBox.ShowStatus(ServerStatusCode.LOBBY_WARN_MEI_YOU_ZONG_MEN))
-        {
-            return;
-        }
         if (useDiamond && PlayerPrefsBridge.Instance.PlayerData.Diamond < GameConstUtils.UseDiamondNum
             && UIRootMgr.Instance.MessageBox.ShowStatus(ServerStatusCode.GLOBAL_WARN_CODE_ZHUAN_SHI_BU_ZU))
         {

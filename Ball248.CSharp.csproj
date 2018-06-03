@@ -209,6 +209,7 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\BallMap.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\BaseObject.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Buff.cs" />
+    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Commodity.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\DropGrade.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\DropQualityRate.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Equip.cs" />
@@ -225,7 +226,6 @@
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\AuxSkillLevel.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\BookSpell.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Cave.cs" />
-    <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\Commodity.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\ErrorStatus.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\GameConst.cs" />
     <Compile Include="Assets\Scripting\Game\Entry\Serialize\Old\GuideStep.cs" />
@@ -307,6 +307,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_AssemSpell.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_AssemSpellMini.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_BattleMainUI.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_BuyNumChoose.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Charge.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_ChoosePlotDungeon.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_ChooseRole.cs" />
@@ -319,7 +320,6 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Mail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_MapEventList.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_NpcInteract.cs" />
-    <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_PrestigeStore.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_PrestigeTask.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Ranking.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_RecipeDetial.cs" />
@@ -328,7 +328,6 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_SellNumChoose.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_Tower.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_VIP.cs" />
-    <Compile Include="Assets\Scripting\Game\UI\Logic\Old\Window_shop.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_BattleHand.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_ChooseMap.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Tab\Panel_LobbyPartner.cs" />
@@ -342,6 +341,7 @@
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapDetail.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_MapEndShow.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_NatureLevelUp.cs" />
+    <Compile Include="Assets\Scripting\Game\UI\Logic\Window_Recharge.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Logic\Window_Store.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\BaseMainUIMgr.cs" />
     <Compile Include="Assets\Scripting\Game\UI\Mgr\Common\LoadingCircleCtrl.cs" />
@@ -477,6 +477,7 @@
   <ItemGroup>
     <None Include="Assets\Build\GameData\Ball.txt" />
     <None Include="Assets\Build\GameData\BallMap.txt" />
+    <None Include="Assets\Build\GameData\Commodity.txt" />
     <None Include="Assets\Build\GameData\DropGrade.txt" />
     <None Include="Assets\Build\GameData\DropQualityRate.txt" />
     <None Include="Assets\Build\GameData\Equip.txt" />

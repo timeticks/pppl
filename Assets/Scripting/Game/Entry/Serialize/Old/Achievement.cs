@@ -299,7 +299,7 @@ public class Achieve
                 str = isGot?"": "(0/1)";
                 break; 		
             case Achievement.ConType.PrestigeLevel:
-                str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.PlayerData.GetPrestige((PrestigeLevel.PrestigeType)achievement.ConProm).Level, achievement.ConValue[index]);              
+                //str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.PlayerData.GetPrestige((PrestigeLevel.PrestigeType)achievement.ConProm).Level, achievement.ConValue[index]);              
                 break;  	
             case Achievement.ConType.SpellNum:
                 str = string.Format("({0}/{1})", PlayerPrefsBridge.Instance.GetSpellNumByLevel(achievement.ConProm), achievement.ConValue[index]);

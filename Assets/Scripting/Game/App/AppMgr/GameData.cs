@@ -27,6 +27,7 @@ public enum DataName : short
     NatureLevelUp,
     IntimacyLevelUp,
     Recharge,
+    Commodity,
     /**********文本配置表***********/
     //TextBattle,
     //ItemText,

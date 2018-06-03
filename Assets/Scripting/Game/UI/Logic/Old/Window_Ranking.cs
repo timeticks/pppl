@@ -47,9 +47,7 @@ public class Window_Ranking : WindowBase {
                 item = new NetRankBotting.RankItem();
                 GamePlayer player = PlayerPrefsBridge.Instance.PlayerData;
                 item.playerName = player.Name;
-                item.sectType = player.MySect;
                 item.level = player.Level;
-                item.playerIcon = player.HeadIconIdx;
                 if (type == RankEnum.Gold)
                     item.num = player.Gold;
                 else if (type == RankEnum.Achieve)
@@ -222,11 +220,7 @@ public class Window_Ranking : WindowBase {
     }
     public void BtnEvt_PullRank(RankEnum rank)
     {
-        if (rank== RankEnum.Sect&& PlayerPrefsBridge.Instance.PlayerData.MySect == Sect.SectType.None&& UIRootMgr.Instance.MessageBox.ShowStatus("尚未加入宗门"))    
-            return;
-        mCurRankEnum = rank;
-        PullRankInfo(rank,(int)mCurRankIndex);
-        mViewObj.SelectTabBtn(rank);
+        
     }
 
     public void BtnEvt_PullOtherRoleInfo(int index,int playerID)

@@ -11,7 +11,7 @@ public static class AppTimer
     /// 当前时间，毫秒级
     /// </summary>
     public static long CurTimeStampMsSecond { get { return StartTimeStampSecond + (long)Time.realtimeSinceStartup*1000 - StampStartDetla; } }
-    public static int CurTimeStampSecond { get { return (int)((StartTimeStampSecond + (long)Time.realtimeSinceStartup * 1000 - StampStartDetla)/1000); } }
+    public static int CurTimeStampSecond { get { return (int)((CurTimeStampMsSecond) / 1000); } }
 
     static long StartTimeStampSecond;
     static long StampStartDetla = 0;

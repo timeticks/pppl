@@ -116,12 +116,12 @@ public class Shop : DescObject {
 
             case ConditionType.Fame:
                 {
-                    PrestigeLevel prestigeLevel = player.GetPrestige((PrestigeLevel.PrestigeType)shop.ConditionValue[0]);
-                    if (prestigeLevel.Level < shop.ConditionValue[1])
-                    {
-                        statusStr = "声望等级不足";
-                        return false;
-                    }
+                    //PrestigeLevel prestigeLevel = player.GetPrestige((PrestigeLevel.PrestigeType)shop.ConditionValue[0]);
+                    //if (prestigeLevel.Level < shop.ConditionValue[1])
+                    //{
+                    //    statusStr = "声望等级不足";
+                    //    return false;
+                    //}
                     break;
                 }
             default:

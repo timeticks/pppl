@@ -36,6 +36,7 @@ public class Recharge : BaseObject
     public int order;
     public int firstLoot;
     public int loot;
+    public int limit;   //可购买数量
 
     public Recharge Clone()
     {

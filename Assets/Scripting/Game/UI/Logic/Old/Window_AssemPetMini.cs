@@ -410,15 +410,15 @@ public class Window_AssemPetMini : WindowBase,IScrollWindow {
     }
     public void S2C_EquipPet(BinaryReader ios)
     {
-        UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_EquipPet msg = MessageBridge.Instance.S2C_EquipPet(ios);
-        int pos = PlayerPrefsBridge.Instance.PlayerData.PetList[msg.EquipPos];
-        if (pos != (int)Pet.PetTypeEnum.None)
-        {
-            CloseWindow(CloseActionType.OpenHide);
-            return;
-        }
-        FreshPetItem();
+        //UIRootMgr.Instance.IsLoading = false;
+        //NetPacket.S2C_EquipPet msg = MessageBridge.Instance.S2C_EquipPet(ios);
+        //int pos = PlayerPrefsBridge.Instance.PlayerData.PetList[msg.EquipPos];
+        //if (pos != (int)Pet.PetTypeEnum.None)
+        //{
+        //    CloseWindow(CloseActionType.OpenHide);
+        //    return;
+        //}
+        //FreshPetItem();
         #region 装配
         //int inventoryPos = PlayerPrefsBridge.Instance.PlayerData.PetList[msg.EquipPos];
 

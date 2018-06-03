@@ -370,7 +370,8 @@ public class Window_Guide : WindowBase
     {
         long finish = ((long)1)<<step;
         if (step < 0) return false;
-        return (PlayerPrefsBridge.Instance.PlayerData.FinishGuideStep & finish) == finish;
+        //return (PlayerPrefsBridge.Instance.PlayerData.FinishGuideStep & finish) == finish;
+        return false;
     }
 
 

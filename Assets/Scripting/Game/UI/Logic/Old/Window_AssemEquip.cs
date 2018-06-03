@@ -484,16 +484,16 @@ public class Window_AssemEquip : WindowBase,IScrollWindow
 
     public void BtnEvt_BtnUnloadClick(int partIndex)
     {
-        if (PlayerPrefsBridge.Instance.PlayerData.EquipList[partIndex] != (int)Equip.EquipType.None)
-        {
-            //UIRootMgr.Instance.IsLoading = true;
-            //GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_EquipEquip((byte)partIndex, (sbyte)Equip.EquipType.None));
-            PlayerPrefsBridge.Instance.onEquippedEquip(partIndex, -1);
-            S2C_EquipEquip(partIndex);
+        //if (PlayerPrefsBridge.Instance.PlayerData.EquipList[partIndex] != (int)Equip.EquipType.None)
+        //{
+        //    //UIRootMgr.Instance.IsLoading = true;
+        //    //GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_EquipEquip((byte)partIndex, (sbyte)Equip.EquipType.None));
+        //    PlayerPrefsBridge.Instance.onEquippedEquip(partIndex, -1);
+        //    S2C_EquipEquip(partIndex);
 
-        }
-        else
-            TDebug.LogError(string.Format("当前位置{0}不存在法宝", partIndex));
+        //}
+        //else
+        //    TDebug.LogError(string.Format("当前位置{0}不存在法宝", partIndex));
     }
     public void BtnEvt_BtnEquipClick(int inventoryPos, int equipPos)
     {
@@ -526,34 +526,34 @@ public class Window_AssemEquip : WindowBase,IScrollWindow
         //UIRootMgr.Instance.IsLoading = false;
         //NetPacket.S2C_EquipEquip msg = MessageBridge.Instance.S2C_EquipEquip(ios);
 
-        GameObject go = (GameObject)SharedAsset.Instance.LoadSpritePrefabObj("IconAtlas");
-        SpritePrefab commonSprite = go.GetComponent<SpritePrefab>();
-        int inventoryPos = PlayerPrefsBridge.Instance.PlayerData.EquipList[equipPos];
-        if (inventoryPos == (int)Equip.EquipType.None)//卸下
-        {
-            mEquipItemList[mCurSelectItemIndex].IconItem.gameObject.SetActive(true);
-            mEquipItemList[mCurSelectItemIndex].IconEquipMark.gameObject.SetActive(false);
-            mViewObj.TextBtnChange.text = "装备";
-            mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_BtnEquipClick(mEquipItemList[mCurSelectItemIndex].InventoryPos, equipPos); });
-            mViewObj.BtnSell.gameObject.SetActive(true);
-            mViewObj.BtnSell.SetOnClick(delegate() { BtnEvt_SellEquip(mEquipItemList[mCurSelectItemIndex].InventoryPos); });
-        }
-        else 
-        {
-            mViewObj.TextBtnChange.text = "卸下";
-            mViewObj.BtnSell.gameObject.SetActive(false);
-            mEquipItemList[mCurSelectItemIndex].IconItem.gameObject.SetActive(false);
-            mEquipItemList[mCurSelectItemIndex].IconEquipMark.gameObject.SetActive(true);
-            mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_BtnUnloadClick(equipPos); });
-            for (int i = 0; i < mEquipItemList.Count; i++)
-            {
-                if (mEquipItemList[i].Type == mEquipItemList[mCurSelectItemIndex].Type && i != mCurSelectItemIndex)
-                {
-                    mEquipItemList[i].IconItem.gameObject.SetActive(true);
-                    mEquipItemList[i].IconEquipMark.gameObject.SetActive(false);
-                }
-            }
-        }
+        //GameObject go = (GameObject)SharedAsset.Instance.LoadSpritePrefabObj("IconAtlas");
+        //SpritePrefab commonSprite = go.GetComponent<SpritePrefab>();
+        //int inventoryPos = PlayerPrefsBridge.Instance.PlayerData.EquipList[equipPos];
+        //if (inventoryPos == (int)Equip.EquipType.None)//卸下
+        //{
+        //    mEquipItemList[mCurSelectItemIndex].IconItem.gameObject.SetActive(true);
+        //    mEquipItemList[mCurSelectItemIndex].IconEquipMark.gameObject.SetActive(false);
+        //    mViewObj.TextBtnChange.text = "装备";
+        //    mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_BtnEquipClick(mEquipItemList[mCurSelectItemIndex].InventoryPos, equipPos); });
+        //    mViewObj.BtnSell.gameObject.SetActive(true);
+        //    mViewObj.BtnSell.SetOnClick(delegate() { BtnEvt_SellEquip(mEquipItemList[mCurSelectItemIndex].InventoryPos); });
+        //}
+        //else 
+        //{
+        //    mViewObj.TextBtnChange.text = "卸下";
+        //    mViewObj.BtnSell.gameObject.SetActive(false);
+        //    mEquipItemList[mCurSelectItemIndex].IconItem.gameObject.SetActive(false);
+        //    mEquipItemList[mCurSelectItemIndex].IconEquipMark.gameObject.SetActive(true);
+        //    mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_BtnUnloadClick(equipPos); });
+        //    for (int i = 0; i < mEquipItemList.Count; i++)
+        //    {
+        //        if (mEquipItemList[i].Type == mEquipItemList[mCurSelectItemIndex].Type && i != mCurSelectItemIndex)
+        //        {
+        //            mEquipItemList[i].IconItem.gameObject.SetActive(true);
+        //            mEquipItemList[i].IconEquipMark.gameObject.SetActive(false);
+        //        }
+        //    }
+        //}
     }
     public void S2C_SellEquip(int sellNum)
     {

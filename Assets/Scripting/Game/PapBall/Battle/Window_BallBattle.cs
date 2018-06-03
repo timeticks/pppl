@@ -544,7 +544,7 @@ public class Window_BallBattle : WindowBase {
 
     void BtnEvt_ExitBattle()
     {
-        UIRootMgr.Instance.MessageBox.ShowInfo_HaveCancel(LangMgr.GetText("desc_exit_battle"), delegate() { CloseWin(); });
+        UIRootMgr.Instance.MessageBox.ShowInfo_HaveCancel(LangMgr.GetText("desc_exit_battle"), delegate() { BattleEnd(); });
     }
     #region 道具
     
@@ -653,10 +653,25 @@ public class Window_BallBattle : WindowBase {
 
     #endregion
 
-    public void CloseWin()
+    public void BattleEnd()
     {
+        if (PlayerPrefsBridge.Instance.BallMapAcce.Score > PlayerPrefsBridge.Instance.PlayerData.MaxScore)
+        {
+            PlayerPrefsBridge.Instance.PlayerData.MaxScore = PlayerPrefsBridge.Instance.BallMapAcce.Score;
+            PlayerPrefsBridge.Instance.PlayerData.MaxScoreTime = AppTimer.CurTimeStampSecond;
+        }
+        PlayerPrefsBridge.Instance.PlayerData.AllScore += PlayerPrefsBridge.Instance.BallMapAcce.Score;
+        PlayerPrefsBridge.Instance.PlayerData.BattleNum++;
+        PlayerPrefsBridge.Instance.savePlayerModule();
+
+        int mapIdx = PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx;
         PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx = 0;
         PlayerPrefsBridge.Instance.saveMapAccessor();
+        UIRootMgr.Instance.OpenWindow<Window_MapEndShow>(WinName.Window_MapEndShow).OpenWindow(mapIdx);
+    }
+
+    public void CloseWin()
+    {
         CloseWindow();
     }
 

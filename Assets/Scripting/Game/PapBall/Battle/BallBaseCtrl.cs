@@ -206,10 +206,8 @@ public class BallBaseCtrl : MonoBehaviour {
         {
             if (col.gameObject.name.Contains(GameConstUtils.NAME_BORDER)) //碰到边界
             {
-                int mapIdx = PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx;
-                PlayerPrefsBridge.Instance.BallMapAcce.CurMapIdx = 0;
-                PlayerPrefsBridge.Instance.saveMapAccessor();
-                UIRootMgr.Instance.OpenWindow<Window_MapEndShow>(WinName.Window_MapEndShow).OpenWindow(mapIdx);
+                ParentWin.BattleEnd();
+                
                 TDebug.LogError("失败了");
             }
         }

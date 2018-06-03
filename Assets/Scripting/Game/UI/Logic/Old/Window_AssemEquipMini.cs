@@ -291,13 +291,13 @@ public class Window_AssemEquipMini : WindowBase,IScrollWindow
 
     public void BtnEvt_BtnUnloadClick(int partIndex)
     {
-        if (PlayerPrefsBridge.Instance.PlayerData.EquipList[partIndex] != (int)Equip.EquipType.None)
-        {
-            UIRootMgr.Instance.IsLoading = true;
-            GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_EquipEquip((byte)partIndex, (sbyte)Equip.EquipType.None));
-        }
-        else
-            TDebug.LogError(string.Format("当前位置{0}不存在法宝", partIndex));
+        //if (PlayerPrefsBridge.Instance.PlayerData.EquipList[partIndex] != (int)Equip.EquipType.None)
+        //{
+        //    UIRootMgr.Instance.IsLoading = true;
+        //    GameClient.Instance.SendMessage(MessageBridge.Instance.C2S_EquipEquip((byte)partIndex, (sbyte)Equip.EquipType.None));
+        //}
+        //else
+        //    TDebug.LogError(string.Format("当前位置{0}不存在法宝", partIndex));
 
     }
     public void BtnEvt_BtnEquipClick(int inventoryPos, int equipPos)
@@ -326,15 +326,15 @@ public class Window_AssemEquipMini : WindowBase,IScrollWindow
     }
     public void S2C_EquipEquip(BinaryReader ios)
     {
-        UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_EquipEquip msg = MessageBridge.Instance.S2C_EquipEquip(ios);
-        int pos = PlayerPrefsBridge.Instance.PlayerData.EquipList[msg.EquipPos];
-        if (pos != (int)Equip.EquipType.None)
-        {
-            CloseWindow(CloseActionType.OpenHide);
-            return;
-        }
-        FreshEquipItem();           
+        //UIRootMgr.Instance.IsLoading = false;
+        //NetPacket.S2C_EquipEquip msg = MessageBridge.Instance.S2C_EquipEquip(ios);
+        //int pos = PlayerPrefsBridge.Instance.PlayerData.EquipList[msg.EquipPos];
+        //if (pos != (int)Equip.EquipType.None)
+        //{
+        //    CloseWindow(CloseActionType.OpenHide);
+        //    return;
+        //}
+        //FreshEquipItem();           
     }
     #region
     //public void S2C_SellEquip(BinaryReader ios)

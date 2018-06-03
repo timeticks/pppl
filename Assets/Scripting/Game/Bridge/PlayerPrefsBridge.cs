@@ -77,7 +77,6 @@ public partial class PlayerPrefsBridge
         GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotPlayerAttribute, S2C_SnapshotPlayerAttribute);
 
         //GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotDungeonMap, S2C_SnapshotDungeonMap);
-        //GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotSect, S2C_SnapshotSect);
         //GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotTravelBotting, S2C_SnapshotTravelBotting);
         //GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotAuxSkill, S2C_SnapshotAuxSkill);
         //GameClient.Instance.RegisterNetCodeHandler(NetCode_S.SnapshotTravelEvent, S2C_SnapshotTravelEvent);
@@ -126,6 +125,7 @@ public partial class PlayerPrefsBridge
         TDebug.LogInEditorF("没有存档，初始化玩家的数据");
         mPlayerData = new GamePlayer();
         mPlayerData.Level = 1;
+        mPlayerData.Diamond = 10000;
         mPlayerData.Hero = Hero.Fetcher.GetHeroCopy(1001);
         mPlayerData.Name = "菜鸟";
         mPlayerData.PlayerUid = 10000 + 1;
@@ -147,7 +147,7 @@ public partial class PlayerPrefsBridge
         mPetsInventory = new InventoryList(InventoryList.InventoryType.Pets);
 
         mPlayerData.UnlockMapLevel = 6;
-        mPlayerData.GuideStepIndex = 7;
+        mPlayerData.GuideStepIndex = 6;
         mPartnerAccessor.selectSex = PartnerData.Sex.Female;
         mPartnerAccessor.selectCharacType = PartnerData.CharacType.Cute;
         mPartnerAccessor.selectHairColor = PartnerData.HairColor.Gold;
@@ -233,11 +233,6 @@ public partial class PlayerPrefsBridge
                 AppEvtMgr.Instance.SendNotice(new EvtItemData(EvtType.CurLevel, msg.Attributes[0].ToString()));
                 break;
             }
-            case PlayerAttribute.IsFinishNewerMap:
-            {
-                mPlayerData.IsFinishNewerMap = msg.Attributes[0] == 1;
-                break;
-            }
         }
         if (LobbySceneMainUIMgr.Instance != null) LobbySceneMainUIMgr.Instance.FreshTopRoleInfo();
         TDebug.Log(string.Format("同步角色属性|类型:{0},当前值:{1},增量值:{2}", msg.Type, variation, msg.Attributes[0]));
@@ -272,7 +267,6 @@ public partial class PlayerPrefsBridge
 
         Equip[] equipList = PlayerPrefsBridge.Instance.GetEquipBarInfo();
         //Pet[] petList = PlayerPrefsBridge.Instance.GetPetBarInfo();
-        hero.Properties(equipList, equipSpellList, player.AddProm, null, player.Level);
         return hero;
     }
 
@@ -351,22 +345,22 @@ public partial class PlayerPrefsBridge
     {
         List<Spell> spellAllList = GetSpellAllList(false);
         List<Spell> spellList = new List<Spell>();
-        for (int i = 0; i < spellAllList.Count; i++)
-        {
-            bool isWeared = false;
-            for (int j = 0; j < mPlayerData.SpellList.Length; j++)
-            {
-                if (spellAllList[i].idx == mPlayerData.SpellList[j] && mPlayerData.SpellList[j] != 0)
-                {
-                    isWeared = true; break;
-                }
-            }
-            if (isWeared == isWearList)//如果isNeedWearList=true，则返回穿戴列表
-            {
-                if (isCopy) { spellList.Add(spellAllList[i].Clone()); }
-                else { spellList.Add(spellAllList[i]); }
-            }
-        }
+        //for (int i = 0; i < spellAllList.Count; i++)
+        //{
+        //    bool isWeared = false;
+        //    for (int j = 0; j < mPlayerData.SpellList.Length; j++)
+        //    {
+        //        if (spellAllList[i].idx == mPlayerData.SpellList[j] && mPlayerData.SpellList[j] != 0)
+        //        {
+        //            isWeared = true; break;
+        //        }
+        //    }
+        //    if (isWeared == isWearList)//如果isNeedWearList=true，则返回穿戴列表
+        //    {
+        //        if (isCopy) { spellList.Add(spellAllList[i].Clone()); }
+        //        else { spellList.Add(spellAllList[i]); }
+        //    }
+        //}
         return spellList;
     }
     /// <summary>
@@ -391,15 +385,15 @@ public partial class PlayerPrefsBridge
     public Spell[] GetSpellBarInfo()
     {
         Spell[] equipSpell = new Spell[(int)Spell.PosType.Max];
-        for (int i = 0; i < mPlayerData.SpellList.Length; i++)
-        {
-            if (mPlayerData.SpellList[i] != (int)Spell.PosType.Max)
-            {
-                equipSpell[i] = GetInventorySpellByPos(mPlayerData.SpellList[i]);
-            }
-            else
-                equipSpell[i] = null;
-        }
+        //for (int i = 0; i < mPlayerData.SpellList.Length; i++)
+        //{
+        //    if (mPlayerData.SpellList[i] != (int)Spell.PosType.Max)
+        //    {
+        //        equipSpell[i] = GetInventorySpellByPos(mPlayerData.SpellList[i]);
+        //    }
+        //    else
+        //        equipSpell[i] = null;
+        //}
         return equipSpell;
     }
     /// <summary>
@@ -425,13 +419,13 @@ public partial class PlayerPrefsBridge
     /// <returns></returns>
     public Spell GetSpellCurWear(Spell.PosType pos)
     {
-        int InventoryIndex = mPlayerData.SpellList[(int)pos];
-        Spell spell = GetInventorySpellByPos(InventoryIndex);
-        if (spell != null)
-        {
-            return spell;
-        }
-        else
+        //int InventoryIndex = mPlayerData.SpellList[(int)pos];
+        //Spell spell = GetInventorySpellByPos(InventoryIndex);
+        //if (spell != null)
+        //{
+        //    return spell;
+        //}
+        //else
         {
             return null;
         }
@@ -515,15 +509,15 @@ public partial class PlayerPrefsBridge
     public Equip[] GetEquipBarInfo()
     {
         Equip[] equipEquip = new Equip[(int)Equip.EquipType.Max];
-        for (int i = 0; i < mPlayerData.EquipList.Length; i++)
-        {
-            if (mPlayerData.EquipList[i] != (int)Equip.EquipType.None)
-            {
-                equipEquip[i] = GetInventoryEquipByPos(mPlayerData.EquipList[i]);
-            }
-            else
-                equipEquip[i] = null;
-        }
+        //for (int i = 0; i < mPlayerData.EquipList.Length; i++)
+        //{
+        //    if (mPlayerData.EquipList[i] != (int)Equip.EquipType.None)
+        //    {
+        //        equipEquip[i] = GetInventoryEquipByPos(mPlayerData.EquipList[i]);
+        //    }
+        //    else
+        //        equipEquip[i] = null;
+        //}
         return equipEquip;
     }
 
@@ -600,15 +594,15 @@ public partial class PlayerPrefsBridge
     public Pet[] GetPetBarInfo()
     {
         Pet[] equipPet = new Pet[(int)Pet.PetTypeEnum.Max];
-        for (int i = 0; i < mPlayerData.PetList.Length; i++)
-        {
-            if (mPlayerData.PetList[i] != (int)Pet.PetTypeEnum.None)
-            {
-                equipPet[i] = GetPetByPosInventory(mPlayerData.PetList[i]);
-            }
-            else
-                equipPet[i] = null;
-        }
+        //for (int i = 0; i < mPlayerData.PetList.Length; i++)
+        //{
+        //    if (mPlayerData.PetList[i] != (int)Pet.PetTypeEnum.None)
+        //    {
+        //        equipPet[i] = GetPetByPosInventory(mPlayerData.PetList[i]);
+        //    }
+        //    else
+        //        equipPet[i] = null;
+        //}
         return equipPet;
     }
     public int GetPetNumByType(Pet.PetTypeEnum petType, int levelMin) //得到某等级以上的某种灵兽
@@ -921,17 +915,6 @@ public partial class PlayerPrefsBridge
 
     #endregion
 
-    #region 门派
-    //////////////////////////门派////////////////////////////
-    private void S2C_SnapshotSect(BinaryReader ios)
-    {
-        TDebug.Log("S2C_SnapshotSect");
-        NetPacket.S2C_SnapshotSect msg = MessageBridge.Instance.S2C_SnapshotSect(ios);
-        mPlayerData.MySect = msg.SectType;
-    }
-
-
-    #endregion
 
     #region 生产制作
 

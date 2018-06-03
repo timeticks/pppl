@@ -487,50 +487,50 @@ public class Window_AssemSpellMini : WindowBase,IScrollWindow
 
     public void S2C_EquipSpell(BinaryReader ios)
     {
-        UIRootMgr.Instance.IsLoading = false;
-        NetPacket.S2C_EquipSpell msg = MessageBridge.Instance.S2C_EquipSpell(ios);
-        int pos = PlayerPrefsBridge.Instance.PlayerData.SpellList[msg.EquipPos];
-        if (mCurSelectItemIndex == -1)
-        {
-            FreshSpellItem();
-        }
-        else
-        {        
-            if (pos == (int)Spell.PosType.None)//卸下技能
-            {
-                Spell curSpell = PlayerPrefsBridge.Instance.GetInventorySpellByPos(mInventoryPos);
-                ItemObj item = mSpellItemList[mCurSelectItemIndex];
-                item.IconItem.gameObject.SetActive(true);
-                item.IconEquipMark.gameObject.SetActive(false);
-                item.isEquip = false;
-                mViewObj.TextTitleChange.text = "装备";
-                int[] SpellList = PlayerPrefsBridge.Instance.PlayerData.SpellList;
-                int canEquipSpellPos = (int)Spell.PosType.None;
-                for (int i = 0; i < SpellList.Length; i++)
-                {
-                    //if (SpellList[i] == (int)Skill.PosType.None && ((Skill.PosType)i).SpellFrameType() == curSpell.skillType)
-                    //{
-                    //    canEquipSpellPos = i;
-                    //    break;
-                    //}
-                }
-                if (canEquipSpellPos != (int)Spell.PosType.None)
-                {
-                    mViewObj.BtnChange.enabled = true;
-                    mViewObj.BtnChange.GetComponent<Image>().color = Color.white;
-                    mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_EquipSpell(canEquipSpellPos); });
-                }
-                else
-                {
-                    mViewObj.BtnChange.enabled = false;
-                    mViewObj.BtnChange.GetComponent<Image>().color = Color.gray;
-                }      
-            }
-            else
-            {
-                CloseWindow(CloseActionType.OpenHide);
-            }
-        }     
+        //UIRootMgr.Instance.IsLoading = false;
+        //NetPacket.S2C_EquipSpell msg = MessageBridge.Instance.S2C_EquipSpell(ios);
+        //int pos = PlayerPrefsBridge.Instance.PlayerData.SpellList[msg.EquipPos];
+        //if (mCurSelectItemIndex == -1)
+        //{
+        //    FreshSpellItem();
+        //}
+        //else
+        //{        
+        //    if (pos == (int)Spell.PosType.None)//卸下技能
+        //    {
+        //        Spell curSpell = PlayerPrefsBridge.Instance.GetInventorySpellByPos(mInventoryPos);
+        //        ItemObj item = mSpellItemList[mCurSelectItemIndex];
+        //        item.IconItem.gameObject.SetActive(true);
+        //        item.IconEquipMark.gameObject.SetActive(false);
+        //        item.isEquip = false;
+        //        mViewObj.TextTitleChange.text = "装备";
+        //        int[] SpellList = PlayerPrefsBridge.Instance.PlayerData.SpellList;
+        //        int canEquipSpellPos = (int)Spell.PosType.None;
+        //        for (int i = 0; i < SpellList.Length; i++)
+        //        {
+        //            //if (SpellList[i] == (int)Skill.PosType.None && ((Skill.PosType)i).SpellFrameType() == curSpell.skillType)
+        //            //{
+        //            //    canEquipSpellPos = i;
+        //            //    break;
+        //            //}
+        //        }
+        //        if (canEquipSpellPos != (int)Spell.PosType.None)
+        //        {
+        //            mViewObj.BtnChange.enabled = true;
+        //            mViewObj.BtnChange.GetComponent<Image>().color = Color.white;
+        //            mViewObj.BtnChange.SetOnClick(delegate() { BtnEvt_EquipSpell(canEquipSpellPos); });
+        //        }
+        //        else
+        //        {
+        //            mViewObj.BtnChange.enabled = false;
+        //            mViewObj.BtnChange.GetComponent<Image>().color = Color.gray;
+        //        }      
+        //    }
+        //    else
+        //    {
+        //        CloseWindow(CloseActionType.OpenHide);
+        //    }
+        //}     
     }
     public void S2C_StudySpell(BinaryReader ios)
     {
